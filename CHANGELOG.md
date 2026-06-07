@@ -1,5 +1,11 @@
 # Global npm Package Setup - CHANGELOG
 
+## v2.0.1 - 2026-06-07
+
+- npm レジストリのルートメタデータ不整合を解消するため再 publish
+- `package.json` の `bin` パス表記を修正 (`./bin/global-npm.cjs` → `bin/global-npm.cjs`)
+- `repository.url` を `git+https://…` 形式に正規化
+
 ## v2.0.0 - 2026-06-07
 
 初回 npm publish 向け (`@s2j/global-npm@2.0.0`、`npm publish --access public`)。

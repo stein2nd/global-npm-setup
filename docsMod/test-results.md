@@ -27,7 +27,7 @@
 |----|------|------|------|
 | NAM-01 | package.json の name が `@s2j/global-npm` であること。 | ✔ PASS | actual: @s2j/global-npm |
 | NAM-02 | package.json の bin に `global-npm` コマンドが定義されていること。 | ✔ PASS |  |
-| NAM-03 | repository.url に `global-npm-setup` が含まれること。 | ✔ PASS | https://github.com/stein2nd/global-npm-setup.git |
+| NAM-03 | repository.url に `global-npm-setup` が含まれること。 | ✔ PASS | git+https://github.com/stein2nd/global-npm-setup.git |
 | NAM-04 | package.json の name が v1 名 `global-npm-packages` ではないこと。 | ✔ PASS |  |
 
 ## mod-os-agnostic-cli
@@ -103,10 +103,10 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.0.0` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.0.1` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.0.0` が公開済みであること。 | ⚠ WARN | 初回 publish は別タイミングで実施予定 |
+| PUB-05 | npm registry に `@s2j/global-npm@2.0.1` が公開済みであること。 | ⚠ WARN | 初回 publish は別タイミングで実施予定 |
 
 ## mod-os-agnostic-windows
 

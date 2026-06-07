@@ -1,12 +1,12 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
   "license": "GPL-3.0-or-later",
   "bin": {
-    "global-npm": "./bin/global-npm.cjs"
+    "global-npm": "bin/global-npm.cjs"
   },
   "files": [
     "bin/",
@@ -24,7 +24,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stein2nd/global-npm-setup.git"
+    "url": "git+https://github.com/stein2nd/global-npm-setup.git"
   },
   "homepage": "https://github.com/stein2nd/global-npm-setup#readme",
   "bugs": {

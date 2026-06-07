@@ -82,7 +82,7 @@ test('naming: CLI command name', () => {
     'NAM-02',
     'mod-os-agnostic-naming',
     'package.json の bin に `global-npm` コマンドが定義されていること。',
-    pkg.bin && pkg.bin['global-npm'] === './bin/global-npm.cjs',
+    pkg.bin && pkg.bin['global-npm'] === 'bin/global-npm.cjs',
   );
 });
 
@@ -535,13 +535,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.0.0', () => {
+test('publish: version 2.0.1', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.0.0` であること。',
-    pkg.version === '2.0.0',
+    'package.json の version が `2.0.1` であること。',
+    pkg.version === '2.0.1',
   );
 });
 
@@ -572,7 +572,7 @@ test('publish: registry publish status', () => {
   mark(
     'PUB-05',
     'mod-npm-publish',
-    'npm registry に `@s2j/global-npm@2.0.0` が公開済みであること。',
+    'npm registry に `@s2j/global-npm@2.0.1` が公開済みであること。',
     false,
     '初回 publish は別タイミングで実施予定',
     { warnOnFail: true },
