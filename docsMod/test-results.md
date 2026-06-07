@@ -6,12 +6,12 @@
 
 | 区分 | 件数 |
 |------|------|
-| ✔ PASS | 56 |
-| ⚠ WARN | 2 |
+| ✔ PASS | 57 |
+| ⚠ WARN | 1 |
 | ✖ FAIL | 0 |
 | 合計 | 58 |
 
-自動テスト合格率（PASS / 合計）: **97%**
+自動テスト合格率（PASS / 合計）: **98%**
 
 実行: `npm test`
 
@@ -106,15 +106,7 @@
 | PUB-02 | package.json の version が `2.0.3` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.0.3` が公開済みであること。 | ⚠ WARN | npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
-npm error code E404
-npm error 404 No match found for version 2.0.3
-npm error 404
-npm error 404  The requested resource '@s2j/global-npm@2.0.3' could not be found or you do not have permission to access it.
-npm error 404
-npm error 404 Note that you can also install from a
-npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/36e379c5b57e5d0842936aa2f9a0f255/npm/_logs/2026-06-07T16_14_27_637Z-debug-0.log |
+| PUB-05 | npm registry に `@s2j/global-npm@2.0.3` が公開済みであること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-windows
 
