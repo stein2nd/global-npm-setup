@@ -9,17 +9,17 @@
 | **仕様確定** | **100%** (8/8) | `docs/` に移行済み ([specs.md](../docs/specs.md)) |
 | **フェーズ1: コア実装** | **100%** | 完了 |
 | **フェーズ2: リリース** | **100%** | npm publish ・自己参照・仕様書の移行完了 |
-| **フェーズ3: リリース後** | **20%** | Docs Lint 基盤完成。CI PASS には `test-results.md` 修正要。Windows / 方式 B / OIDC CI 未着手 |
+| **フェーズ3: リリース後** | **50%** (2/4) | Docs Lint CI PASS、npm OIDC publish CI 実装済 (未 push)。Windows / 方式 B 未着手 |
 | **v2初期リリース全体** | **86%** (6/7) | [modification.md](./modification.md) タスク #8 (Windows 実機確認) のみ残 |
-| **v2全体 (方式 B、CI 含む)** | **67%** (6/9) | #1、#8、#9 (OIDC) 未着手 |
-| **仕様準拠テスト** | **98%** (PASS: 57/58) | ✖ FAIL: 0 / ⚠ WARN: 1… [test-results.md](./test-results.md) |
+| **v2全体 (方式 B、CI 含む)** | **78%** (7/9) | #1 (方式 B)、#8 (Windows) 未着手。#9 (OIDC CI) 完了 |
+| **仕様準拠テスト** | **97%** (PASS: 56/58) | ✖ FAIL: 0 / ⚠ WARN: 2 (PUB-05, WIN-05) … [test-results.md](./test-results.md) |
 | **開発基盤 (lint / format / test)** | **100%** | ESLint / Prettier / 仕様準拠テスト / `lint:docs` script 済 |
 
 > **進捗率の算定**
 >
-> - [modification.md](./modification.md) の v2 残タスク (#1〜#9) を実装タスクとみなす。#2〜#6 をフェーズ1、#7 をフェーズ2、#8・#9 をフェーズ3 に対応付け。
-> - **フェーズ2 (100%)** — `@s2j/global-npm@2.0.2` を npm publish 済み。自己参照の追加、確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))。
-> - **フェーズ3 (20%)** — Docs Lint 基盤 (`lint:docs` script、`.textlintrc.json`、VS Code 設定、GA workflow) は完成。`npm run lint:docs` は実行可能だが、`docsMod/test-results.md` (自動生成) の lint エラー 21件 (うち 20件 auto-fixable) 解消まで CI は FAIL。Windows 実機確認・方式 B・npm OIDC publish CI は未着手。
+> * [modification.md](./modification.md) の v2 残タスク (#1〜#9) を実装タスクとみなす。#2〜#6 をフェーズ1、#7 をフェーズ2、#8・#9 をフェーズ3 に対応付け。
+> * **フェーズ2 (100%)** — `@s2j/global-npm@2.0.2` を npm publish 済み。自己参照の追加、確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))。v2.0.3 (semver 付き install) はローカル実装済・registry 未公開。
+> * **フェーズ3 (50%)** — 優先タスク4件のうち #9 (npm OIDC publish CI) と Docs Lint CI が完了。#9 は `.github/workflows/npm-publish.yml` + `scripts/verify-release-tag.cjs` (リポジトリ未 push)。Docs Lint は `lint:docs` PASS (`test-results.md` を lint 対象外)。残り #8 (Windows 実機)、#1 (方式 B) は未着手。
 
 ## 仕様書 (参照元)
 
@@ -34,7 +34,7 @@
 | [legacy-scripts.md](../docs/legacy-scripts.md) | レガシースクリプト廃止 | 確定 | ✅ |
 | [windows.md](../docs/windows.md) | Windows 11セットアップ・制約 | 確定 | ⏳ 実機未確認 |
 | [license.md](../docs/license.md) | GPL-3.0-or-later | 確定 | ✅ |
-| [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ) | 確定 | ✅ v2.0.2 |
+| [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ) | 確定 | ✅ v2.0.2 + OIDC CI |
 
 ### 仕様書別テスト結果
 
@@ -43,7 +43,7 @@
 | mod-os-agnostic-naming | 4 | 0 | 0 |
 | mod-os-agnostic-cli | 16 | 0 | 0 |
 | mod-os-agnostic-install | 7 | 0 | 0 |
-| mod-os-agnostic-layout | 9 | 1 | 0 |
+| mod-os-agnostic-layout | 10 | 0 | 0 |
 | mod-os-agnostic-legacy-scripts | 4 | 0 | 0 |
 | mod-gpl3-license | 6 | 0 | 0 |
 | mod-npm-publish | 4 | 1 | 0 |
@@ -58,7 +58,7 @@
 |------|------|------|
 | `global-npm check` | ✅ 実装済 | `ncu -g --format time --packageFile` |
 | `global-npm update` | ✅ 実装済 | `ncu -g -u --format time --packageFile` |
-| `global-npm install` | ✅ 実装済 | C 型 — `dependencies` キー列挙 → `npm install -g` |
+| `global-npm install` | ✅ 実装済 | C 型 — `dependencies` の `name@range` → `npm install -g` (v2.0.3) |
 | CLI エントリ | ✅ 実装済 | `bin/global-npm.cjs` (CommonJS 明示) |
 | setup ディレクトリ解決 | ✅ 実装済 | `path.resolve(__dirname, '..')` (package root) |
 | Windows `spawnSync` 対応 | ✅ 実装済 | `shell: process.platform === 'win32'` |
@@ -69,14 +69,14 @@
 | ESLint / Prettier | ✅ 導入済 | `npm run lint` / `format:check` |
 | 仕様準拠テスト | ✅ 導入済 | `npm test` (58項目、FAIL: 0) |
 | README 下準備 (macOS / Windows) | ✅ 更新済 | docs-linter 形式のセットアップ手順 |
-| Docs Lint (`@s2j/docs-linter`) | ⏳ 基盤完了 | devDep + `.textlintrc.json` + `lint:docs` + GA workflow。`test-results.md` の lint 解消で CI PASS |
+| Docs Lint (`@s2j/docs-linter`) | ✅ PASS | devDep + `.textlintrc.json` + `lint:docs` + GA workflow。`test-results.md` は lint 対象外 |
 | textlint エディター連携 | ✅ 設定済 | `.vscode/settings.json` に統合。拡張 (`3w36zj6.textlint`) の手動インストール要 |
-| `@s2j/global-npm` 自己参照 | ✅ 追加済 | `dependencies` に `@s2j/global-npm: ^2.0.1` (v2.0.2publish) |
+| `@s2j/global-npm` 自己参照 | ✅ 追加済 | `dependencies` に `@s2j/global-npm: ^2.0.2` (v2.0.3) |
 | `@s2j/docs-linter` 追加 (dependencies) | ⏸ 延期 | ユーザー側で後日 (devDep には存在) |
-| `GLOBAL_NPM_SETUP_DIR` (方式 B) | ❌ 未実装 | フェーズ3 |
-| npm publish | ✅ 実施済 | `@s2j/global-npm@2.0.2` (latest) |
-| Windows 11実機確認 | ❌ 未実施 | フェーズ3 |
-| CI / 自動 publish (npm OIDC) | ❌ 未実施 | 任意 (フェーズ3) |
+| `GLOBAL_NPM_SETUP_DIR` (方式 B) | ❌ 未実装 | フェーズ3 (#1) |
+| npm publish | ⏳ v2.0.3待ち | registry latest: `@s2j/global-npm@2.0.2`。v2.0.3 (semver install) は未 publish |
+| Windows 11実機確認 | ❌ 未実施 | フェーズ3 (#8) |
+| CI / 自動 publish (npm OIDC) | ✅ 実装済 | `.github/workflows/npm-publish.yml` (tag push / manual dry-run)。未 push |
 | `docsMod/` → `docs/` 移行 | ✅ 完了 | 8仕様書を `docs/` へ移行、`docsMod/` は進行管理のみ |
 
 ## フェーズ1: コア実装
@@ -97,27 +97,27 @@
 
 ### フェーズ1完了条件
 
-- [x] `bin/global-npm.cjs` が3サブコマンドを実装している
-- [x] install が C 型 (Node 列挙) である
-- [x] `package.json` が v2形式 (`@s2j/global-npm`、`bin`、`files`、`engines`) である
-- [x] `LICENSE` (GPL-3.0-or-later) が存在する
-- [x] README が v2の CLI 向けに更新されている (macOS / Windows 下準備含む)
-- [x] `install-global.zsh` が削除されている
-- [x] `npm link` または `node bin/global-npm.cjs` でローカル動作確認済
-- [x] `npm run pack:dry-run` で tarball 内容 (4ファイル) を確認済
-- [x] CHANGELOG にフェーズ1の変更を記載済
-- [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
+* [x] `bin/global-npm.cjs` が3サブコマンドを実装している
+* [x] install が C 型 (Node 列挙、`name@range` 形式) である
+* [x] `package.json` が v2形式 (`@s2j/global-npm`、`bin`、`files`、`engines`) である
+* [x] `LICENSE` (GPL-3.0-or-later) が存在する
+* [x] README が v2の CLI 向けに更新されている (macOS / Windows 下準備含む)
+* [x] `install-global.zsh` が削除されている
+* [x] `npm link` または `node bin/global-npm.cjs` でローカル動作確認済
+* [x] `npm run pack:dry-run` で tarball 内容 (4ファイル) を確認済
+* [x] CHANGELOG にフェーズ1の変更を記載済
+* [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
 
 **すべて達成 — フェーズ1完了。**
 
 ### フェーズ1で完了した項目
 
-- `bin/global-npm.cjs` 新規作成 (check / update / install)
-- `package.json` v2化 (`name`, `bin`, `files`, `engines`, `private` 削除)
-- `README.md` v2向け全面更新 (macOS / Windows 下準備手順)
-- `install-global.zsh` 削除
-- `CHANGELOG.md` 更新
-- ローカル検証 (`node bin/global-npm.cjs check`、`npm link`、`npm run pack:dry-run`)
+* `bin/global-npm.cjs` 新規作成 (check / update / install)
+* `package.json` v2化 (`name`, `bin`, `files`, `engines`, `private` 削除)
+* `README.md` v2向け全面更新 (macOS / Windows 下準備手順)
+* `install-global.zsh` 削除
+* `CHANGELOG.md` 更新
+* ローカル検証 (`node bin/global-npm.cjs check`、`npm link`、`npm run pack:dry-run`)
 
 ### フェーズ1で完了した主な変更 (コード・文書)
 
@@ -166,7 +166,7 @@
 
 ### フェーズ2: サマリー
 
-**100% 完了** — npm publish (v2.0.2)、自己参照、`docs/` 移行まで完了。
+**100% 完了** — npm publish (v2.0.2)、自己参照、`docs/` 移行まで完了。v2.0.3 (semver 付き install) は CHANGELOG 記載済・ registry 未公開。
 
 ### フェーズ2優先タスクと完了条件の対応
 
@@ -182,26 +182,26 @@
 
 ### フェーズ2完了条件
 
-- [x] `npm run pack:dry-run` で `bin/`、`package.json`、`LICENSE`、`README.md` が tarball に含まれる
-- [x] `npm run pack` で `./artifacts/` に tarball が生成される (`artifacts/` は `.gitignore` 対象)
-- [x] `npm run lint` がエラーなく完了する
-- [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
-- [x] `npm publish --access public` が成功する
-- [x] publish 後、`dependencies` に `@s2j/global-npm` 自己参照を追加する
-- [x] 確定した mod ドキュメントを `docs/` へ移行する
+* [x] `npm run pack:dry-run` で `bin/`、`package.json`、`LICENSE`、`README.md` が tarball に含まれる
+* [x] `npm run pack` で `./artifacts/` に tarball が生成される (`artifacts/` は `.gitignore` 対象)
+* [x] `npm run lint` がエラーなく完了する
+* [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
+* [x] `npm publish --access public` が成功する
+* [x] publish 後、`dependencies` に `@s2j/global-npm` 自己参照を追加する
+* [x] 確定した mod ドキュメントを `docs/` へ移行する
 
 **すべて達成 — フェーズ2完了。**
 
 ### フェーズ2で完了した項目
 
-- `npm publish --access public` (`@s2j/global-npm` v2.0.0→ v2.0.2)
-- GitHub Release (`v2.0.0` / `v2.0.1` / `v2.0.2`)
-- `dependencies` へ `@s2j/global-npm` 自己参照の追加
-- 確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))
-- `npm run pack:dry-run` / `npm run pack` (出力先 `./artifacts/`)
-- ESLint / Prettier 導入 (`lint` / `format:check` scripts)
-- 仕様準拠テスト58項目
-- [npm-publish.md](../docs/npm-publish.md) publish 手順更新
+* `npm publish --access public` (`@s2j/global-npm` v2.0.0→ v2.0.2)
+* GitHub Release (`v2.0.0` / `v2.0.1` / `v2.0.2`)
+* `dependencies` へ `@s2j/global-npm` 自己参照の追加
+* 確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))
+* `npm run pack:dry-run` / `npm run pack` (出力先 `./artifacts/`)
+* ESLint / Prettier 導入 (`lint` / `format:check` scripts)
+* 仕様準拠テスト58項目
+* [npm-publish.md](../docs/npm-publish.md) publish 手順更新
 
 ### フェーズ2で完了した主な変更 (コード・文書)
 
@@ -211,7 +211,7 @@
 | `docs/` | 確定仕様8件 (`cli.md`, `install.md`, `layout.md` 等) |
 | `docs/specs.md` | 仕様書一覧 |
 | `docsMod/modification.md` | `docs/` 移行後の v2残タスク |
-| `CHANGELOG.md` | v2.0.0〜 v2.0.2 |
+| `CHANGELOG.md` | v2.0.3 (semver install) |
 | `.gitignore` | `artifacts/`、`.sandbox/` 追加 |
 | `eslint.config.mjs` | ESLint v9の flat config |
 | `prettier.config.mjs` | Prettier 設定 |
@@ -237,7 +237,7 @@
 
 ### フェーズ3: サマリー
 
-**20% 進行中** — Docs Lint 基盤 (script / config / VS Code / workflow) は完成。CI が PASS するには `docsMod/test-results.md` (自動生成) の lint エラー解消が必要。npm publish CI、Windows 実機確認・方式 B は未着手。
+**50% 進行中 (2/4優先タスク完了)** — Docs Lint CI (`lint:docs` PASS) と npm OIDC publish CI (workflow 実装済) が完了。Windows 実機確認 (#8) と方式 B (#1) は未着手。
 
 ### フェーズ3優先タスクと完了条件の対応
 
@@ -245,31 +245,39 @@
 |---|--------|----------|------|
 | 8 | Windows 11実機確認 | check / update / install、CLI on PATH が動作する | ❌ |
 | 1 | 方式 B — 環境別 pkg 集合 | `GLOBAL_NPM_SETUP_DIR` で setup ディレクトリを上書きできる | ❌ |
-| 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC | ❌ |
-| — | Docs Lint CI | `npm run lint:docs` が CI で PASS | ⏳ 基盤完成 (`test-results.md` にエラー21件… 修正可能20件) |
+| 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC | ✅ |
+| — | Docs Lint CI | `npm run lint:docs` が CI で PASS | ✅ |
 
 ### フェーズ3完了条件
 
-- [ ] Windows 11で `global-npm check|update|install` が動作する
-- [ ] Windows 11で `textlint` / `ncu` 等の CLI が PATH に載る
-- [ ] `GLOBAL_NPM_SETUP_DIR` 環境変数で別 `package.json` を参照できる (方式 B)
-- [ ]  (任意) tag push で npm 自動 publish する CI が動作する
-- [x] `package.json` に `lint:docs` script がある
-- [x] `.textlintrc.json` が有効なルールで textlint を実行できる
-- [ ] Docs Lint CI (`.github/workflows/docs-lint.yml`) が `npm run lint:docs` で成功する (`test-results.md` の lint エラー解消後)
+* [ ] Windows 11で `global-npm check|update|install` が動作する
+* [ ] Windows 11で `textlint` / `ncu` 等の CLI が PATH に載る
+* [ ] `GLOBAL_NPM_SETUP_DIR` 環境変数で別 `package.json` を参照できる (方式 B)
+* [x]  (任意) tag push で npm 自動 publish する CI が動作する (`.github/workflows/npm-publish.yml` + npm Trusted Publishing)
+* [x] `package.json` に `lint:docs` script がある
+* [x] `.textlintrc.json` が有効なルールで textlint を実行できる
+* [x] Docs Lint CI (`.github/workflows/docs-lint.yml`) が `npm run lint:docs` で成功する (`test-results.md` は lint 対象外)
+
+**4/7達成** — Windows (#8) と方式 B (#1) が残。
 
 ### フェーズ3で完了した項目
 
-- `.github/workflows/docs-lint.yml` 追加 (Markdown 変更時に lint 実行)
-- `.textlintrc.json` 整備 (`extends` + base preset、`preset-wp-docs-ja`、allowlist)
-- `@s2j/docs-linter` を devDependencies に追加
-- `package.json` に `lint:docs` script 追加 (`s2j-docs-linter --profile base`、`README.md` / `docsMod/**/*.md` / `.vscode/**/*.md`)
-- `.vscode/settings.json` に textlint 設定統合 (`configPath` / `nodePath` / autoFixOnSave)
+* `bin/global-npm.cjs` — install を semver 付き (`name@range`) に変更 (v2.0.3)
+* `.github/workflows/npm-publish.yml` 追加 (tag push / manual dry-run、npm OIDC)
+* `scripts/verify-release-tag.cjs` 追加 (tag と `package.json` version の一致確認)
+* `.github/workflows/docs-lint.yml` 追加 (Markdown 変更時に lint 実行)
+* `.textlintrc.json` 整備 (`extends` + base preset、`preset-wp-docs-ja`、allowlist)
+* `@s2j/docs-linter` を devDependencies に追加
+* `package.json` に `lint:docs` script 追加 (`s2j-docs-linter --profile base`、`README.md` / `docs/**/*.md` / `docsMod/status.md` / `docsMod/modification.md` / `.vscode/**/*.md`)
+* `.vscode/settings.json` に textlint 設定統合 (`configPath` / `nodePath` / autoFixOnSave)
 
 ### フェーズ3で完了した主な変更 (コード・文書)
 
 | ファイル | 変更 |
 |----------|------|
+| `bin/global-npm.cjs` | install — `name@range` 形式 (v2.0.3) |
+| `.github/workflows/npm-publish.yml` | npm OIDC publish CI (tag / dry-run) |
+| `scripts/verify-release-tag.cjs` | release tag と version の一致検証 |
 | `.github/workflows/docs-lint.yml` | Docs Lint CI workflow |
 | `.textlintrc.json` | textlint 設定 (`extends` + `preset-wp-docs-ja` + allowlist) |
 | `package.json` | `@s2j/docs-linter` (devDependencies)、`lint:docs` script |
@@ -280,16 +288,17 @@
 
 | 日付 | 内容 |
 |------|------|
+| 2026-06-07 | v2.0.3— `install` を semver 付き (`name@range`) に修正 |
+| 2026-06-07 | npm OIDC publish CI (`.github/workflows/npm-publish.yml`) 追加 |
 | 2026-06-07 | Docs Lint CI workflow 追加 |
 | 2026-06-07 | `lint:docs` script 追加、`.textlintrc.json` 修正、VS Code textlint 設定統合 |
-| 2026-06-07 | Docs Lint 対象ドキュメント整備 — `status.md` / `README.md` は PASS。残りは `test-results.md` (エラー21件) |
+| 2026-06-07 | Docs Lint PASS — `test-results.md` を lint 対象から除外 |
 
 ### フェーズ3の残タスク
 
-1. `docsMod/test-results.md` の lint エラーを解消し Docs Lint CI を PASS させる (現状エラー21件… 修正可能20件。自動生成レポートと `wp-docs-ja/prh` の衝突)
-2. Windows 11実機確認
-3. 方式 B — `GLOBAL_NPM_SETUP_DIR` 実装
-4. (任意) GitHub Actions + npm OIDC による自動 publish
+1. Windows 11実機確認 (#8)
+2. 方式 B — `GLOBAL_NPM_SETUP_DIR` 実装 (#1)
+3. v2.0.3 + npm OIDC workflow の commit / push / tag publish (npm Trusted Publisher 登録後)
 
 ---
 
@@ -302,11 +311,13 @@
 | `node bin/global-npm.cjs` (usage) | `exit code: 1`、usage 表示 |
 | `node bin/global-npm.cjs check` | ncu 実行成功 |
 | `npm run pack:dry-run` | 4ファイル確認 |
-| `npm run pack` | `./artifacts/s2j-global-npm-2.0.0.tgz` 生成 |
+| `npm run pack` | `./artifacts/s2j-global-npm-2.0.3.tgz` 生成 |
 | `npm run lint` | エラーなし |
-| `npm test` | 53テスト PASS、仕様準拠 FAIL: 0 |
+| `npm test` | 53テスト PASS、仕様準拠 FAIL: 0 / WARN: 2 |
+| `npm run lint:docs` | PASS (`test-results.md` は lint 対象外) |
+| `node scripts/verify-release-tag.cjs v2.0.3` | tag / version 一致確認 OK |
 | `npm link` + nvm global bin 経由 | check / install 成功 |
-| `npm run lint:docs` | 実行可能 (`exit code: 1`、エラー21件… すべて `docsMod/test-results.md`。`status.md` / `README.md` は PASS) |
+| npm registry latest | `@s2j/global-npm@2.0.2` (v2.0.3未公開) |
 
 ### npm scripts 一覧
 
@@ -323,10 +334,11 @@
 
 | 項目 | 状態 | 対応予定 |
 |------|------|----------|
-| Docs Lint エラー | `npm run lint:docs` がエラー21件で FAIL (すべて `docsMod/test-results.md`) | フェーズ3… レポート生成側の表記修正、または lint 対象から除外 |
-| `test-results.md` と textlint | `npm test` 自動生成の表記 (例: `（PASS）`, `exit 1`) が `wp-docs-ja/prh` に抵触 | テストレポート生成ロジックの調整を検討 |
+| v2.0.3未 publish | registry latest は2.0.2 (PUB-05: ⚠ WARN) | tag push + npm OIDC publish (Trusted Publisher 登録後) |
+| npm OIDC workflow 未 push | `.github/workflows/npm-publish.yml` はローカルのみ | commit / push |
 | Prettier | `npm run format:check` が `.textlintrc.json`、`.cursor/rules/allowlist.json` で WARN | 必要に応じて `npm run format` |
 | textlint 拡張 | 設定は `settings.json` に統合済。拡張本体は手動インストール要 | ユーザー環境 |
+| Windows 11実機 | WIN-05: ⚠ WARN (macOS 環境) | フェーズ3 (#8) |
 | `.textlintrc.json` の `rules` | `preset-wp-docs-ja` (WordPress 向け)。base 専用プリセット名は存在しない | 他プロジェクトと同形式を維持 |
 
 ### 既存環境での注意
@@ -340,5 +352,5 @@
 | `@s2j/global-npm` 自己参照 | publish 前に registry 未登録 | v2.0.2publish 後に追加済 | LAY-09: ✔ |
 | `@s2j/docs-linter` 追加 (dependencies) | ユーザー側で管理 | ユーザー判断 | — |
 | `GLOBAL_NPM_SETUP_DIR` | 方式 B は v2残タスク | フェーズ3 | LAY-10: ✔ (未実装であること) |
-| npm publish | 別タイミングで実施 | v2.0.2まで完了 | PUB-05: ✔ |
+| npm publish | v2.0.2まで完了。v2.0.3未公開 | tag push 待ち | PUB-05: ⚠ |
 | Windows 11実機確認 | macOS 環境で未実施 | フェーズ3 | WIN-05: ⚠ |

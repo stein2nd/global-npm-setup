@@ -20,10 +20,10 @@ v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) だった。
 
 以下いずれかで Node.js v18以降を導入する。
 
-- [fnm](https://github.com/Schniz/fnm) (macOS / Windows 共通。推奨)
-- [nvm-windows](https://github.com/coreybutler/nvm-windows)
-- [Volta](https://volta.sh/)
-- 公式インストーラ
+* [fnm](https://github.com/Schniz/fnm) (macOS / Windows 共通。推奨)
+* [nvm-windows](https://github.com/coreybutler/nvm-windows)
+* [Volta](https://volta.sh/)
+* 公式インストーラ
 
 ### 2. `@s2j/global-npm` のインストール
 
@@ -91,23 +91,23 @@ Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決する。
 
 ## jq について (Windows)
 
-- **C 型のため、`global-npm` 実行に jq は不要。**
-- 手動でグローバル pkg 一覧を `package.json` に取り込む作業に jq を使う場合は任意 (`winget install jqlang.jq` 等)。
-- macOS も同様に、CLI ランタイム依存は Node + npm のみ。
+* **C 型のため、`global-npm` 実行に jq は不要。**
+* 手動でグローバル pkg 一覧を `package.json` に取り込む作業に jq を使う場合は任意 (`winget install jqlang.jq` 等)。
+* macOS も同様に、CLI ランタイム依存は Node + npm のみ。
 
 ## 勤務先環境の制約 (想定)
 
-- 管理者権限なしでの `npm install -g` が可能か事前確認する。
-- プロキシ / 社内 npm registry がある場合は `.npmrc` で設定する。
-- Git 管理ポリシー: dotfiles を clone するか、`npm install -g` のみで完結させるかは環境次第。
+* 管理者権限なしでの `npm install -g` が可能か事前確認する。
+* プロキシ / 社内 npm registry がある場合は `.npmrc` で設定する。
+* Git 管理ポリシー: dotfiles を clone するか、`npm install -g` のみで完結させるかは環境次第。
 
 ## README への反映
 
 v2の README は、OS 別セクションに分ける。
 
-- **共通** — 概要、`global-npm` コマンド、更新フロー
-- **macOS** — fnm / Homebrew (任意)、dotfiles 配置
-- **Windows** — fnm / nvm-windows、PowerShell、PATH 確認
+* **共通** — 概要、`global-npm` コマンド、更新フロー
+* **macOS** — fnm / Homebrew (任意)、dotfiles 配置
+* **Windows** — fnm / nvm-windows、PowerShell、PATH 確認
 
 ## テスト観点
 

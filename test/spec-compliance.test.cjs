@@ -281,13 +281,15 @@ test('cli: check does not modify package.json', () => {
 
 // --- mod-os-agnostic-install ---
 
-test('install: C-type npm install -g with names', () => {
+test('install: C-type npm install -g with semver specs', () => {
   const source = read(CLI_PATH);
   mark(
     'INS-01',
     'mod-os-agnostic-install',
-    'install が `npm install -g` にパッケージ名を列挙して渡すこと。',
-    source.includes("'npm'") && source.includes("'install', '-g', ...names"),
+    'install が `npm install -g` に `name@range` 形式で渡すこと。',
+    source.includes("'npm'") &&
+      source.includes("'install', '-g', ...specs") &&
+      source.includes('toGlobalInstallSpec'),
   );
 });
 
@@ -301,13 +303,13 @@ test('install: not B-type bare npm install -g', () => {
   );
 });
 
-test('install: uses dependencies keys only', () => {
+test('install: uses dependencies entries', () => {
   const source = read(CLI_PATH);
   mark(
     'INS-03',
     'mod-os-agnostic-install',
-    'install が `dependencies` のキーを `Object.keys` で列挙すること。',
-    source.includes('Object.keys(dependencies)'),
+    'install が `dependencies` の name / range を `Object.entries` で列挙すること。',
+    source.includes('Object.entries(dependencies)'),
   );
 });
 
@@ -317,7 +319,7 @@ test('install: empty dependencies error', () => {
     'INS-04',
     'mod-os-agnostic-install',
     'dependencies が空のとき `No dependencies to install.` で exit 1 すること。',
-    source.includes('No dependencies to install.') && source.includes('names.length === 0'),
+    source.includes('No dependencies to install.') && source.includes('specs.length === 0'),
   );
 });
 
@@ -533,13 +535,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.0.2', () => {
+test('publish: version 2.0.3', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.0.2` であること。',
-    pkg.version === '2.0.2',
+    'package.json の version が `2.0.3` であること。',
+    pkg.version === '2.0.3',
   );
 });
 

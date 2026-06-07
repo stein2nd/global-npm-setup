@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
@@ -55,7 +55,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@s2j/global-npm": "^2.0.1",
+    "@s2j/global-npm": "^2.0.2",
     "corepack": "^0.35.0",
     "editorconfig-cli": "^1.0.0",
     "envinfo": "^7.21.0",

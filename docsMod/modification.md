@@ -5,8 +5,8 @@ v2脱 OS 依存改修の進行管理です。
 
 ## ドキュメント命名規則
 
-- **ファイル名** — ASCII のみ。initiative ごとに接頭辞を付け、ソートしやすくする (例: `mod-os-agnostic-naming.md` → 確定後 `docs/naming.md`)。
-- **タイトル** — 各ファイルの1行目に `# Global npm Package Setup - …` 形式で記載する。
+* **ファイル名:** ASCII のみ。initiative ごとに接頭辞を付け、ソートしやすくする (例: `mod-os-agnostic-naming.md` → 確定後 `docs/naming.md`)。
+* **タイトル:** 各ファイルの1行目に `# Global npm Package Setup - …` 形式で記載する。
 
 ## 確定仕様 (docs/ へ移行済み)
 
@@ -33,4 +33,4 @@ v2脱 OS 依存改修の進行管理です。
 | 6 | `install-global.zsh` 削除 | レガシー廃止 | ✅ |
 | 7 | 初回 npm publish | `@s2j/global-npm` v2.0.x | ✅ v2.0.2 |
 | 8 | Windows 11実機確認 | check / update / install、CLI on PATH | ❌ フェーズ3 |
-| 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC | ❌ フェーズ3 |
+| 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC | ✅ |

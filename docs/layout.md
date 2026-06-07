@@ -22,15 +22,15 @@ v2では npm パッケージ `@s2j/global-npm` として配布するため、**d
 
 ### 根拠
 
-- 自宅 macOS と勤務先 Windows11で **同一の dependencies 一覧** を使う要件に合致する。
-- `@s2j/docs-linter` と同様、`npm update -g` で更新管理できる。
-- CLI 実装が単純 (パッケージ root = setup ディレクトリ)。
-- v1の「1つの `package.json` が真実の源」というモデルを維持できる。
+* 自宅 macOS と勤務先 Windows11で **同一の dependencies 一覧** を使う要件に合致する。
+* `@s2j/docs-linter` と同様、`npm update -g` で更新管理できる。
+* CLI 実装が単純 (パッケージ root = setup ディレクトリ)。
+* v1の「1つの `package.json` が真実の源」というモデルを維持できる。
 
 ### トレードオフ
 
-- パッケージ一覧の変更は **リポジトリ更新 → npm publish** が必要。
-- 勤務先だけ別一覧にしたい場合は v2初期では未対応。**v2残タスク** として方式 B (`GLOBAL_NPM_SETUP_DIR` 等) を実装する ([modification.md](./modification.md) 参照)。
+* パッケージ一覧の変更は **リポジトリ更新 → npm publish** が必要。
+* 勤務先だけ別一覧にしたい場合は v2初期では未対応。**v2残タスク** として方式 B (`GLOBAL_NPM_SETUP_DIR` 等) を実装する ([modification.md](./modification.md) 参照)。
 
 ## ディレクトリ構成 (v2)
 
@@ -92,8 +92,8 @@ npm install -g .
 
 ## npm publish 時の注意
 
-- `files` フィールドで `bin/` と `package.json` が tarball に含まれることを確認する。
-- `devDependencies` は含めない (グローバル install 対象は `dependencies` のみ)。
+* `files` フィールドで `bin/` と `package.json` が tarball に含まれることを確認する。
+* `devDependencies` は含めない (グローバル install 対象は `dependencies` のみ)。
 
 ## ステータス
 

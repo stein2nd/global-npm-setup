@@ -60,9 +60,11 @@ npm グローバル bin: `%AppData%\npm` (通常 PATH に含まれる)
 初回 publish 後:
 
 ```sh
-npm install -g @s2j/global-npm
-global-npm install
+npm install -g @s2j/global-npm  # CLI 本体の導入（これは一度だけ）
+global-npm install  # dependencies 一覧をすべて global install
 ```
+
+`global-npm install` は、`@s2j/global-npm` 自身 (自己参照 `^2.0.1`) も含め、`dependencies` のキーを列挙して `npm install -g` します。
 
 ### 開発 — リポジトリ clone
 
@@ -79,6 +81,23 @@ global-npm install
 `check` / `update` / `install` はいずれもこの一覧を参照します。
 
 一覧の変更はリポジトリ更新 → npm publish → `npm update -g @s2j/global-npm` で各環境に反映します。
+
+
+## 日常の更新サイクル
+
+```mermaid
+flowchart LR
+  A["global-npm check"] --> B{"更新あり?"}
+  B -->|Yes| C["global-npm update"]
+  C --> D["global-npm install"]
+  B -->|No| E["終了"]
+```
+
+* **check** … 読み取り専用。何が新しいか (公開日時付き) を見るだけ
+* **update** … `@s2j/global-npm` 同梱の `package.json` の `dependencies` バージョン範囲を更新
+* **install** … その一覧に従って実際にグローバルパッケージを入れ直す/更新する
+
+`global-npm install` は、`@s2j/global-npm` 自身 (自己参照 `^2.0.1`) も含め、`dependencies` のキーを列挙して `npm install -g` します。
 
 ## 開発用 scripts
 

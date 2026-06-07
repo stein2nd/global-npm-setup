@@ -1,0 +1,91 @@
+# ============================================================
+# Publish @s2j/global-npm to npm (tag-triggered + manual dry-run)
+# ------------------------------------------------------------
+# 仕様: docs/npm-publish.md
+# 認証: npm Trusted Publishing (OIDC) — stein2nd/global-npm-setup / npm-publish.yml
+#
+# 必須 (tag push で publish する場合):
+# - npm Trusted Publisher 登録済み (GitHub Actions / stein2nd / global-npm-setup / npm-publish.yml)
+# - package.json version と tag (例: v2.0.3) の一致
+#
+# トリガー:
+# git tag v2.0.3 && git push origin v2.0.3
+#
+# 手動 dry-run:
+# Actions → Publish to npm → Run workflow → dry_run: true
+# ============================================================
+
+name: Publish to npm
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry-run only (verify tarball + pack artifact; skip npm publish)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - name: Ensure npm supports OIDC trusted publishing
+        run: npm install -g npm@11.6.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint and test
+        run: |
+          npm run lint
+          npm test
+
+      - name: Verify npm pack dry-run
+        run: npm run pack:dry-run
+
+      - name: Verify tag matches package version
+        if: startsWith(github.ref, 'refs/tags/')
+        run: node ./scripts/verify-release-tag.cjs "${{ github.ref_name }}"
+
+      - name: Pack versioned artifact
+        run: npm run pack
+
+      - name: Upload pack artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: s2j-global-npm-${{ github.ref_name || format('manual-{0}', github.run_number) }}
+          path: artifacts/*.tgz
+          if-no-files-found: error
+
+      - name: Publish dry-run
+        if: env.DRY_RUN == 'true'
+        run: npm publish --dry-run --access public
+
+      - name: Publish to npm
+        if: env.DRY_RUN != 'true'
+        run: npm publish --access public
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/') && env.DRY_RUN != 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true

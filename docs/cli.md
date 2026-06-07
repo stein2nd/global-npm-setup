@@ -42,7 +42,7 @@ global-npm install  # dependencies を列挙して npm install -g を実行
 | 項目 | 内容 |
 |------|------|
 | 目的 | `dependencies` に列挙されたパッケージを **各々トップレベルの global pkg** としてインストールする |
-| 実装 | C 型 — Node で `dependencies` キーを列挙し `npm install -g <names…>` |
+| 実装 | C 型 — Node で `dependencies` を読み、`npm install -g <name>@<range>…` |
 | 副作用 | グローバル node_modules / `{prefix}/bin` を更新 |
 | v1相当 | `ncu:install` の install 部分 (jq 列挙)。`install-global.zsh` (B 型) は非採用 |
 
@@ -79,7 +79,7 @@ Usage: global-npm <check|update|install>
 
   check    Check for available updates (ncu -g)
   update   Update version ranges in package.json (ncu -g -u)
-  install  Install dependencies globally (npm install -g <each>)
+  install  Install dependencies globally (npm install -g <name>@<range>…)
 ```
 
 ## setup ディレクトリの解決

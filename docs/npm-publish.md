@@ -85,14 +85,24 @@ npm publish --access public
 
 `@s2j` はスコープ付きのため `--access public` が必要 (初回 publish 時)。
 
-## CI / 自動 publish (将来)
+## CI / 自動 publish
 
-`@s2j/docs-linter` と同様、GitHub Actions + npm OIDC による自動 publish を検討可能。
+`@s2j/docs-linter` と同様、GitHub Actions + npm OIDC (Trusted Publishing) による自動 publish を利用する。
 
-- tag push (`v2.0.0`) で publish
-- `NPM_TOKEN` または OIDC trusted publishing
+| 項目 | 内容 |
+|------|------|
+| workflow | `.github/workflows/npm-publish.yml` |
+| 認証 | npm Trusted Publishing (OIDC) — `stein2nd/global-npm-setup` / `npm-publish.yml` |
+| トリガー | tag push (`v*`) または手動 dispatch (dry-run デフォルト) |
+| 前提 | npm 側で Trusted Publisher 登録済み、`package.json` version と tag が一致 |
 
-v2初期リリースは手動 publish でも可。
+```sh
+# tag push で publish + GitHub Release
+git tag v2.0.3
+git push origin v2.0.3
+```
+
+手動 dry-run: GitHub Actions → **Publish to npm** → Run workflow → `dry_run: true`
 
 ## ユーザー向けインストール
 

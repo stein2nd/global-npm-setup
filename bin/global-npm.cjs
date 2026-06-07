@@ -13,7 +13,7 @@ function usage() {
 
   check    Check for available updates (ncu -g)
   update   Update version ranges in package.json (ncu -g -u)
-  install  Install dependencies globally (npm install -g <each>)`);
+  install  Install dependencies globally (npm install -g <name>@<range>…)`);
   process.exit(1);
 }
 
@@ -31,6 +31,24 @@ function run(command, args) {
   process.exit(result.status ?? 1);
 }
 
+function toGlobalInstallSpec(name, versionRange) {
+  if (typeof versionRange === 'string' && versionRange.trim() !== '') {
+    return `${name}@${versionRange}`;
+  }
+
+  return name;
+}
+
+function readDependencies() {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+    return pkg.dependencies ?? {};
+  } catch (err) {
+    console.error(`Failed to read ${pkgPath}: ${err.message}`);
+    process.exit(1);
+  }
+}
+
 const subcommand = process.argv[2];
 
 switch (subcommand) {
@@ -43,24 +61,17 @@ switch (subcommand) {
     break;
 
   case 'install': {
-    let dependencies;
+    const dependencies = readDependencies();
+    const specs = Object.entries(dependencies).map(([name, range]) =>
+      toGlobalInstallSpec(name, range),
+    );
 
-    try {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-      dependencies = pkg.dependencies ?? {};
-    } catch (err) {
-      console.error(`Failed to read ${pkgPath}: ${err.message}`);
-      process.exit(1);
-    }
-
-    const names = Object.keys(dependencies);
-
-    if (names.length === 0) {
+    if (specs.length === 0) {
       console.error('No dependencies to install.');
       process.exit(1);
     }
 
-    run('npm', ['install', '-g', ...names]);
+    run('npm', ['install', '-g', ...specs]);
     break;
   }
 
