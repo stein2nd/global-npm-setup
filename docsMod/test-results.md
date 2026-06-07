@@ -114,7 +114,7 @@ npm error 404  The requested resource '@s2j/global-npm@2.0.3' could not be found
 npm error 404
 npm error 404 Note that you can also install from a
 npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/36e379c5b57e5d0842936aa2f9a0f255/npm/_logs/2026-06-07T16_04_55_329Z-debug-0.log |
+npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/36e379c5b57e5d0842936aa2f9a0f255/npm/_logs/2026-06-07T16_14_27_637Z-debug-0.log |
 
 ## mod-os-agnostic-windows
 
