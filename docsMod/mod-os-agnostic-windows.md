@@ -1,26 +1,26 @@
-# Global npm Package Installer - Windows 11（脱 OS 依存改修）
+# Global npm Package Setup - Windows 11 (脱 OS 依存改修)
 
 ## 背景
 
-v1.0.0 は macOS 専用（Zsh、`brew`、`~/bin`、nvm Unix 版）だった。
-勤務先 Windows 11 でも `@s2j/docs-linter` 等と同じグローバル npm 更新フローを使えるようにする。
+v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) だった。
+勤務先 Windows 11でも `@s2j/docs-linter` 等と同じグローバル npm 更新フローを使えるようにする。
 
-## v1 で Windows 非対応だった要素
+## v1で Windows 非対応だった要素
 
 | 要素 | v1 | v2 |
 |------|----|----|
 | インストールスクリプト | `install-global.zsh` | Node CLI `global-npm` |
-| コマンドラッパー | `~/bin/global-npm`（Zsh） | `npm install -g @s2j/global-npm` |
-| パッケージ名の列挙 | `jq` + シェル展開 | Node `JSON.parse`（C 型。**jq 不要**） |
-| パッケージマネージャ（OS） | Homebrew（jq 等） | fnm / winget 等（Node 導入） |
+| コマンドラッパー | `~/bin/global-npm` (Zsh) | `npm install -g @s2j/global-npm` |
+| パッケージ名の列挙 | `jq` + シェル展開 | Node `JSON.parse` (C 型。**jq 不要**) |
+| パッケージマネージャー (OS) | Homebrew (jq 等) | fnm / winget 等 (Node 導入) |
 
-## Windows 11 セットアップ手順（概要）
+## Windows 11セットアップ手順 (概要)
 
 ### 1. Node.js
 
-以下いずれかで Node.js 18+ を導入する。
+以下いずれかで Node.js v18以降を導入する。
 
-- [fnm](https://github.com/Schniz/fnm)（macOS / Windows 共通。推奨）
+- [fnm](https://github.com/Schniz/fnm) (macOS / Windows 共通。推奨)
 - [nvm-windows](https://github.com/coreybutler/nvm-windows)
 - [Volta](https://volta.sh/)
 - 公式インストーラ
@@ -53,9 +53,9 @@ global-npm install
 
 | 項目 | Windows 11 |
 |------|------------|
-| ユーザーホーム | `%USERPROFILE%`（例: `C:\Users\<user>`） |
+| ユーザーホーム | `%USERPROFILE%` (例: `C:\Users\<user>`) |
 | dotfiles 推奨配置 | `%USERPROFILE%\dotfiles\global-npm-setup\` |
-| npm グローバル bin | `%AppData%\npm`（通常 PATH に含まれる） |
+| npm グローバル bin | `%AppData%\npm` (通常 PATH に含まれる) |
 | npm グローバル modules | `%AppData%\npm\node_modules` |
 
 `global-npm` コマンドは npm グローバル bin ディレクトリに配置される。
@@ -67,9 +67,9 @@ PowerShell 再起動後、`global-npm --version` 等で PATH を確認する。
 |------|------|
 | シェル非依存 | Node.js `child_process.spawnSync` を使用 |
 | パス区切り | `path.join` / `path.resolve` を使用 |
-| shebang | `#!/usr/bin/env node`（Windows では npm が `.js` を node で実行） |
-| 改行コード | リポジトリは LF 統一（`.gitattributes` 推奨） |
-| JSON 列挙 | Node 標準 API（PowerShell / cmd 不要） |
+| shebang | `#!/usr/bin/env node` (Windows では npm が `.js` を node で実行) |
+| 改行コード | リポジトリは LF 統一 (`.gitattributes` 推奨) |
+| JSON 列挙 | Node 標準 API (PowerShell / cmd 不要) |
 
 ### spawn 時の注意
 
@@ -89,13 +89,13 @@ spawnSync('npm', ['install', '-g', ...names], {
 
 Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決する。
 
-## jq について（Windows）
+## jq について (Windows)
 
 - **C 型のため、`global-npm` 実行に jq は不要。**
-- 手動でグローバル pkg 一覧を `package.json` に取り込む作業に jq を使う場合は任意（`winget install jqlang.jq` 等）。
+- 手動でグローバル pkg 一覧を `package.json` に取り込む作業に jq を使う場合は任意 (`winget install jqlang.jq` 等)。
 - macOS も同様に、CLI ランタイム依存は Node + npm のみ。
 
-## 勤務先環境の制約（想定）
+## 勤務先環境の制約 (想定)
 
 - 管理者権限なしでの `npm install -g` が可能か事前確認する。
 - プロキシ / 社内 npm registry がある場合は `.npmrc` で設定する。
@@ -103,10 +103,10 @@ Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決する。
 
 ## README への反映
 
-v2 README は OS 別セクションに分ける。
+v2の README は、OS 別セクションに分ける。
 
 - **共通** — 概要、`global-npm` コマンド、更新フロー
-- **macOS** — fnm / Homebrew（任意）、dotfiles 配置
+- **macOS** — fnm / Homebrew (任意)、dotfiles 配置
 - **Windows** — fnm / nvm-windows、PowerShell、PATH 確認
 
 ## テスト観点
@@ -115,7 +115,7 @@ v2 README は OS 別セクションに分ける。
 |----------|-------|------------|
 | `global-npm check` | ✓ | ✓ |
 | `global-npm update` | ✓ | ✓ |
-| `global-npm install`（C 型列挙） | ✓ | ✓ |
+| `global-npm install` (C 型列挙) | ✓ | ✓ |
 | 未知サブコマンドで usage | ✓ | ✓ |
 | `@s2j/docs-linter` の CLI が PATH に載る | ✓ | ✓ |
 | `textlint` / `ncu` が PATH に載る | ✓ | ✓ |

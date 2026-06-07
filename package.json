@@ -1,19 +1,26 @@
 {
-  "name": "global-npm-setup",
+  "name": "@s2j/global-npm",
   "version": "2.0.0",
-  "description": "A list of globally installed npm packages managed via package.json for reproducible setup.",
+  "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
-  "main": "install-global.zsh",
   "type": "commonjs",
   "license": "GPL-3.0-or-later",
-  "private": true,
+  "bin": {
+    "global-npm": "./bin/global-npm.cjs"
+  },
+  "files": [
+    "bin/",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
   "keywords": [
     "npm",
     "global",
     "packages",
     "setup",
-    "dotfiles",
-    "ncu"
+    "ncu",
+    "npm-check-updates"
   ],
   "repository": {
     "type": "git",
@@ -23,21 +30,41 @@
   "bugs": {
     "url": "https://github.com/stein2nd/global-npm-setup/issues"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
+    "test": "node --test test/spec-compliance.test.cjs",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:docs": "s2j-docs-linter --profile base ./README.md ./docsMod/**/*.md ./.vscode/**/*.md",
+    "format": "prettier --write \"**/*.{cjs,js,mjs,json}\"",
+    "format:check": "prettier --check \"**/*.{cjs,js,mjs,json}\"",
+    "pack": "npm pack --pack-destination artifacts",
+    "pack:dry-run": "npm pack --dry-run --pack-destination artifacts",
     "ncu:check": "ncu -g --format time --packageFile package.json",
     "ncu:update": "ncu -g --format time -u --packageFile package.json"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@s2j/docs-linter": "^1.0.16",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "corepack": "^0.35.0",
     "editorconfig-cli": "^1.0.0",
     "envinfo": "^7.21.0",
-    "npm-check-updates": "^22.2.3",
     "npm": "^11.16.0",
+    "npm-check-updates": "^22.2.3",
     "run": "^1.5.0",
+    "textlint": "^15.7.1",
     "textlint-rule-preset-ja-spacing": "^3.0.0",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-spellcheck-tech-word": "^5.0.0",
-    "textlint": "^15.7.1",
     "wp-handbook-converter": "^1.0.0",
     "wpapi": "^1.2.2"
   }

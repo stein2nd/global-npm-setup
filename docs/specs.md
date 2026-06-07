@@ -1,12 +1,12 @@
-# Global npm Package Installer - SPECS
+# Global npm Package Setup - SPECS
 
 確定した仕様ドキュメントへの導線です。
 
 ## ドキュメント命名規則
 
-- **ファイル名** — ASCII のみ（英数字・ハイフン）。日本語やスペースは使わない。
-- **タイトル** — 各ファイルの 1 行目に `# Global npm Package Installer - …` 形式で記載する。
+- **ファイル名** — ASCII のみ (英数字・ハイフン)。日本語やスペースは使わない。
+- **タイトル** — 各ファイルの 1 行目に `# Global npm Package Setup - …` 形式で記載する。
 
 ## 仕様書一覧
 
-（論点確定後、`docsMod/` から移動したドキュメントをここにリンクする）
+(論点確定後、`docsMod/` から移動したドキュメントをここにリンクする)
