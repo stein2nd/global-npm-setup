@@ -399,15 +399,13 @@ test('layout: no devDependencies install target', () => {
   );
 });
 
-test('layout: self-reference deferred', () => {
+test('layout: self-reference', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'LAY-09',
     'mod-os-agnostic-layout',
     'dependencies に `@s2j/global-npm` 自己参照が含まれること。',
     Object.prototype.hasOwnProperty.call(pkg.dependencies ?? {}, '@s2j/global-npm'),
-    '初回 npm publish 後に追加予定',
-    { warnOnFail: true },
   );
 });
 
@@ -535,13 +533,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.0.1', () => {
+test('publish: version 2.0.2', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.0.1` であること。',
-    pkg.version === '2.0.1',
+    'package.json の version が `2.0.2` であること。',
+    pkg.version === '2.0.2',
   );
 });
 
@@ -572,7 +570,7 @@ test('publish: registry publish status', () => {
   mark(
     'PUB-05',
     'mod-npm-publish',
-    'npm registry に `@s2j/global-npm@2.0.1` が公開済みであること。',
+    'npm registry に `@s2j/global-npm@2.0.2` が公開済みであること。',
     false,
     '初回 publish は別タイミングで実施予定',
     { warnOnFail: true },

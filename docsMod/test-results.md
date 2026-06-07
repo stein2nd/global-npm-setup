@@ -6,12 +6,12 @@
 
 | 区分 | 件数 |
 |------|------|
-| ✔ PASS | 55 |
-| ⚠ WARN | 3 |
+| ✔ PASS | 56 |
+| ⚠ WARN | 2 |
 | ✖ FAIL | 0 |
 | 合計 | 58 |
 
-自動テスト合格率（PASS / 合計）: **95%**
+自動テスト合格率（PASS / 合計）: **97%**
 
 実行: `npm test`
 
@@ -75,7 +75,7 @@
 | LAY-06 | package.json の files に publish 同梱パスが定義されていること。 | ✔ PASS | expected: bin/, package.json, LICENSE, README.md; actual: bin/, package.json, LICENSE, README.md |
 | LAY-07 | package.json に `dependencies` が定義されていること。 | ✔ PASS |  |
 | LAY-08 | install が `devDependencies` を参照しないこと。 | ✔ PASS |  |
-| LAY-09 | dependencies に `@s2j/global-npm` 自己参照が含まれること。 | ⚠ WARN | 初回 npm publish 後に追加予定 |
+| LAY-09 | dependencies に `@s2j/global-npm` 自己参照が含まれること。 | ✔ PASS |  |
 | LAY-10 | v2 初期実装で `GLOBAL_NPM_SETUP_DIR` が未実装であること（方式 B 着手前）。 | ✔ PASS |  |
 
 ## mod-os-agnostic-legacy-scripts
@@ -103,10 +103,10 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.0.1` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.0.2` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.0.1` が公開済みであること。 | ⚠ WARN | 初回 publish は別タイミングで実施予定 |
+| PUB-05 | npm registry に `@s2j/global-npm@2.0.2` が公開済みであること。 | ⚠ WARN | 初回 publish は別タイミングで実施予定 |
 
 ## mod-os-agnostic-windows
 

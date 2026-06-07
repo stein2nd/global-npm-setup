@@ -1,5 +1,10 @@
 # Global npm Package Setup - CHANGELOG
 
+## v2.0.2 - 2026-06-07
+
+- `dependencies` に `@s2j/global-npm` 自己参照を追加 (`^2.0.1`)
+- `global-npm install` (C 型) で CLI 自身も global install 対象に含め、自己更新を可能にする
+
 ## v2.0.1 - 2026-06-07
 
 - npm レジストリのルートメタデータ不整合を解消するため再 publish
@@ -22,7 +27,6 @@
 - `ncu:install` を削除 (`global-npm install` へ移行)
 - README を v2 向けに更新 (macOS / Windows 11対応、移行手順)
 - tarball 同梱は `bin/`、`package.json`、`LICENSE`、`README.md` の4ファイル
-- `@s2j/global-npm` の自己参照 (`dependencies` への追加) は初回 publish 後に実施予定
 
 ### リポジトリ整備 (tarball 非同梱)
 
