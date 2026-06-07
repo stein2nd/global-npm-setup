@@ -6,33 +6,35 @@
 
 | 区分 | 進捗 | 備考 |
 |------|------|------|
-| **仕様確定** | **100%** (8/8) | `docsMod/mod-*.md` すべて **確定** |
+| **仕様確定** | **100%** (8/8) | `docs/` に移行済み ([specs.md](../docs/specs.md)) |
 | **フェーズ1: コア実装** | **100%** | 完了 |
-| **フェーズ2: リリース** | **50%** | publish 下準備完了。`npm publish` 未実施 |
+| **フェーズ2: リリース** | **100%** | npm publish ・自己参照・仕様書の移行完了 |
 | **フェーズ3: リリース後** | **20%** | Docs Lint 基盤完成。CI PASS には `test-results.md` 修正要。Windows / 方式 B / OIDC CI 未着手 |
-| **v2初期リリース全体** | **71%** (5/7) | [modification.md](./modification.md) タスク #2〜#8のうち #7、#8残 |
-| **v2全体 (方式 B、CI 含む)** | **61%** (5.5/9) | #1、#8未着手。#9は Docs Lint 基盤のみ部分対応 (OIDC publish CI 未着手) |
-| **仕様準拠テスト** | **95%** (PASS: 55/58) | ✖ FAIL: 0 / ⚠ WARN: 3… [test-results.md](./test-results.md) |
+| **v2初期リリース全体** | **86%** (6/7) | [modification.md](./modification.md) タスク #8 (Windows 実機確認) のみ残 |
+| **v2全体 (方式 B、CI 含む)** | **67%** (6/9) | #1、#8、#9 (OIDC) 未着手 |
+| **仕様準拠テスト** | **98%** (PASS: 57/58) | ✖ FAIL: 0 / ⚠ WARN: 1… [test-results.md](./test-results.md) |
 | **開発基盤 (lint / format / test)** | **100%** | ESLint / Prettier / 仕様準拠テスト / `lint:docs` script 済 |
 
 > **進捗率の算定**
 >
 > - [modification.md](./modification.md) の v2 残タスク (#1〜#9) を実装タスクとみなす。#2〜#6 をフェーズ1、#7 をフェーズ2、#8・#9 をフェーズ3 に対応付け。
-> - **フェーズ2 (50%)** — publish 前準備 (`pack:dry-run` / `pack` → `./artifacts/`、lint / format、仕様準拠テスト) を完了。`npm publish` 本体は未実施のため 50% とする。
+> - **フェーズ2 (100%)** — `@s2j/global-npm@2.0.2` を npm publish 済み。自己参照の追加、確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))。
 > - **フェーズ3 (20%)** — Docs Lint 基盤 (`lint:docs` script、`.textlintrc.json`、VS Code 設定、GA workflow) は完成。`npm run lint:docs` は実行可能だが、`docsMod/test-results.md` (自動生成) の lint エラー 21件 (うち 20件 auto-fixable) 解消まで CI は FAIL。Windows 実機確認・方式 B・npm OIDC publish CI は未着手。
 
 ## 仕様書 (参照元)
 
+[docs/specs.md](../docs/specs.md) に移行済み。
+
 | ファイル | 概要 | 仕様 | 実装 |
 |----------|------|------|------|
-| [mod-os-agnostic-naming.md](./mod-os-agnostic-naming.md) | 命名 (`global-npm-setup` / `@s2j/global-npm` / `global-npm`) | 確定 | ✅ |
-| [mod-os-agnostic-cli.md](./mod-os-agnostic-cli.md) | CLI サブコマンド (check / update / install) | 確定 | ✅ |
-| [mod-os-agnostic-install.md](./mod-os-agnostic-install.md) | install 方式 C 型 (Node 列挙) | 確定 | ✅ |
-| [mod-os-agnostic-layout.md](./mod-os-agnostic-layout.md) | 方式 A — パッケージ同梱 `package.json` | 確定 | ✅ |
-| [mod-os-agnostic-legacy-scripts.md](./mod-os-agnostic-legacy-scripts.md) | レガシースクリプト廃止 | 確定 | ✅ |
-| [mod-os-agnostic-windows.md](./mod-os-agnostic-windows.md) | Windows 11セットアップ・制約 | 確定 | ⏳ 実機未確認 |
-| [mod-gpl3-license.md](./mod-gpl3-license.md) | GPL-3.0-or-later | 確定 | ✅ |
-| [mod-npm-publish.md](./mod-npm-publish.md) | npm 公開 (`@s2j` スコープ) | 確定 | ⏳ publish 未実施 |
+| [naming.md](../docs/naming.md) | 命名 (`global-npm-setup` / `@s2j/global-npm` / `global-npm`) | 確定 | ✅ |
+| [cli.md](../docs/cli.md) | CLI サブコマンド (check / update / install) | 確定 | ✅ |
+| [install.md](../docs/install.md) | install 方式 C 型 (Node 列挙) | 確定 | ✅ |
+| [layout.md](../docs/layout.md) | 方式 A — パッケージ同梱 `package.json` | 確定 | ✅ |
+| [legacy-scripts.md](../docs/legacy-scripts.md) | レガシースクリプト廃止 | 確定 | ✅ |
+| [windows.md](../docs/windows.md) | Windows 11セットアップ・制約 | 確定 | ⏳ 実機未確認 |
+| [license.md](../docs/license.md) | GPL-3.0-or-later | 確定 | ✅ |
+| [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ) | 確定 | ✅ v2.0.2 |
 
 ### 仕様書別テスト結果
 
@@ -69,13 +71,13 @@
 | README 下準備 (macOS / Windows) | ✅ 更新済 | docs-linter 形式のセットアップ手順 |
 | Docs Lint (`@s2j/docs-linter`) | ⏳ 基盤完了 | devDep + `.textlintrc.json` + `lint:docs` + GA workflow。`test-results.md` の lint 解消で CI PASS |
 | textlint エディター連携 | ✅ 設定済 | `.vscode/settings.json` に統合。拡張 (`3w36zj6.textlint`) の手動インストール要 |
-| `@s2j/global-npm` 自己参照 | ⏸ 延期 | 初回 npm publish 後に追加予定 |
+| `@s2j/global-npm` 自己参照 | ✅ 追加済 | `dependencies` に `@s2j/global-npm: ^2.0.1` (v2.0.2publish) |
 | `@s2j/docs-linter` 追加 (dependencies) | ⏸ 延期 | ユーザー側で後日 (devDep には存在) |
 | `GLOBAL_NPM_SETUP_DIR` (方式 B) | ❌ 未実装 | フェーズ3 |
-| npm publish | ❌ 未実施 | publish 下準備完了 |
+| npm publish | ✅ 実施済 | `@s2j/global-npm@2.0.2` (latest) |
 | Windows 11実機確認 | ❌ 未実施 | フェーズ3 |
 | CI / 自動 publish (npm OIDC) | ❌ 未実施 | 任意 (フェーズ3) |
-| `docsMod/` → `docs/` 移行 | ❌ 未実施 | publish 完了後 |
+| `docsMod/` → `docs/` 移行 | ✅ 完了 | 8仕様書を `docs/` へ移行、`docsMod/` は進行管理のみ |
 
 ## フェーズ1: コア実装
 
@@ -164,19 +166,19 @@
 
 ### フェーズ2: サマリー
 
-**50% 進行中** — publish 下準備 (tarball 確認と生成、lint / test) は完了。`npm publish` 本体は未実施。
+**100% 完了** — npm publish (v2.0.2)、自己参照、`docs/` 移行まで完了。
 
 ### フェーズ2優先タスクと完了条件の対応
 
 | # | タスク | 完了条件 | 状態 |
 |---|--------|----------|------|
-| 7 | 初回 npm publish | `npm publish --access public` で `@s2j/global-npm@2.0.0` が registry に公開される | ❌ |
+| 7 | npm publish | `@s2j/global-npm@2.0.2` が registry に公開される | ✅ |
 | — | publish 前確認 | `npm run pack:dry-run` で tarball 内容を確認 | ✅ |
 | — | tarball 生成 | `npm run pack` で `./artifacts/` に `.tgz` が出力される | ✅ |
 | — | 品質チェック | `npm run lint` / `npm test` が PASS | ✅ |
-| — | 自己参照の追加 | publish 後、`dependencies` に `@s2j/global-npm` を追加 | ⏸ 延期 |
+| — | 自己参照の追加 | publish 後、`dependencies` に `@s2j/global-npm` を追加 | ✅ |
 | — | `@s2j/docs-linter` 追加 | `dependencies` に追加 | ⏸ ユーザー側で後日 |
-| — | 仕様書移行 | 確定 mod を `docs/` へ移動し [specs.md](../docs/specs.md) にリンク | ❌ |
+| — | 仕様書移行 | 確定 mod を `docs/` へ移動し [specs.md](../docs/specs.md) にリンク | ✅ |
 
 ### フェーズ2完了条件
 
@@ -184,31 +186,36 @@
 - [x] `npm run pack` で `./artifacts/` に tarball が生成される (`artifacts/` は `.gitignore` 対象)
 - [x] `npm run lint` がエラーなく完了する
 - [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
-- [ ] `npm publish --access public` が成功する
-- [ ] publish 後、`dependencies` に `@s2j/global-npm` 自己参照を追加する
-- [ ] 確定した mod ドキュメントを `docs/` へ移行する
+- [x] `npm publish --access public` が成功する
+- [x] publish 後、`dependencies` に `@s2j/global-npm` 自己参照を追加する
+- [x] 確定した mod ドキュメントを `docs/` へ移行する
+
+**すべて達成 — フェーズ2完了。**
 
 ### フェーズ2で完了した項目
 
+- `npm publish --access public` (`@s2j/global-npm` v2.0.0→ v2.0.2)
+- GitHub Release (`v2.0.0` / `v2.0.1` / `v2.0.2`)
+- `dependencies` へ `@s2j/global-npm` 自己参照の追加
+- 確定仕様8件を `docs/` へ移行 ([specs.md](../docs/specs.md))
 - `npm run pack:dry-run` / `npm run pack` (出力先 `./artifacts/`)
 - ESLint / Prettier 導入 (`lint` / `format:check` scripts)
-- 仕様準拠テスト58項目 (PASS: 55 / WARN: 3 / FAIL: 0)
-- [mod-npm-publish.md](./mod-npm-publish.md) publish 手順更新
+- 仕様準拠テスト58項目
+- [npm-publish.md](../docs/npm-publish.md) publish 手順更新
 
 ### フェーズ2で完了した主な変更 (コード・文書)
 
 | ファイル | 変更 |
 |----------|------|
-| `package.json` | `pack` / `pack:dry-run` scripts 追加 |
+| `package.json` | v2.0.2、自己参照、`pack` scripts |
+| `docs/` | 確定仕様8件 (`cli.md`, `install.md`, `layout.md` 等) |
+| `docs/specs.md` | 仕様書一覧 |
+| `docsMod/modification.md` | `docs/` 移行後の v2残タスク |
+| `CHANGELOG.md` | v2.0.0〜 v2.0.2 |
 | `.gitignore` | `artifacts/`、`.sandbox/` 追加 |
 | `eslint.config.mjs` | ESLint v9の flat config |
 | `prettier.config.mjs` | Prettier 設定 |
-| `tsconfig.json` | TypeScript 言語サービス設定 |
-| `.vscode/settings.json` | ワークスペース TypeScript 設定 |
-| `.vscode/extensions.json` | textlint 拡張の推奨 |
-| `.vscode/textlint.settings.jsonc.example` | textlint 設定例 |
 | `test/spec-compliance.test.cjs` | 仕様準拠テスト |
-| `docsMod/mod-npm-publish.md` | publish 手順 (artifacts 出力) |
 
 ### フェーズ2のマイルストーン
 
@@ -217,13 +224,12 @@
 | 2026-06-07 | `npm run pack:dry-run` 確認済 |
 | 2026-06-07 | 仕様準拠テスト、ESLint / Prettier 導入 |
 | 2026-06-07 | `npm run pack` → `./artifacts/` 整備 |
+| 2026-06-07 | npm publish (`v2.0.0` / `v2.0.1` / `v2.0.2`)、自己参照の追加 |
+| 2026-06-07 | **フェーズ2完了** — 確定仕様を `docs/` へ移行 |
 
 ### フェーズ2の残タスク
 
-1. `npm publish --access public` (`@s2j/global-npm` v2.0.0)
-2. publish 後 — `dependencies` へ `@s2j/global-npm` 自己参照を追加
-3. `@s2j/docs-linter` を `dependencies` に追加 (ユーザー側)
-4. 確定 mod を `docs/` へ移行 (`cli.md`, `install.md`, `layout.md` 等)
+なし ( `@s2j/docs-linter` の `dependencies` 追加はユーザー判断で延期)。
 
 ---
 
@@ -311,7 +317,7 @@
 | `format` / `format:check` | Prettier |
 | `pack` / `pack:dry-run` | tarball 生成 / 確認 (`./artifacts/`) |
 | `ncu:check` / `ncu:update` | 開発用 ncu |
-| `lint:docs` | Docs Lint (`s2j-docs-linter --profile base`… `README.md`, `docsMod/**/*.md`, `.vscode/**/*.md`) |
+| `lint:docs` | Docs Lint (`s2j-docs-linter --profile base`… `README.md`, `docs/**/*.md`, `docsMod/status.md`, `docsMod/modification.md`) |
 
 ### 既知のギャップ
 
@@ -331,8 +337,8 @@
 
 | 項目 | 理由 | 着手タイミング | テスト ID |
 |------|------|----------------|-----------|
-| `@s2j/global-npm` 自己参照 | publish 前に registry 未登録 | 初回 npm publish 後 | LAY-09: ⚠ |
+| `@s2j/global-npm` 自己参照 | publish 前に registry 未登録 | v2.0.2publish 後に追加済 | LAY-09: ✔ |
 | `@s2j/docs-linter` 追加 (dependencies) | ユーザー側で管理 | ユーザー判断 | — |
 | `GLOBAL_NPM_SETUP_DIR` | 方式 B は v2残タスク | フェーズ3 | LAY-10: ✔ (未実装であること) |
-| npm publish | 別タイミングで実施 | フェーズ2 | PUB-05: ⚠ |
+| npm publish | 別タイミングで実施 | v2.0.2まで完了 | PUB-05: ✔ |
 | Windows 11実機確認 | macOS 環境で未実施 | フェーズ3 | WIN-05: ⚠ |

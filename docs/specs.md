@@ -5,8 +5,25 @@
 ## ドキュメント命名規則
 
 - **ファイル名** — ASCII のみ (英数字・ハイフン)。日本語やスペースは使わない。
-- **タイトル** — 各ファイルの 1 行目に `# Global npm Package Setup - …` 形式で記載する。
+- **タイトル** — 各ファイルの1行目に `# Global npm Package Setup - …` 形式で記載する。
 
-## 仕様書一覧
+## 仕様書一覧 (v2)
 
-(論点確定後、`docsMod/` から移動したドキュメントをここにリンクする)
+| ファイル | 概要 |
+|----------|------|
+| [naming.md](./naming.md) | 命名 (`global-npm-setup` / `@s2j/global-npm` / `global-npm`) |
+| [cli.md](./cli.md) | CLI サブコマンド (`check` / `update` / `install`) |
+| [install.md](./install.md) | install 方式 C 型 (Node 列挙) と ncu 整合 |
+| [layout.md](./layout.md) | `package.json` (dependencies 一覧) の配置方式 |
+| [legacy-scripts.md](./legacy-scripts.md) | `install-global.zsh` / `~/bin/global-npm` 廃止 |
+| [windows.md](./windows.md) | Windows 11向けセットアップ・制約 |
+| [license.md](./license.md) | ライセンス MIT → GPL-3.0-or-later |
+| [npm-publish.md](./npm-publish.md) | npm 公開 (`@s2j` スコープ) |
+
+## 進行管理
+
+| ファイル | 概要 |
+|----------|------|
+| [../docsMod/status.md](../docsMod/status.md) | 実装状況・進捗率 |
+| [../docsMod/modification.md](../docsMod/modification.md) | v2残タスク (#1方式 B、#8Windows 実機確認 等) |
+| [../docsMod/test-results.md](../docsMod/test-results.md) | 仕様準拠テスト結果 (`npm test` で自動生成) |

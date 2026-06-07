@@ -6,12 +6,12 @@
 
 | 区分 | 件数 |
 |------|------|
-| ✔ PASS | 56 |
-| ⚠ WARN | 2 |
+| ✔ PASS | 57 |
+| ⚠ WARN | 1 |
 | ✖ FAIL | 0 |
 | 合計 | 58 |
 
-自動テスト合格率（PASS / 合計）: **97%**
+自動テスト合格率（PASS / 合計）: **98%**
 
 実行: `npm test`
 
@@ -106,7 +106,7 @@
 | PUB-02 | package.json の version が `2.0.2` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.0.2` が公開済みであること。 | ⚠ WARN | 初回 publish は別タイミングで実施予定 |
+| PUB-05 | npm registry に `@s2j/global-npm@2.0.2` が公開済みであること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-windows
 

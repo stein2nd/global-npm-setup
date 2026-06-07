@@ -99,9 +99,9 @@ spawnSync('npm', ['install', '-g', ...names], {
 
 ## 関連ドキュメント
 
-- [mod-os-agnostic-cli.md](./mod-os-agnostic-cli.md) — サブコマンド全体
-- [mod-os-agnostic-layout.md](./mod-os-agnostic-layout.md) — setup ディレクトリ (package.json 配置)
+- [cli.md](./cli.md) — サブコマンド全体
+- [layout.md](./layout.md) — setup ディレクトリ (package.json 配置)
 
 ## ステータス
 
-**確定** — 実装完了後 `docs/install.md` へ移動する。
+**確定** — `docs/install.md` に移行済み。

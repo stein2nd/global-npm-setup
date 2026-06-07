@@ -567,13 +567,20 @@ test('publish: tarball contents via dry-run', () => {
 });
 
 test('publish: registry publish status', () => {
+  const pkg = readJson(PKG_PATH);
+  const result = spawnSync('npm', ['view', `@s2j/global-npm@${pkg.version}`, 'version'], {
+    cwd: ROOT,
+    encoding: 'utf8',
+    shell: process.platform === 'win32',
+  });
+  const published = result.status === 0 && result.stdout.trim() === pkg.version;
   mark(
     'PUB-05',
     'mod-npm-publish',
-    'npm registry に `@s2j/global-npm@2.0.2` が公開済みであること。',
-    false,
-    '初回 publish は別タイミングで実施予定',
-    { warnOnFail: true },
+    `npm registry に \`@s2j/global-npm@${pkg.version}\` が公開済みであること。`,
+    published,
+    published ? undefined : (result.stderr || result.stdout).trim(),
+    { warnOnFail: !published },
   );
 });
 

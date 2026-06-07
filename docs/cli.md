@@ -5,7 +5,7 @@
 v1では `~/bin/global-npm` (Zsh) が `npm run ncu:*` を呼び出していた。
 v2では Node.js 製 CLI として `@s2j/global-npm` に同梱し、macOS / Windows 11で同一のサブコマンドを提供する。
 
-install の実装は **C 型 (Node 列挙 → 明示 `npm install -g`)** とする。詳細は [mod-os-agnostic-install.md](./mod-os-agnostic-install.md)。
+install の実装は **C 型 (Node 列挙 → 明示 `npm install -g`)** とする。詳細は [install.md](./install.md)。
 
 ## コマンド一覧
 
@@ -84,7 +84,7 @@ Usage: global-npm <check|update|install>
 
 ## setup ディレクトリの解決
 
-CLI は **自身が属するパッケージ root** (`@s2j/global-npm` のインストール先) を setup ディレクトリとする ([mod-os-agnostic-layout.md](./mod-os-agnostic-layout.md))。
+CLI は **自身が属するパッケージ root** (`@s2j/global-npm` のインストール先) を setup ディレクトリとする ([layout.md](./layout.md))。
 
 ```js
 const setupDir = process.env.GLOBAL_NPM_SETUP_DIR
@@ -106,4 +106,4 @@ const setupDir = process.env.GLOBAL_NPM_SETUP_DIR
 
 ## ステータス
 
-**確定** — 実装完了後 `docs/cli.md` へ移動する。
+**確定** — `docs/cli.md` に移行済み。

@@ -37,7 +37,7 @@
     "test": "node --test test/spec-compliance.test.cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:docs": "s2j-docs-linter --profile base ./README.md ./docsMod/**/*.md ./.vscode/**/*.md",
+    "lint:docs": "s2j-docs-linter --profile base ./README.md ./docs/**/*.md ./docsMod/status.md ./docsMod/modification.md ./.vscode/**/*.md",
     "format": "prettier --write \"**/*.{cjs,js,mjs,json}\"",
     "format:check": "prettier --check \"**/*.{cjs,js,mjs,json}\"",
     "pack": "npm pack --pack-destination artifacts",

@@ -3,7 +3,7 @@
 ## 背景
 
 v1では `~/dotfiles/setup/package.json` にグローバル npm パッケージ一覧を保持し、`ncu:install` 経由で jq 列挙 → `npm install -g` していた。
-v2でも同一 `package.json` を真実の源とし、install は C 型 (Node 列挙) で実装する ([mod-os-agnostic-install.md](./mod-os-agnostic-install.md))。
+v2でも同一 `package.json` を真実の源とし、install は C 型 (Node 列挙) で実装する ([install.md](./install.md))。
 v2では npm パッケージ `@s2j/global-npm` として配布するため、**dependencies 一覧をどこに置くか** を決める必要がある。
 
 ## 方式の比較
@@ -97,4 +97,4 @@ npm install -g .
 
 ## ステータス
 
-**確定** — 実装完了後 `docs/layout.md` へ移動する。
+**確定** — `docs/layout.md` に移行済み。
