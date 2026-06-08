@@ -4,11 +4,11 @@
 
 ### パッケージ本体
 
-* **方式 B (overlay manifest)** を実装: upstream 同梱 `package.json` と `user-deps.json` をマージし、物理的なアーカイブ化 `package.json` を生成。
+* **方式 B (overlay manifest)** を実装: upstream 同梱 `package.json` と `user-deps.json` をマージし、実効 `package.json` を生成。
 * setup ディレクトリのデフォルトを `~/.config/global-npm` (Windows: `%APPDATA%\global-npm`) に変更。`GLOBAL_NPM_SETUP_DIR` で上書き可能。
 * `global-npm sync` / `global-npm add` サブコマンドを追加。
 * `add` の range 省略時は `npm view` で `^x.y.z` を設定。失敗時は `*` にフォールバック。
-* `user-deps.json` の `devDependencies` を、物理的なアーカイブにマージ (`install` は `dependencies` のみ)
+* `user-deps.json` の `devDependencies` を、実効 package.json にマージ (`install` は `dependencies` のみ)
 
 ### リポジトリ整備 (tarball 同梱)
 
