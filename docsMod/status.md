@@ -77,7 +77,7 @@
 | README / docs (v2.1) | ✅ 更新済 | overlay manifest、移行手順 |
 | Docs Lint (`@s2j/docs-linter`) | ✅ PASS | `lint:docs` + GA workflow |
 | textlint エディター連携 | ✅ 設定済 | `.vscode/settings.json` に統合 |
-| `@s2j/global-npm` 自己参照 | ✅ 追加済 | `dependencies` に `@s2j/global-npm: ^2.0.2` |
+| `@s2j/global-npm` 自己参照 | ✅ 追加済 | `dependencies` に `@s2j/global-npm: ^2.1.0` |
 | `@s2j/docs-linter` 追加 (dependencies) | ⏸ 延期 | ユーザー側で後日 (devDep には存在) |
 | npm publish | ✅ 実施済 | `@s2j/global-npm@2.1.0` (latest)。OIDC CI + [`v2.1.0`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.0) |
 | Windows 11実機確認 | ❌ 未実施 | フェーズ3 (#8) |
@@ -274,7 +274,6 @@
 | 項目 | 状態 | 対応予定 |
 |------|------|----------|
 | Windows 11実機 | WIN-05: ⚠ WARN (macOS 環境) | フェーズ3 (#8) |
-| 自己参照 range | `dependencies` は `^2.0.2` のまま (`^` により2.1.0は解決可) | 任意で `^2.1.0` に更新 |
 | 手動 dry-run (公開済 version) | 既存 version で `npm publish --dry-run` FAIL | pack 系で代替 |
 | textlint 拡張 | 拡張本体は手動インストール要 | ユーザー環境 |
 
