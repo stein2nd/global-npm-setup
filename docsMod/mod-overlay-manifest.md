@@ -121,7 +121,7 @@ v2.0.x の「package root = setup」は廃止します。
 {
   "upstreamVersion": "2.1.0",
   "dependencies": {
-    "@s2j/global-npm": "^2.0.2",
+    "@s2j/global-npm": "^2.1.0",
     "textlint": "^15.7.1"
   },
   "userDeps": {
