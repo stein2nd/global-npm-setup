@@ -11,8 +11,8 @@ v2.0.x は **方式 A: パッケージ同梱** のみでした。v2.1以降は *
 
 | | 方式 A: パッケージ同梱のみ | 方式 B: overlay manifest (v2.1) |
 |--|---------------------------|----------------------------------|
-| 配置 | `@s2j/global-npm` 内の `package.json` のみ | upstream 正本 + `$SETUP_DIR` の物理的なアーカイブ |
-| 更新 | `npm update -g @s2j/global-npm` で upstream 更新 | sync が upstream を物理的なアーカイブに反映 |
+| 配置 | `@s2j/global-npm` 内の `package.json` のみ | upstream 正本 + `$SETUP_DIR` の実効 package.json |
+| 更新 | `npm update -g @s2j/global-npm` で upstream 更新 | sync が upstream を実効 package.json に反映 |
 | Mac / Windows 同期 | upstream を npm publish で同期 | upstream + 同一 `$SETUP_DIR` 構成で同期 |
 | カスタム | fork が必要だった | `user-deps.json` / `global-npm add` で追記 |
 | 複雑さ | 低 | 中 |
@@ -33,7 +33,7 @@ v2.0.x は **方式 A: パッケージ同梱** のみでした。v2.1以降は *
 |--------|------|--------|------|
 | Upstream 正本 | `<packageRoot>/package.json` | npm publish | 公式 `dependencies` 一覧 |
 | ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー / `global-npm add` | 追加分、ピン留め |
-| 物理的なアーカイブ | `$SETUP_DIR/package.json` | CLI `sync` | ncu / install の実効マニフェスト |
+| 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu / install の実効マニフェスト |
 | Meta | `$SETUP_DIR/.upstream-meta.json` | CLI `sync` | 差分検出用スナップショット |
 
 `packageRoot` = `path.resolve(__dirname, '..')` で解決し、CLI が属する `@s2j/global-npm` のインストール先になります。
@@ -64,7 +64,7 @@ const setupDir = path.resolve(
 ```
 ~/.config/global-npm/          # または GLOBAL_NPM_SETUP_DIR
 ├── user-deps.json             # ユーザー追加分・ピン留め
-├── package.json               # 物理的なアーカイブ (ncu / install 入力)
+├── package.json               # 実効 package.json (ncu / install 入力)
 └── .upstream-meta.json        # 同期メタ (ユーザー環境のみ)
 ```
 
@@ -82,9 +82,9 @@ const setupDir = path.resolve(
 ```
 
 * upstream に存在するパッケージ名でも `dependencies` に書けば、**ピン留め:** 最優先。
-* `devDependencies` は物理的なアーカイブにマージするが、global install 対象外 ([install.md](./install.md))。
+* `devDependencies` は実効 package.json にマージするが、global install 対象外 ([install.md](./install.md))。
 
-### 物理的なアーカイブ化 `package.json`
+### 実効 `package.json`
 
 ```json
 {
@@ -97,24 +97,24 @@ const setupDir = path.resolve(
 
 ## マージ仕様 (`syncManifest`)
 
-`check` / `update` / `install` / `sync` / `add` 実行時に upstream + `user-deps.json` から物理的なアーカイブを再生成します。
+`check` / `update` / `install` / `sync` / `add` 実行時に upstream + `user-deps.json` から実効 package.json を再生成します。
 
 ### `dependencies` の優先順位 — 高い順
 
 1. `user-deps.json` の `dependencies` にキーがある → その range にピン留め。
-2. 物理的なアーカイブの値が前回 upstream と異なる → `global-npm update` 済みとみなし維持。
+2. 実効 package.json の値が前回 upstream と異なる → `global-npm update` 済みとみなし維持。
 3. それ以外 → 新 upstream の range で上書き。未 update 追従。
 
 ### upstream から削除されたパッケージ
 
 | 種別 | 扱い |
 |------|------|
-| ユーザー追加分 | 物理的なアーカイブに維持 |
-| upstream 管理分 | 物理的なアーカイブから削除 |
+| ユーザー追加分 | 実効 package.json に維持 |
+| upstream 管理分 | 実効 package.json から削除 |
 
 ### `devDependencies` — B 案
 
-* upstream の `devDependencies` は物理的なアーカイブに含めない。リポジトリ開発用ツールをユーザー環境に流さない。
+* upstream の `devDependencies` は実効 package.json に含めない。リポジトリ開発用ツールをユーザー環境に流さない。
 * `user-deps.json` の `devDependencies` のみをマージする。
 
 詳細なマージ手順・実行フローは [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md) を参照してください。
@@ -159,7 +159,7 @@ GLOBAL_NPM_SETUP_DIR=.sandbox/setup global-npm sync
 ## npm publish 時の注意
 
 * `files` に `bin/`、`lib/`、`package.json` が tarball に含まれることを確認する。
-* publish される `package.json` は **upstream 正本**。ユーザーの物理的なアーカイブは各環境の `$SETUP_DIR` に生成される。
+* publish される `package.json` は **upstream 正本**。ユーザーの実効 package.json は各環境の `$SETUP_DIR` に生成される。
 
 ## ステータス
 
