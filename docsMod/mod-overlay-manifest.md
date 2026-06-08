@@ -24,10 +24,10 @@ v2.1では下記を同時に満たします。
 | 方式 | 常に overlay。同梱 `package.json` は upstream 正本のみ |
 | setup デフォルト | macOS / Linux: `~/.config/global-npm`、Windows 11: `%APPDATA%\global-npm` |
 | 環境変数 | `GLOBAL_NPM_SETUP_DIR` でデフォルトを上書き可能 |
-| `devDependencies` | **B 案:** `user-deps.json` の `devDependencies` を物理的なアーカイブにマージ。`install` は `dependencies` のみ |
-| upstream `devDependencies` | 物理的なアーカイブに含めない (リポジトリ開発用ツールをユーザー環境に流さない) |
+| `devDependencies` | **B 案:** `user-deps.json` の `devDependencies` を実効 package.json にマージ。`install` は `dependencies` のみ |
+| upstream `devDependencies` | 実効 package.json に含めない (リポジトリ開発用ツールをユーザー環境に流さない) |
 | `user-deps` による range オーバーライト | 可能 (upstream 管理パッケージのピン留め可、最優先) |
-| upstream から削除 | ユーザー追加分は維持 / upstream 管理分は物理的なアーカイブから削除 |
+| upstream から削除 | ユーザー追加分は維持 / upstream 管理分は実効 package.json から削除 |
 | 新サブコマンド | v2.1で `sync` / `add` を追加 |
 | `add` の range 省略 | オンライン: `npm view <pkg> version` → `^x.y.z`。オフライン: `*` にフォールバック |
 | バージョン | v2.1.0 (v2.0.x からの破壊的変更あり) |
@@ -43,7 +43,7 @@ flowchart TB
   subgraph setup ["$SETUP_DIR"]
     USER["user-deps.json<br/>追加分・ピン留め"]
     META[".upstream-meta.json<br/>前回同期スナップショット"]
-    MAT["package.json<br/>物理的なアーカイブ"]
+    MAT["package.json<br/>実効 package.json"]
   end
 
   U_PKG --> SYNC
@@ -62,7 +62,7 @@ flowchart TB
 |--------|------|--------|------|
 | Upstream 正本 | `<packageRoot>/package.json` | npm publish | 公式 `dependencies` 一覧 |
 | ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー / `global-npm add` | 追加分、ピン留め |
-| 物理的なアーカイブ | `$SETUP_DIR/package.json` | CLI `sync` | ncu / install の実効マニフェスト |
+| 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu / install の実効マニフェスト |
 | Meta | `$SETUP_DIR/.upstream-meta.json` | CLI `sync` | 差分検出用スナップショット |
 
 `packageRoot` = `path.resolve(__dirname, '..')` (CLI が属する `@s2j/global-npm` のインストール先)。
@@ -94,7 +94,7 @@ v2.0.x の「package root = setup」は廃止します。
 ```
 ~/.config/global-npm/          # または GLOBAL_NPM_SETUP_DIR
 ├── user-deps.json             # ユーザー追加分、ピン留め
-├── package.json               # 物理的なアーカイブ (ncu / install 入力)
+├── package.json               # 実効 package.json (ncu / install 入力)
 └── .upstream-meta.json        # 同期メタ (Git 管理外、ユーザー環境のみ)
 ```
 
@@ -139,7 +139,7 @@ v2.0.x の「package root = setup」は廃止します。
 * `userDeps`: 前回同期時の `user-deps.json` のコピー (`devDependencies` の ncu 済み判定に使用)。
 * upstream の `devDependencies` は記録しない。
 
-### 物理的なアーカイブ化 `package.json`
+### 実効 `package.json`
 
 ```json
 {
@@ -160,7 +160,7 @@ v2.0.x の「package root = setup」は廃止します。
 ### `dependencies` の優先順位 (高い順)
 
 1. `user-deps.json` の `dependencies` にキーがある → その range (ピン留め)
-2. 物理的なアーカイブの値が前回 upstream と異なる → `global-npm update` 済みとみなし維持
+2. 実効 package.json の値が前回 upstream と異なる → `global-npm update` 済みとみなし維持
 3. それ以外 → 新 upstream の range でオーバーライト (未 update 追従)
 
 ### `dependencies` マージ手順
@@ -196,7 +196,7 @@ for (name, range) in current.dependencies:
   stillUpstream = name in upstream.dependencies
 
   if wasUpstream AND NOT stillUpstream AND name not in userDeps.dependencies:
-    continue   // upstream 削除 → 物理的なアーカイブからも削除
+    continue   // upstream 削除 → 実効 package.json からも削除
 
   merged[name] = range   // ユーザー追加分のみ → 維持
 ```
@@ -208,13 +208,13 @@ upstream `devDependencies` は参照しません。`user-deps.json` の `devDepe
 **優先順位**
 
 1. `user-deps.json` の `devDependencies` にキーがある → その range (ピン留め)
-2. 物理的なアーカイブが前回 `meta.userDeps.devDependencies` と異なる → ncu update 済みとみなし維持
+2. 実効 package.json が前回 `meta.userDeps.devDependencies` と異なる → ncu update 済みとみなし維持
 3. それ以外 → `user-deps` の range を採用
 
 **フェーズ3 (レガシー)**
 
 * `current.devDependencies` にのみ存在し `user-deps` にないキー → 維持 (移行期間の救済)。
-* `user-deps` から削除されたキー → 物理的なアーカイブからも削除。
+* `user-deps` から削除されたキー → 実効 package.json からも削除。
 
 ### sync 後の meta 更新
 
@@ -243,13 +243,13 @@ global-npm <check|update|install|sync|add>
 
 | サブコマンド | 事前 sync | 操作対象 |
 |--------------|-----------|----------|
-| `check` | あり | 物理的なアーカイブ → `ncu -g --format time --packageFile` |
-| `update` | あり | 物理的なアーカイブ → `ncu -g --format time -u --packageFile` |
-| `install` | あり | 物理的なアーカイブの **dependencies のみ** → `npm install -g` |
-| `sync` | — | upstream + user-deps → 物理的なアーカイブ |
+| `check` | あり | 実効 package.json → `ncu -g --format time --packageFile` |
+| `update` | あり | 実効 package.json → `ncu -g --format time -u --packageFile` |
+| `install` | あり | 実効 package.json の **dependencies のみ** → `npm install -g` |
+| `sync` | — | upstream + user-deps → 実効 package.json |
 | `add` | 後続 sync | `user-deps.json` に追記 → sync |
 
-`check` / `update` は物理的なアーカイブの `dependencies` と `devDependencies` の両方を ncu が読みます。
+`check` / `update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読みます。
 `install` は `dependencies` のみとします (`devDependencies` は global install しない)。
 
 ### `global-npm add <pkg>[@range] [--dev]`
@@ -340,7 +340,7 @@ sequenceDiagram
   participant S as syncManifest
   participant U as upstream package.json
   participant UD as user-deps.json
-  participant M as 物理的なアーカイブ化 package.json
+  participant M as 実効 package.json
   participant META as .upstream-meta.json
 
   CLI->>IO: ensureSetupDir()
@@ -348,10 +348,10 @@ sequenceDiagram
   CLI->>S: syncManifest(ctx)
   S->>U: read upstream
   S->>UD: read user-deps
-  S->>M: read current 物理的なアーカイブ
+  S->>M: read current 実効 package.json
   S->>META: read meta
   S->>S: mergeDependencies + mergeDevDependencies
-  S->>M: write 物理的なアーカイブ
+  S->>M: write 実効 package.json
   S->>META: write meta
   S-->>CLI: { changed, report }
 ```
@@ -364,7 +364,7 @@ sequenceDiagram
   participant CLI as global-npm
   participant P as prepare
   participant N as ncu
-  participant M as 物理的なアーカイブ化 package.json
+  participant M as 実効 package.json
 
   U->>CLI: global-npm check
   CLI->>P: prepare()
@@ -380,8 +380,8 @@ sequenceDiagram
   N-->>U: 結果表示
 ```
 
-* `check` / `update` は物理的なアーカイブの `dependencies` と `devDependencies` の両方を ncu が読む。
-* `update` は物理的なアーカイブのみ変更する。`user-deps.json` と upstream 正本は変更しない。
+* `check` / `update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読む。
+* `update` は実効 package.json のみ変更する。`user-deps.json` と upstream 正本は変更しない。
 
 ### `install`
 
@@ -390,7 +390,7 @@ sequenceDiagram
   participant U as User
   participant CLI as global-npm
   participant P as prepare
-  participant M as 物理的なアーカイブ化 package.json
+  participant M as 実効 package.json
   participant N as npm
 
   U->>CLI: global-npm install
@@ -412,13 +412,13 @@ sequenceDiagram
   participant CLI as global-npm
   participant IO as pkg-io
   participant S as syncManifest
-  participant M as 物理的なアーカイブ化 package.json
+  participant M as 実効 package.json
 
   U->>CLI: global-npm sync [--dry-run]
   CLI->>IO: ensureSetupDir()
   CLI->>S: syncManifest(ctx, { dryRun })
   alt dryRun = false
-    S->>M: write 物理的なアーカイブ + meta
+    S->>M: write 実効 package.json + meta
     S-->>U: 差分レポート (任意)
   else dryRun = true
     S-->>U: 追加 / 更新 / 削除を stderr 表示のみ
@@ -537,14 +537,14 @@ global-npm install
 | v2.0.x | v2.1 |
 |--------|------|
 | setup = package root | setup = `~/.config/global-npm` (Windows: `%APPDATA%\global-npm`) |
-| 同梱 `package.json` を直接 ncu | 物理的なアーカイブ を ncu |
+| 同梱 `package.json` を直接 ncu | 実効 package.json を ncu |
 | 3サブコマンド | 5サブコマンド |
 
 移行手順は、下記になります。
 
 1. `npm update -g @s2j/global-npm` で v2.1に上げる。
 2. 追加分を `global-npm add …` で `user-deps.json` に登録する。
-3. `global-npm sync` で物理的なアーカイブを生成する。
+3. `global-npm sync` で実効 package.json を生成する。
 4. `global-npm install` で global 環境を同期する。
 
 既存のグローバルパッケージは自動ではアンインストールされません。
@@ -558,14 +558,14 @@ global-npm install
 |----|------|------|
 | SYNC-01 | user-only `dependencies` | upstream 更新後も維持 |
 | SYNC-02 | 未 update の upstream パッケージ | 新 upstream range にオーバーライトする |
-| SYNC-03 | `global-npm update` 済み | 物理的なアーカイブ維持 |
+| SYNC-03 | `global-npm update` 済み | 実効 package.json 維持 |
 | SYNC-04 | `user-deps` による upstream ピン | 最優先で維持 |
-| SYNC-05 | upstream 削除 (upstream 管理) | 物理的なアーカイブから削除 |
+| SYNC-05 | upstream 削除 (upstream 管理) | 実効 package.json から削除 |
 | SYNC-06 | upstream 削除 (user 追加分) | 維持 |
-| SYNC-07 | `user-deps.devDependencies` マージ | 物理的なアーカイブに反映 |
-| SYNC-08 | upstream `devDependencies` | 物理的なアーカイブに含まれない |
-| SYNC-09 | `user-deps` から devDep 削除 | 物理的なアーカイブからも削除 |
-| SYNC-10 | devDep の ncu update 済み | 物理的なアーカイブ維持 |
+| SYNC-07 | `user-deps.devDependencies` マージ | 実効 package.json に反映 |
+| SYNC-08 | upstream `devDependencies` | 実効 package.json に含まれない |
+| SYNC-09 | `user-deps` から devDep 削除 | 実効 package.json からも削除 |
+| SYNC-10 | devDep の ncu update 済み | 実効 package.json 維持 |
 
 ### `test/resolve-range.test.cjs` (新規)
 
