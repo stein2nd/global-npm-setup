@@ -52,7 +52,7 @@
 | CLI-16 | check 実行後もリポジトリ root の package.json が変わらないこと。 | ✔ PASS |  |
 | CLI-17 | `add` が `user-deps.json` の dependencies に追記すること。 | ✔ PASS |  |
 | CLI-18 | `add --dev` が `user-deps.json` の devDependencies に追記すること。 | ✔ PASS |  |
-| CLI-19 | `sync` が upstream dependencies を実効 package.json に反映すること。 | ✔ PASS |  |
+| CLI-19 | `sync` が upstream dependencies を materialized package.json に反映すること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-install
 
@@ -128,3 +128,4 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | REP-01 | test-results.md が生成されること。 | ✔ PASS |  |
+
