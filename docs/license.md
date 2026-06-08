@@ -2,9 +2,9 @@
 
 ## 背景
 
-v1.0.0は MIT ライセンスだった。
-v2では npm 公開し `@s2j/docs-linter` (GPL-2.0-or-later) と同一エコシステムとして運用する。
-ライセンスを **GPL-3.0-or-later** に変更する。
+v1.0.0は MIT ライセンスでした。
+v2では npm 公開し `@s2j/docs-linter` (GPL-2.0-or-later) と同一エコシステムとして運用します。
+併せて、ライセンスを **GPL-3.0-or-later** に変更します。
 
 ## 決定事項
 
@@ -43,7 +43,7 @@ the Free Software Foundation, either version 3 of the License, or
 
 ## 依存パッケージとの関係
 
-本プロジェクトは **グローバル npm パッケージの一覧と CLI** を提供する。
+本プロジェクトは **グローバル npm パッケージの一覧と CLI** を提供します。
 
 * `dependencies` に列挙するパッケージ (textlint、docs-linter 等) を **ソース同梱して再配布するわけではない**。
 * CLI 自身のソースコードが GPL-3.0-or-later で公開される。
@@ -51,8 +51,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 ## バージョニング
 
-MIT → GPL-3.0-or-later は **後方互換のないライセンス変更** のため、**v2.0.0 (メジャー bump)** とする。
+MIT → GPL-3.0-or-later は **後方互換のないライセンス変更** のため、**v2.0.0 (メジャー bump)** とします。
 
 ## ステータス
 
-**確定** — `docs/license.md` に移行済み。
+**確定:** `docs/license.md` に移行済み。

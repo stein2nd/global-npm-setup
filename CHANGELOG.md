@@ -1,5 +1,21 @@
 # Global npm Package Setup - CHANGELOG
 
+## v2.1.0: 2026-06-08
+
+### パッケージ本体
+
+* **方式 B (overlay manifest)** を実装: upstream 同梱 `package.json` と `user-deps.json` をマージし、物理的なアーカイブ化 `package.json` を生成。
+* setup ディレクトリのデフォルトを `~/.config/global-npm` (Windows: `%APPDATA%\global-npm`) に変更。`GLOBAL_NPM_SETUP_DIR` で上書き可能。
+* `global-npm sync` / `global-npm add` サブコマンドを追加。
+* `add` の range 省略時は `npm view` で `^x.y.z` を設定。失敗時は `*` にフォールバック。
+* `user-deps.json` の `devDependencies` を、物理的なアーカイブにマージ (`install` は `dependencies` のみ)
+
+### リポジトリ整備 (tarball 同梱)
+
+* `lib/` モジュール分割 (`paths`, `pkg-io`, `sync-manifest`, `resolve-range`, `install-spec`)
+* 仕様: [docsMod/mod-overlay-manifest.md](./docsMod/mod-overlay-manifest.md)
+* ユニットテスト `test/sync-manifest.test.cjs` / `test/resolve-range.test.cjs` を追加
+
 ## v2.0.3: 2026-06-07
 
 ### パッケージ本体
@@ -10,11 +26,11 @@
 
 ### リポジトリ整備 (tarball 非同梱)
 
-* 確定仕様8件を `docsMod/mod-*.md` から `docs/` へ移行 ([specs.md](./docs/specs.md))
+* 確定仕様8件を `docsMod/mod-*.md` から `docs/` に移行 ([specs.md](./docs/specs.md))
 * GitHub Actions + npm OIDC による自動 publish を追加 (`.github/workflows/npm-publish.yml`)
 * release tag と `package.json` version の一致検証を追加 (`scripts/verify-release-tag.cjs`)
-* install / npm-publish 仕様書を semver 付き install・OIDC CI に合わせて更新
-* 仕様準拠テスト (INS-01 / INS-03 等) を v2.0.3 向けに更新
+* install / npm-publish 仕様書を semver 付き install、OIDC CI に合わせて更新
+* 仕様準拠テスト (INS-01 / INS-03等) を v2.0.3向けに更新
 
 ## v2.0.2: 2026-06-07
 
@@ -34,14 +50,14 @@
 ### パッケージ本体
 
 * npm パッケージ名を `@s2j/global-npm` に変更 (CLI コマンド名 `global-npm` は維持)
-* Node.js CLI (`bin/global-npm.cjs`) を追加 — `check` / `update` / `install` サブコマンド
+* Node.js CLI (`bin/global-npm.cjs`) を追加: `check` / `update` / `install` サブコマンド
 * `global-npm install` を C 型 (Node 列挙 → `npm install -g <each>`) で実装。jq ランタイム不要
 * `install-global.zsh` と `~/bin/global-npm` (Zsh ラッパー) を廃止
-* v1の README の SETUP_DIR 問題を解消 — CLI は package root (`npm install -g` 先) を setup ディレクトリとして参照
+* v1の README の SETUP_DIR 問題を解消: CLI は package root (`npm install -g` 先) を setup ディレクトリとして参照
 * ライセンスを MIT から GPL-3.0-or-later に変更 (`LICENSE` 追加)
 * `ncu:check` / `ncu:update` に `--packageFile package.json` を追加 (開発用 scripts として維持)
-* `ncu:install` を削除 (`global-npm install` へ移行)
-* README を v2 向けに更新 (macOS / Windows 11対応、移行手順)
+* `ncu:install` を削除 (`global-npm install` に移行)
+* README を v2向けに更新 (macOS / Windows 11対応、移行手順)
 * tarball 同梱は `bin/`、`package.json`、`LICENSE`、`README.md` の4ファイル
 
 ### リポジトリ整備 (tarball 非同梱)
@@ -53,5 +69,5 @@
 
 ## v1.0.1: 2026-06-07
 
-* `dependencies` を最新版に更新 (`npm-check-updates` ^22.2.3 ほか)
+* `dependencies` を最新版に更新 (`npm-check-updates` ^22.2.3ほか)
 * `ncu:check` / `ncu:update` / `ncu:install` に `--format time` を追加し、公開日時を表示

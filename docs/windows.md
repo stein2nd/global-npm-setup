@@ -2,8 +2,8 @@
 
 ## 背景
 
-v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) だった。
-勤務先 Windows 11でも `@s2j/docs-linter` 等と同じグローバル npm 更新フローを使えるようにする。
+v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) でした。
+勤務先 Windows 11でも `@s2j/docs-linter` 等と同じグローバル npm 更新フローを使えるようにします。
 
 ## v1で Windows 非対応だった要素
 
@@ -18,7 +18,7 @@ v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) だった。
 
 ### 1. Node.js
 
-以下いずれかで Node.js v18以降を導入する。
+以下いずれかで Node.js v18以降を導入します。
 
 * [fnm](https://github.com/Schniz/fnm) (macOS / Windows 共通。推奨)
 * [nvm-windows](https://github.com/coreybutler/nvm-windows)
@@ -31,17 +31,26 @@ v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) だった。
 npm install -g @s2j/global-npm
 ```
 
-初回のみ。以降は `global-npm install` の C 型列挙に `@s2j/global-npm` 自身も含まれる。
+インストールは、初回のみです。以降は `global-npm install` の C 型列挙に `@s2j/global-npm` 自身も含まれます。
 
-### 3. グローバルパッケージの一括インストール
+### 3. ユーザー追加分の登録 (任意)
+
+勤務先だけ別 pkg 集合にする場合は、下記のように指定します。
+
+```powershell
+global-npm add @s2j/docs-linter@^1.0.16
+global-npm sync --dry-run
+```
+
+### 4. グローバルパッケージの一括インストール
 
 ```powershell
 global-npm install
 ```
 
-`dependencies` の各 pkg がトップレベル global install され、`textlint` や `s2j-docs-linter` 等の CLI が `{prefix}/bin` にリンクされる。
+物理的なアーカイブ化 `package.json` の `dependencies` がトップレベル global install され、`textlint` や `s2j-docs-linter` 等の CLI が `{prefix}/bin` にリンクされます。
 
-### 4. 更新フロー
+### 5. 更新フロー
 
 ```powershell
 global-npm check
@@ -54,12 +63,16 @@ global-npm install
 | 項目 | Windows 11 |
 |------|------------|
 | ユーザーホーム | `%USERPROFILE%` (例: `C:\Users\<user>`) |
-| dotfiles 推奨配置 | `%USERPROFILE%\dotfiles\global-npm-setup\` |
+| setup ディレクトリ (デフォルト) | `%APPDATA%\global-npm` |
+| setup 上書き | 環境変数 `GLOBAL_NPM_SETUP_DIR` |
+| dotfiles 推奨配置 (開発) | `%USERPROFILE%\dotfiles\global-npm-setup\` |
 | npm グローバル bin | `%AppData%\npm` (通常 PATH に含まれる) |
 | npm グローバル modules | `%AppData%\npm\node_modules` |
 
-`global-npm` コマンドは npm グローバル bin ディレクトリに配置される。
-PowerShell 再起動後、`global-npm --version` 等で PATH を確認する。
+overlay manifest のファイル (`user-deps.json`、物理的なアーカイブ化 `package.json`) は setup ディレクトリに生成されます ([layout.md](./layout.md))。
+
+`global-npm` コマンドは npm グローバル bin ディレクトリに配置されます。
+PowerShell 再起動後、`global-npm --version` 等で PATH を確認します。
 
 ## CLI 実装上の Windows 対応
 
@@ -87,7 +100,7 @@ spawnSync('npm', ['install', '-g', ...names], {
 });
 ```
 
-Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決する。
+Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決します。
 
 ## jq について (Windows)
 
@@ -103,11 +116,11 @@ Windows では `shell: true` により `npm.cmd` / `ncu.cmd` を解決する。
 
 ## README への反映
 
-v2の README は、OS 別セクションに分ける。
+v2の README は、OS 別セクションに分けます。
 
-* **共通** — 概要、`global-npm` コマンド、更新フロー
-* **macOS** — fnm / Homebrew (任意)、dotfiles 配置
-* **Windows** — fnm / nvm-windows、PowerShell、PATH 確認
+* **共通:** 概要、`global-npm` コマンド、更新フロー
+* **macOS:** fnm / Homebrew (任意)、dotfiles 配置
+* **Windows:** fnm / nvm-windows、PowerShell、PATH 確認
 
 ## テスト観点
 
@@ -116,6 +129,7 @@ v2の README は、OS 別セクションに分ける。
 | `global-npm check` | ✓ | ✓ |
 | `global-npm update` | ✓ | ✓ |
 | `global-npm install` (C 型列挙) | ✓ | ✓ |
+| `global-npm sync` / `add` | ✓ | ✓ |
 | 未知サブコマンドで usage | ✓ | ✓ |
 | `@s2j/docs-linter` の CLI が PATH に載る | ✓ | ✓ |
 | `textlint` / `ncu` が PATH に載る | ✓ | ✓ |

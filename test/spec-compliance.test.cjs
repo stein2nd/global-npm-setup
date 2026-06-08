@@ -8,7 +8,10 @@ const { test } = require('node:test');
 
 const ROOT = path.resolve(__dirname, '..');
 const CLI_PATH = path.join(ROOT, 'bin', 'global-npm.cjs');
+const LIB_DIR = path.join(ROOT, 'lib');
+const PATHS_PATH = path.join(LIB_DIR, 'paths.cjs');
 const PKG_PATH = path.join(ROOT, 'package.json');
+const SANDBOX_SETUP = path.join(ROOT, '.sandbox', 'setup');
 const LICENSE_PATH = path.join(ROOT, 'LICENSE');
 const README_PATH = path.join(ROOT, 'README.md');
 const CHANGELOG_PATH = path.join(ROOT, 'CHANGELOG.md');
@@ -32,6 +35,18 @@ function mark(id, spec, condition, pass, detail = '', { warnOnFail = false } = {
 
 function read(filePath) {
   return fs.readFileSync(filePath, 'utf8');
+}
+
+function readLibSources() {
+  return fs
+    .readdirSync(LIB_DIR)
+    .filter((name) => name.endsWith('.cjs'))
+    .map((name) => read(path.join(LIB_DIR, name)))
+    .join('\n');
+}
+
+function readCliAndLibSources() {
+  return `${read(CLI_PATH)}\n${readLibSources()}`;
 }
 
 function readJson(filePath) {
@@ -149,7 +164,7 @@ test('cli: spawnSync usage', () => {
 });
 
 test('cli: json parse without jq', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'CLI-05',
     'mod-os-agnostic-cli',
@@ -165,22 +180,24 @@ test('cli: json parse without jq', () => {
 });
 
 test('cli: setup directory resolution', () => {
-  const source = read(CLI_PATH);
+  const source = read(PATHS_PATH);
   mark(
     'CLI-07',
     'mod-os-agnostic-cli',
-    "setup ディレクトリが `path.resolve(__dirname, '..')` で解決されること。",
-    /path\.resolve\(__dirname,\s*['"]\.\.['"]\)/.test(source),
+    'package root は upstream 正本、`defaultSetupDir()` で overlay setup を解決すること。',
+    source.includes('defaultSetupDir') &&
+      source.includes('resolveSetupContext') &&
+      source.includes('upstreamPkgPath'),
   );
 });
 
-test('cli: no GLOBAL_NPM_SETUP_DIR in v2 initial', () => {
-  const source = read(CLI_PATH);
+test('cli: GLOBAL_NPM_SETUP_DIR support', () => {
+  const source = read(PATHS_PATH);
   mark(
     'CLI-08',
     'mod-os-agnostic-cli',
-    'v2 初期実装に `GLOBAL_NPM_SETUP_DIR` 参照が含まれないこと。',
-    !source.includes('GLOBAL_NPM_SETUP_DIR'),
+    '`GLOBAL_NPM_SETUP_DIR` で setup ディレクトリを上書きできること。',
+    source.includes('GLOBAL_NPM_SETUP_DIR'),
   );
 });
 
@@ -255,12 +272,12 @@ test('cli: ncu install script removed', () => {
   );
 });
 
-test('cli: check does not modify package.json', () => {
+test('cli: check does not modify repository package.json', () => {
   if (!hasCommand('ncu')) {
     mark(
       'CLI-16',
       'mod-os-agnostic-cli',
-      'check 実行後も package.json の内容が変わらないこと。',
+      'check 実行後もリポジトリ root の package.json が変わらないこと。',
       false,
       'ncu が PATH にないためスキップ',
       { warnOnFail: true },
@@ -268,21 +285,66 @@ test('cli: check does not modify package.json', () => {
     return;
   }
 
+  fs.rmSync(SANDBOX_SETUP, { recursive: true, force: true });
   const before = read(PKG_PATH);
-  runCli(['check']);
+  runCli(['check'], { GLOBAL_NPM_SETUP_DIR: SANDBOX_SETUP });
   const after = read(PKG_PATH);
   mark(
     'CLI-16',
     'mod-os-agnostic-cli',
-    'check 実行後も package.json の内容が変わらないこと。',
+    'check 実行後もリポジトリ root の package.json が変わらないこと。',
     before === after,
+  );
+});
+
+test('cli: add subcommand updates user-deps.json', () => {
+  fs.rmSync(SANDBOX_SETUP, { recursive: true, force: true });
+  const result = runCli(['add', 'typescript@^5.9.3'], {
+    GLOBAL_NPM_SETUP_DIR: SANDBOX_SETUP,
+  });
+  const userDeps = readJson(path.join(SANDBOX_SETUP, 'user-deps.json'));
+  mark(
+    'CLI-17',
+    'mod-os-agnostic-cli',
+    '`add` が `user-deps.json` の dependencies に追記すること。',
+    result.status === 0 && userDeps.dependencies?.typescript === '^5.9.3',
+  );
+});
+
+test('cli: add --dev updates user-deps devDependencies', () => {
+  fs.rmSync(SANDBOX_SETUP, { recursive: true, force: true });
+  const result = runCli(['add', 'eslint@^9.0.0', '--dev'], {
+    GLOBAL_NPM_SETUP_DIR: SANDBOX_SETUP,
+  });
+  const userDeps = readJson(path.join(SANDBOX_SETUP, 'user-deps.json'));
+  mark(
+    'CLI-18',
+    'mod-os-agnostic-cli',
+    '`add --dev` が `user-deps.json` の devDependencies に追記すること。',
+    result.status === 0 && userDeps.devDependencies?.eslint === '^9.0.0',
+  );
+});
+
+test('cli: sync materializes overlay manifest', () => {
+  fs.rmSync(SANDBOX_SETUP, { recursive: true, force: true });
+  const result = runCli(['sync'], { GLOBAL_NPM_SETUP_DIR: SANDBOX_SETUP });
+  const materialized = readJson(path.join(SANDBOX_SETUP, 'package.json'));
+  const upstream = readJson(PKG_PATH);
+  mark(
+    'CLI-19',
+    'mod-os-agnostic-cli',
+    '`sync` が upstream dependencies を materialized package.json に反映すること。',
+    result.status === 0 &&
+      materialized?.name === 'global-npm-user-manifest' &&
+      Object.keys(materialized.dependencies ?? {}).length ===
+        Object.keys(upstream.dependencies ?? {}).length,
   );
 });
 
 // --- mod-os-agnostic-install ---
 
 test('install: C-type npm install -g with semver specs', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'INS-01',
     'mod-os-agnostic-install',
@@ -304,7 +366,7 @@ test('install: not B-type bare npm install -g', () => {
 });
 
 test('install: uses dependencies entries', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'INS-03',
     'mod-os-agnostic-install',
@@ -370,7 +432,7 @@ test('layout: required files exist', () => {
 
 test('layout: files field for publish', () => {
   const pkg = readJson(PKG_PATH);
-  const expected = ['bin/', 'package.json', 'LICENSE', 'README.md'];
+  const expected = ['bin/', 'lib/', 'package.json', 'LICENSE', 'README.md'];
   const actual = pkg.files ?? [];
   mark(
     'LAY-06',
@@ -392,12 +454,17 @@ test('layout: dependencies is source of truth', () => {
 });
 
 test('layout: no devDependencies install target', () => {
-  const source = read(CLI_PATH);
+  const pkgIo = read(path.join(LIB_DIR, 'pkg-io.cjs'));
+  const cli = read(CLI_PATH);
+  const installBlock = cli.slice(cli.indexOf("case 'install'"), cli.indexOf("case 'sync'"));
+  const readDependenciesFn = pkgIo.match(/function readDependencies[\s\S]*?^}/m)?.[0] ?? '';
   mark(
     'LAY-08',
     'mod-os-agnostic-layout',
     'install が `devDependencies` を参照しないこと。',
-    !source.includes('devDependencies'),
+    installBlock.includes('readDependencies') &&
+      !installBlock.includes('devDependencies') &&
+      !readDependenciesFn.includes('devDependencies'),
   );
 });
 
@@ -411,13 +478,34 @@ test('layout: self-reference', () => {
   );
 });
 
-test('layout: GLOBAL_NPM_SETUP_DIR not implemented', () => {
-  const source = read(CLI_PATH);
+test('layout: overlay manifest implemented', () => {
+  const source = readCliAndLibSources();
   mark(
     'LAY-10',
     'mod-os-agnostic-layout',
-    'v2 初期実装で `GLOBAL_NPM_SETUP_DIR` が未実装であること（方式 B 着手前）。',
-    !source.includes('GLOBAL_NPM_SETUP_DIR'),
+    'overlay manifest（`syncManifest` / `user-deps.json`）が実装されていること。',
+    source.includes('syncManifest') &&
+      source.includes('user-deps.json') &&
+      source.includes('GLOBAL_NPM_SETUP_DIR'),
+  );
+});
+
+test('layout: default setup dir', () => {
+  const source = read(PATHS_PATH);
+  mark(
+    'LAY-11',
+    'mod-os-agnostic-layout',
+    'デフォルト setupDir が `~/.config/global-npm`（Win: AppData）であること。',
+    source.includes("'.config', 'global-npm'") && source.includes("'global-npm'"),
+  );
+});
+
+test('layout: lib directory published', () => {
+  mark(
+    'LAY-12',
+    'mod-os-agnostic-layout',
+    '`lib/` ディレクトリが存在し publish files に含まれること。',
+    fs.existsSync(LIB_DIR) && (readJson(PKG_PATH).files ?? []).includes('lib/'),
   );
 });
 
@@ -535,13 +623,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.0.3', () => {
+test('publish: version 2.1.0', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.0.3` であること。',
-    pkg.version === '2.0.3',
+    'package.json の version が `2.1.0` であること。',
+    pkg.version === '2.1.0',
   );
 });
 
@@ -558,7 +646,13 @@ test('publish: engines node >=18', () => {
 test('publish: tarball contents via dry-run', () => {
   const result = runNpmPackDryRun();
   const output = `${result.stdout}\n${result.stderr}`;
-  const required = ['bin/global-npm.cjs', 'package.json', 'LICENSE', 'README.md'];
+  const required = [
+    'bin/global-npm.cjs',
+    'lib/paths.cjs',
+    'package.json',
+    'LICENSE',
+    'README.md',
+  ];
   mark(
     'PUB-04',
     'mod-npm-publish',
@@ -589,7 +683,7 @@ test('publish: registry publish status', () => {
 // --- mod-os-agnostic-windows ---
 
 test('windows: path.join usage', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'WIN-01',
     'mod-os-agnostic-windows',

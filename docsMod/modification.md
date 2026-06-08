@@ -8,7 +8,7 @@ v2脱 OS 依存改修の進行管理です。
 * **ファイル名:** ASCII のみ。initiative ごとに接頭辞を付け、ソートしやすくする (例: `mod-os-agnostic-naming.md` → 確定後 `docs/naming.md`)。
 * **タイトル:** 各ファイルの1行目に `# Global npm Package Setup - …` 形式で記載する。
 
-## 確定仕様 (docs/ へ移行済み)
+## 確定仕様 (docs/ に移行済み)
 
 | ファイル | 概要 |
 |----------|------|
@@ -21,11 +21,19 @@ v2脱 OS 依存改修の進行管理です。
 | [license.md](../docs/license.md) | ライセンス MIT → GPL-3.0-or-later |
 | [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ) |
 
+## v2.1仕様 (方式 B: 着手前確定)
+
+overlay manifest の詳細仕様: [mod-overlay-manifest.md](./mod-overlay-manifest.md)
+
+* 常時 overlay (デフォルト `~/.config/global-npm` / Windows `%APPDATA%\global-npm`)
+* `sync` / `add` サブコマンド。v2.1で追加
+* `add` range 省略: `npm view` → `^x.y.z`、オフライン時 `*` フォールバック
+
 ## v2残タスク
 
 | # | タスク | 概要 | 状態 |
 |---|--------|------|------|
-| 1 | **方式 B — 環境別 pkg 集合** | `GLOBAL_NPM_SETUP_DIR` 等で setup ディレクトリを上書き | ❌ フェーズ3 |
+| 1 | **方式 B: overlay manifest (v2.1)** | [mod-overlay-manifest.md](./mod-overlay-manifest.md) に従い実装、docs 移行済 | ✅ v2.1.0 |
 | 2 | `bin/global-npm.cjs` 実装 | C 型 install、ncu 連携 | ✅ |
 | 3 | `package.json` v2化 | `@s2j/global-npm`、GPL-3.0-or-later、`bin` 定義 | ✅ |
 | 4 | `LICENSE` 追加 | GPL v3全文 | ✅ |
