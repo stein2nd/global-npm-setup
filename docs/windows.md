@@ -48,7 +48,7 @@ global-npm sync --dry-run
 global-npm install
 ```
 
-物理的なアーカイブ化 `package.json` の `dependencies` がトップレベル global install され、`textlint` や `s2j-docs-linter` 等の CLI が `{prefix}/bin` にリンクされます。
+実効 `package.json` の `dependencies` がトップレベル global install され、`textlint` や `s2j-docs-linter` 等の CLI が `{prefix}/bin` にリンクされます。
 
 ### 5. 更新フロー
 
@@ -69,7 +69,7 @@ global-npm install
 | npm グローバル bin | `%AppData%\npm` (通常 PATH に含まれる) |
 | npm グローバル modules | `%AppData%\npm\node_modules` |
 
-overlay manifest のファイル (`user-deps.json`、物理的なアーカイブ化 `package.json`) は setup ディレクトリに生成されます ([layout.md](./layout.md))。
+overlay manifest のファイル (`user-deps.json`、実効 `package.json`) は setup ディレクトリに生成されます ([layout.md](./layout.md))。
 
 `global-npm` コマンドは npm グローバル bin ディレクトリに配置されます。
 PowerShell 再起動後、`global-npm --version` 等で PATH を確認します。
