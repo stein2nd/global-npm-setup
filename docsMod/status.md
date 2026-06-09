@@ -10,7 +10,7 @@
 | **フェーズ1: コア実装** | **100%** | 完了 |
 | **フェーズ2: リリース** | **100%** | npm publish、自己参照、仕様書の移行完了 |
 | **フェーズ3: リリース後** | **100%** (4/4) | 方式 B (#1)、Docs Lint CI、npm OIDC publish CI、`v2.1.2` publish、Windows 実機 (#8) 完了 |
-| **実機確認 (OS)** | **100%** (2/2) | macOS 定番フロー ✅、Windows 11 (#8) 11/11 ✅ |
+| **実機確認 (OS)** | **100%** (2/2) | macOS 定番フロー✅、Windows 11 (#8) 11/11✅ |
 | **v2初期リリース全体** | **100%** (7/7) | [modification.md](./modification.md) v2残タスク (#1〜#9) すべて完了 |
 | **v2全体 (方式 B、CI 含む)** | **100%** (9/9) | 完了 |
 | **プロジェクト全体 (v2系)** | **100%** | 仕様、実装、publish、実機確認まで完了。残りは運用ギャップと任意改善のみ |
@@ -18,7 +18,7 @@
 | **v2.1.1パッチ** | **100%** (publish 済) | ドキュメント整備、自己参照 tarball 更新、`@s2j/global-npm@2.1.1` publish |
 | **v2.1.2パッチ** | **100%** (publish 済) | 同梱 ncu 起動 (`resolve-ncu`)、`install` の version 解決 (`pinVersion`)、`@s2j/global-npm@2.1.2` publish |
 | **仕様準拠テスト** | **100%** (PASS: 63/63) | ✖ FAIL: 0、⚠ WARN: 1 (WIN-05) … [test-results.md](./test-results.md) |
-| **自動テスト (`npm test`)** | **100%** (80/80) | 仕様準拠 63 + ユニット 17。FAIL: 0 |
+| **自動テスト (`npm test`)** | **100%** (80/80) | 仕様準拠 (63) + ユニット (17)。FAIL: 0 |
 | **開発基盤 (lint、format、test)** | **100%** | ESLint、Prettier、仕様準拠 + ユニットテスト、`lint:docs` script 済 |
 
 > **進捗率の算定**
@@ -45,7 +45,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | [layout.md](../docs/layout.md) | overlay manifest、`$SETUP_DIR`、自己参照 range 運用 | 確定 (v2.1.1) | ✅ |
 | [usage.md](../docs/usage.md) | 鮮度管理、定番フロー、衝突整理 | 確定 (v2.1.1) | ✅ |
 | [legacy-scripts.md](../docs/legacy-scripts.md) | レガシースクリプト廃止 | 確定 | ✅ |
-| [windows.md](../docs/windows.md) | Windows 11セットアップ、制約 | 確定 | ✅ 実機確認完了 (11/11) |
+| [windows.md](../docs/windows.md) | Windows 11セットアップ、制約 | 確定 | ✅ 実機確認が完了 (11/11) |
 | [license.md](../docs/license.md) | GPL-3.0-or-later | 確定 | ✅ |
 | [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ)、自己参照の更新手順 | 確定 | ✅ v2.1.2 + OIDC CI |
 
@@ -75,7 +75,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | `global-npm update` | ✅ 実装済 | 事前 sync → 同梱 ncu 優先起動。v2.1.2、macOS と Windows 11実機確認済 |
 | `global-npm install` | ✅ 実装済 | 事前 sync → range を `npm view` で具体 version に解決 → `npm install -g`。v2.1.2、macOS と Windows 11実機確認済 |
 | `global-npm sync` | ✅ 実装済 | upstream + user-deps → 実効 package.json。`--dry-run` 対応 (v2.1) |
-| `global-npm add` | ✅ 実装済 | user-deps 追記 → sync。`--dev`、`npm view`、`*` フォールバック (v2.1)。macOS と Windows 11実機確認済 (`install` までで global 反映) |
+| `global-npm add` | ✅ 実装済 | user-deps 追記 → sync。`--dev`、`npm view`、`*` フォールバック (v2.1)。macOS と Windows 11実機確認済 (`install` までに global 反映) |
 | overlay manifest (`syncManifest`) | ✅ 実装済 | `lib/sync-manifest.cjs` |
 | setup ディレクトリ解決 | ✅ 実装済 | デフォルト `~/.config/global-npm` (Windows: `%APPDATA%\global-npm`)。`GLOBAL_NPM_SETUP_DIR` で上書き |
 | CLI エントリ | ✅ 実装済 | `bin/global-npm.cjs` + `lib/` |
@@ -93,7 +93,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | `@s2j/docs-linter` 追加 (dependencies) | ⏸ 延期 | ユーザー側で後日 (devDep には存在) |
 | npm publish | ✅ 実施済 | `@s2j/global-npm@2.1.2` (latest)。OIDC CI + [`v2.1.2`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.2) |
 | Windows 11実機確認 | ✅ 完了 | クリーンインストール後、定番フロー、`add`、CLI on PATH (`ncu`、`textlint --version` → v15.7.1) を PowerShell で確認 |
-| macOS 実機確認 | ✅ 完了 | v2.0.3 → v2.1.2 移行、`check` → `update` → `install` 定番フロー。最終 `check` で up-to-date |
+| macOS 実機確認 | ✅ 完了 | v2.0.3→ v2.1.2移行、`check` → `update` → `install` 定番フロー。最終 `check` で up-to-date |
 | CI、自動 publish (npm OIDC) | ✅ 稼働中 | `.github/workflows/npm-publish.yml` |
 | `docsMod/` → `docs/` 移行 | ✅ 完了 | v2.1の overlay 仕様も `docs/` に反映済 |
 
@@ -194,7 +194,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 * [x] Windows 11で `global-npm update` が動作する (同上)
 * [x] Windows 11で `global-npm install` が動作する (同上)
 * [x] Windows 11で `global-npm sync` が動作する (同上)
-* [x] Windows 11で `global-npm add` が動作する (2026-06-08。`@s2j/docs-linter` 登録後 `install` で global 反映。`add` 直後は global 変動なし＝仕様どおり)
+* [x] Windows 11で `global-npm add` が動作する (2026-06-08。`@s2j/docs-linter` 登録後 `install` で global 反映。`add` 直後は (仕様どおり) global に変動なし)
 * [x] Windows 11で `ncu` が PATH に載る (`global-npm install` 後、`npm ls -g` で `npm-check-updates` 確認)
 * [x] Windows 11で `textlint` 等の CLI が PATH から実行できる (2026-06-09。`textlint --version` → `v15.7.1`)
 * [x] Windows 11で `npm install -g` 直後の `global-npm check` が動作する (v2.1.2、クリーンインストール後に確認)
@@ -204,18 +204,18 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 * [x] `package.json` に `lint:docs` script がある
 * [x] Docs Lint CI が `npm run lint:docs` で成功する
 
-**11/11達成: フェーズ3必須完了条件をすべて充足。**
+**11/11達成: フェーズ3必須完了の条件をすべて充足。**
 
 ### macOS 実機確認 (任意): 完了条件
 
 * [x] `global-npm check` が更新候補を表示する (2026-06-09)
 * [x] `global-npm update` が実効 manifest を更新する (同上)
-* [x] `global-npm install` で `@s2j/global-npm` が 2.0.3 → 2.1.2に更新される (同上)
+* [x] `global-npm install` で `@s2j/global-npm` が2.0.3→2.1.2に更新される (同上)
 * [x] 追加分 `@s2j/docs-linter` の差分残存と `npm update -g` による解消を確認 (同上。既知ギャップの運用回避)
 * [x] 最終 `global-npm check` で up-to-date になる (同上)
 * [x] v2.0.x 既存環境から v2.1.2への移行パスが成立する (同上)
 
-**6/6達成: macOS 実機確認完了。**
+**6/6達成: macOS 実機確認が完了。**
 
 ### Windows 11実機確認 (#8) の進捗
 
@@ -326,8 +326,8 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | 2026-06-09 | **`@s2j/global-npm@2.1.2` npm publish:** tag `v2.1.2`、OIDC CI success |
 | 2026-06-09 | Windows 11クリーンインストール後、check (install 前)、update、install、sync を実機確認 |
 | 2026-06-08 | Windows 11で `global-npm add @s2j/docs-linter` → `install` を実機確認 (`add` 直後は global 非変動、`npm ls -g` で追加分反映) |
-| 2026-06-09 | Windows 11で `textlint --version` → `v15.7.1` を確認。**#8 完了、フェーズ3 100%** |
-| 2026-06-09 | macOS で `check` → `update` → `install` を実施。`@s2j/global-npm` 2.0.3 → 2.1.2。追加分 `@s2j/docs-linter` は `install` 後も差分残存 → `npm update -g` で解消 |
+| 2026-06-09 | Windows 11で `textlint --version` → `v15.7.1` を確認。**#8 (完了)、フェーズ3 (100%)** |
+| 2026-06-09 | macOS で `check` → `update` → `install` を実施。`@s2j/global-npm` 2.0.3→2.1.2。追加分 `@s2j/docs-linter` は `install` 後も差分残存 → `npm update -g` で解消 |
 
 ### フェーズ3の残タスク
 
@@ -354,17 +354,17 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | Windows 11クリーンインストール | check (install 前)、update、install、sync、`add` + 追加分 `install` 動作確認済 |
 | Windows 11 `add` 挙動 | `user-deps.json`、実効 manifest のみ更新。続けて `install` で global 反映 (仕様どおり) |
 | Windows 11 `textlint --version` | `v15.7.1` (PowerShell) |
-| macOS 定番フロー | `check` → `update` → `install` で `@s2j/global-npm` 2.0.3 → 2.1.2 |
+| macOS 定番フロー | `check` → `update` → `install` で `@s2j/global-npm` 2.0.3→2.1.2 |
 | macOS 追加分 `@s2j/docs-linter` | `install` 後も `check` に差分残存。`npm update -g @s2j/docs-linter` 後に up-to-date |
 
 ### macOS 実機確認 (任意) の進捗
 
 | 確認項目 | 状態 | メモ |
 |----------|------|------|
-| `global-npm check` (移行前) | ✅ | `@s2j/docs-linter` 1.0.16 → 1.0.17、`@s2j/global-npm` 2.0.3 → 2.1.2を検出 |
+| `global-npm check` (移行前) | ✅ | `@s2j/docs-linter` 1.0.16→1.0.17、`@s2j/global-npm` 2.0.3→2.1.2を検出 |
 | `global-npm update` | ✅ | 同上 |
-| `global-npm install` | ✅ | global 一括更新完了 (`@s2j/global-npm` → 2.1.2) |
-| `global-npm check` (`install` 後) | ℹ️ 想定どおり | `@s2j/docs-linter` 1.0.16→ 1.0.17が残存 (追加分ギャップ。下記参照) |
+| `global-npm install` | ✅ | global 一括更新が完了 (`@s2j/global-npm` →2.1.2) |
+| `global-npm check` (`install` 後) | ℹ️ 想定どおり | `@s2j/docs-linter` 1.0.16→1.0.17が残存 (追加分ギャップ。下記参照) |
 | `npm update -g @s2j/docs-linter` | ✅ | 追加分を latest へ |
 | `global-npm check` (最終) | ✅ | `All global packages are up-to-date :)` |
 
@@ -383,7 +383,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 
 | 項目 | 状態 | 対応予定 |
 |------|------|----------|
-| Windows 11実機 (#8) | ✅ 完了 (`textlint --version` → v15.7.1 含む) | — |
+| Windows 11実機 (#8) | ✅ 完了 (`textlint --version` → v15.7.1含む) | — |
 | `install` 後の `@s2j/global-npm` 版 | `pinVersion` により実効 manifest の `^2.1.1` → `2.1.1` に固定されうる | `npm update -g @s2j/global-npm` で latest に。 |
 | 追加分の `update` → `install` | `user-deps.json` の range が sync で優先され、ncu が上げた実効 manifest が `install` 前に戻りうる (macOS と Windows 11で確認) | `npm update -g <pkg>`、または `user-deps.json` の range を手動更新。将来: `update` が user-deps に書き戻す改善を検討。 |
 | `@s2j/docs-linter` | デフォルト upstream にない。macOS と Windows 11で追加分運用を確認済 | リポジトリ `dependencies` への同梱はユーザー判断。 |
