@@ -1,6 +1,6 @@
 # Global npm Package Setup - 仕様準拠テスト結果
 
-最終実行: **2026-06-08**
+最終実行: **2026-06-09**
 
 ## サマリー
 
@@ -17,9 +17,9 @@
 
 ## 結果マーク
 
-- ✔ PASS: 条件を満たす
-- ⚠ WARN: 条件未達だが、延期・手動確認待ちなど意図的に許容
-- ✖ FAIL: 条件未達（要修正）
+- ✔ PASS — 条件を満たす
+- ⚠ WARN — 条件未達だが、延期・手動確認待ちなど意図的に許容
+- ✖ FAIL — 条件未達（要修正）
 
 ## mod-os-agnostic-naming
 
@@ -108,10 +108,10 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.1.0` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.1.1` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.1.0` が公開済みであること。 | ✔ PASS |  |
+| PUB-05 | npm registry に `@s2j/global-npm@2.1.1` が公開済みであること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-windows
 
