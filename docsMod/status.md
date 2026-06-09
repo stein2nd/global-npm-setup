@@ -17,6 +17,7 @@
 | **v2.1の overlay manifest** | **100%** (12/12) | 実装、docs、README、`@s2j/global-npm@2.1.0` npm publish 完了 |
 | **v2.1.1パッチ** | **100%** (publish 済) | ドキュメント整備、自己参照 tarball 更新、`@s2j/global-npm@2.1.1` publish |
 | **v2.1.2パッチ** | **100%** (publish 済) | 同梱 ncu 起動 (`resolve-ncu`)、`install` の version 解決 (`pinVersion`)、`@s2j/global-npm@2.1.2` publish |
+| **v2.1.3パッチ** | **100%** (publish 済) | 実機確認・ドキュメント整備、WIN-05 反映、`@s2j/global-npm@2.1.3` publish |
 | **仕様準拠テスト** | **100%** (PASS: 63/63) | ✖ FAIL: 0、⚠ WARN: 0… [test-results.md](./test-results.md) |
 | **自動テスト (`npm test`)** | **100%** (80/80) | 仕様準拠 (63) + ユニット (17)。FAIL: 0 |
 | **開発基盤 (lint、format、test)** | **100%** | ESLint、Prettier、仕様準拠 + ユニットテスト、`lint:docs` script 済 |
@@ -89,9 +90,9 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | README、docs (v2.1.1) | ✅ 更新済 | overlay manifest、移行手順、`usage.md` 導線 |
 | Docs Lint (`@s2j/docs-linter`) | ✅ PASS | `lint:docs` + GA workflow |
 | textlint エディター連携 | ✅ 設定済 | `.vscode/settings.json` に統合 |
-| `@s2j/global-npm` 自己参照 | ✅ 運用確定 | publish 済み latest を `^x.y.z` で明示。リポジトリ: `^2.1.2` |
+| `@s2j/global-npm` 自己参照 | ✅ 運用確定 | publish 済み latest を `^x.y.z` で明示。リポジトリ: `^2.1.3` |
 | `@s2j/docs-linter` 追加 (dependencies) | ⏸ 延期 | ユーザー側で後日 (devDep には存在) |
-| npm publish | ✅ 実施済 | `@s2j/global-npm@2.1.2` (latest)。OIDC CI + [`v2.1.2`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.2) |
+| npm publish | ✅ 実施済 | `@s2j/global-npm@2.1.3` (latest)。OIDC CI + [`v2.1.3`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.3) |
 | Windows 11実機確認 | ✅ 完了 | クリーンインストール後、定番フロー、`add`、CLI on PATH (`ncu`、`textlint --version` → v15.7.1) を PowerShell で確認 |
 | macOS 実機確認 | ✅ 完了 | v2.0.3→ v2.1.2移行、`check` → `update` → `install` 定番フロー。最終 `check` で up-to-date |
 | CI、自動 publish (npm OIDC) | ✅ 稼働中 | `.github/workflows/npm-publish.yml` |
@@ -328,6 +329,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | 2026-06-08 | Windows 11で `global-npm add @s2j/docs-linter` → `install` を実機確認 (`add` 直後は global 非変動、`npm ls -g` で追加分反映) |
 | 2026-06-09 | Windows 11で `textlint --version` → `v15.7.1` を確認。**#8 (完了)、フェーズ3 (100%)** |
 | 2026-06-09 | macOS で `check` → `update` → `install` を実施。`@s2j/global-npm` 2.0.3→2.1.2。追加分 `@s2j/docs-linter` は `install` 後も差分残存 → `npm update -g` で解消 |
+| 2026-06-09 | **`@s2j/global-npm@2.1.3` npm publish:** tag `v2.1.3`、OIDC CI success |
 
 ### フェーズ3の残タスク
 
@@ -346,11 +348,11 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | `npm run lint:docs` | PASS |
 | `npm run pack:dry-run` | `bin/`、`lib/`、`package.json` 等を確認 |
 | `global-npm add`、`sync` (`.sandbox/setup`) | CLI-17〜19PASS |
-| `node scripts/verify-release-tag.cjs v2.1.2` | tag、version 一致確認 OK |
-| GitHub Actions `Publish to npm` (v2.1.2) | success |
-| npm registry latest | `@s2j/global-npm@2.1.2` |
-| GitHub Release | [`v2.1.2`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.2) |
-| PUB-05 (registry `@2.1.2`) | ✔ PASS |
+| `node scripts/verify-release-tag.cjs v2.1.3` | tag、version 一致確認 OK |
+| GitHub Actions `Publish to npm` (v2.1.3) | success |
+| npm registry latest | `@s2j/global-npm@2.1.3` |
+| GitHub Release | [`v2.1.3`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.3) |
+| PUB-05 (registry `@2.1.3`) | ✔ PASS |
 | Windows 11クリーンインストール | check (install 前)、update、install、sync、`add` + 追加分 `install` 動作確認済 |
 | Windows 11 `add` 挙動 | `user-deps.json`、実効 manifest のみ更新。続けて `install` で global 反映 (仕様どおり) |
 | Windows 11 `textlint --version` | `v15.7.1` (PowerShell) |
