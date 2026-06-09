@@ -5,6 +5,20 @@ macOS、Windows 11で同じ `global-npm` フローを使えます。
 
 GitHub: [stein2nd/global-npm-setup](https://github.com/stein2nd/global-npm-setup)
 
+## 想定環境
+
+本ツールは、下記に挙げる、Node.js (npm) が利用でき、グローバルインストールが許容される環境での利用を想定します。
+
+* macOS (Intel / Apple Silicon)
+* Windows 11
+* Ubuntu Developer Workstation
+
+下記環境は、推奨外とします。
+
+* 本番サーバー
+* AWS Lambda
+* 共有ホスティング
+
 ## コマンド
 
 ```
