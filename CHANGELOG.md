@@ -8,6 +8,7 @@
 
 * `global-npm check`、`update` が同梱 `npm-check-updates` を優先起動。`npm install -g @s2j/global-npm` 直後でも PATH に `ncu` がなくても動作。
 * `global-npm install` が各 dependency の range を `npm view` で具体 version に解決し、`npm install -g <name>@<version>` を実行するよう変更 (ncu `check` が案内する global 更新と同等)
+* `lib/resolve-ncu.cjs` を追加。同梱 tarball に `lib/` が含まれる
 
 ## v2.1.1: 2026-06-09
 
