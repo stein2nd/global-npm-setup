@@ -6,7 +6,8 @@
 
 ### パッケージ本体
 
-* `dependencies` の自己参照 `@s2j/global-npm` を `^2.1.0` に更新 (v2.1.0 tarball は `^2.0.2` のまま)
+* 同梱 tarball: 自己参照 `@s2j/global-npm` を `^2.1.0` に更新
+* publish 後: リポジトリの自己参照を `^2.1.1` に追従
 
 ### リポジトリ整備 (tarball 非同梱)
 
