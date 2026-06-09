@@ -4,9 +4,9 @@
 
 ## v2.1.1: 2026-06-09
 
-### パッケージ本体 (次回 publish で tarball 反映)
+### パッケージ本体
 
-* `dependencies` の自己参照 `@s2j/global-npm` を `^2.1.0` に更新
+* `dependencies` の自己参照 `@s2j/global-npm` を `^2.1.0` に更新 (v2.1.0 tarball は `^2.0.2` のまま)
 
 ### リポジトリ整備 (tarball 非同梱)
 
