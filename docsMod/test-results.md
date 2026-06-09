@@ -42,8 +42,8 @@
 | CLI-06 | CLI ソースに jq 呼び出しが含まれないこと。 | ✔ PASS |  |
 | CLI-07 | package root は upstream 正本、`defaultSetupDir()` で overlay setup を解決すること。 | ✔ PASS |  |
 | CLI-08 | `GLOBAL_NPM_SETUP_DIR` で setup ディレクトリを上書きできること。 | ✔ PASS |  |
-| CLI-09 | check が `ncu -g --format time --packageFile` を使うこと。 | ✔ PASS |  |
-| CLI-10 | update が `ncu -g --format time -u --packageFile` を使うこと。 | ✔ PASS |  |
+| CLI-09 | check が bundled ncu 経由で `-g --format time --packageFile` を使うこと。 | ✔ PASS |  |
+| CLI-10 | update が bundled ncu 経由で `-g --format time -u --packageFile` を使うこと。 | ✔ PASS |  |
 | CLI-11 | サブコマンド未指定時に usage を表示して exit 1 すること。 | ✔ PASS |  |
 | CLI-12 | 未知サブコマンド時に usage を表示して exit 1 すること。 | ✔ PASS |  |
 | CLI-13 | 開発用 script `ncu:check` が存在すること。 | ✔ PASS |  |
@@ -58,7 +58,7 @@
 
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
-| INS-01 | install が `npm install -g` に `name@range` 形式で渡すこと。 | ✔ PASS |  |
+| INS-01 | install が `npm install -g` に `name@version` 形式 (range 解決済み) で渡すこと。 | ✔ PASS |  |
 | INS-02 | install が引数なし `npm install -g`（B 型）を実行しないこと。 | ✔ PASS |  |
 | INS-03 | install が `dependencies` の name / range を `Object.entries` で列挙すること。 | ✔ PASS |  |
 | INS-04 | dependencies が空のとき `No dependencies to install.` で exit 1 すること。 | ✔ PASS |  |

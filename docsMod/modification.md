@@ -12,11 +12,11 @@ v2脱 OS 依存改修の進行管理です。
 
 | ファイル | 概要 |
 |----------|------|
-| [naming.md](../docs/naming.md) | 命名 (リポジトリ `global-npm-setup` / npm `@s2j/global-npm` / CLI `global-npm`) |
-| [cli.md](../docs/cli.md) | CLI サブコマンド (`check` / `update` / `install`) の挙動 |
+| [naming.md](../docs/naming.md) | 命名 (リポジトリ `global-npm-setup`、npm `@s2j/global-npm`、CLI `global-npm`) |
+| [cli.md](../docs/cli.md) | CLI サブコマンド (`check`、`update`、`install`) の挙動 |
 | [install.md](../docs/install.md) | install 方式 C 型 (Node 列挙) と ncu 整合 |
 | [layout.md](../docs/layout.md) | `package.json` (dependencies 一覧) の配置方式 |
-| [legacy-scripts.md](../docs/legacy-scripts.md) | `install-global.zsh` / `~/bin/global-npm` 廃止の比較検討 |
+| [legacy-scripts.md](../docs/legacy-scripts.md) | `install-global.zsh`、`~/bin/global-npm` 廃止の比較検討 |
 | [windows.md](../docs/windows.md) | Windows 11向けセットアップ、制約 |
 | [license.md](../docs/license.md) | ライセンス MIT → GPL-3.0-or-later |
 | [npm-publish.md](../docs/npm-publish.md) | npm 公開 (`@s2j` スコープ) |
@@ -25,8 +25,8 @@ v2脱 OS 依存改修の進行管理です。
 
 overlay manifest の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manifest.md) をご覧ください。
 
-* 常時 overlay (デフォルト `~/.config/global-npm` / Windows `%APPDATA%\global-npm`)
-* `sync` / `add` サブコマンド。v2.1で追加
+* 常時 overlay (デフォルト `~/.config/global-npm`、Windows `%APPDATA%\global-npm`)
+* `sync`、`add` サブコマンド。v2.1で追加
 * `add` range 省略: `npm view` → `^x.y.z`、オフライン時 `*` フォールバック
 
 ## v2残タスク
@@ -40,5 +40,5 @@ overlay manifest の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-mani
 | 5 | README 更新 | OS 別手順、移行 (v1→ v2) | ✅ |
 | 6 | `install-global.zsh` 削除 | レガシー廃止 | ✅ |
 | 7 | 初回 npm publish | `@s2j/global-npm` v2.0.x | ✅ v2.0.2 |
-| 8 | Windows 11実機確認 | check / update / install、CLI on PATH | ❌ フェーズ3 |
-| 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC | ✅ |
+| 8 | Windows 11実機確認 | check、update、install、CLI on PATH | ❌ フェーズ3 |
+| 9 | CI、自動 publish (任意) | GitHub Actions + npm OIDC | ✅ |

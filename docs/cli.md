@@ -3,7 +3,7 @@
 ## 背景
 
 v1では `~/bin/global-npm` (Zsh) が `npm run ncu:*` を呼び出していました。
-v2では Node.js 製 CLI として `@s2j/global-npm` に同梱し、macOS / Windows 11で同一のサブコマンドを提供します。
+v2では Node.js 製 CLI として `@s2j/global-npm` に同梱し、macOS、Windows 11で同一のサブコマンドを提供します。
 
 v2.1以降は **overlay manifest** を採用します。
 `check`、`update`、`install` は実効 `package.json` を操作します ([layout.md](./layout.md))。
@@ -32,7 +32,7 @@ global-npm add      # user-deps.json にパッケージを追記
 |------|------|
 | 目的 | 管理対象パッケージに利用可能な更新があるか確認する。 |
 | 事前処理 | `syncManifest()` |
-| 実装 | `ncu -g --format time --packageFile <materialized>/package.json` |
+| 実装 | 同梱 `npm-check-updates` を優先起動し、`-g --format time --packageFile <materialized>/package.json` |
 | 副作用 | 実効 package.json は sync により更新されうる。ncu 自体は check 時に range を書き換えない。 |
 | v1相当 | `npm run ncu:check` |
 
@@ -45,7 +45,7 @@ global-npm add      # user-deps.json にパッケージを追記
 |------|------|
 | 目的 | 実効 package.json のバージョン範囲を、最新に書き換える。 |
 | 事前処理 | `syncManifest()` |
-| 実装 | `ncu -g --format time -u --packageFile <materialized>/package.json` |
+| 実装 | 同梱 `npm-check-updates` を優先起動し、`-g --format time -u --packageFile <materialized>/package.json` |
 | 副作用 | 実効 package.json を更新する。`user-deps.json` と upstream 正本は変更しない。 |
 | v1相当 | `npm run ncu:update` |
 
@@ -55,7 +55,7 @@ global-npm add      # user-deps.json にパッケージを追記
 |------|------|
 | 目的 | 実効 package.json の `dependencies` を **各々トップレベルの global pkg** としてインストールする。 |
 | 事前処理 | `syncManifest()` |
-| 実装 | C 型: 実効 package.json の `dependencies` を読み、`npm install -g <name>@<range>…` |
+| 実装 | C 型: 実効 package.json の `dependencies` を読み、range を `npm view` で具体 version に解決して `npm install -g <name>@<version>…` |
 | 副作用 | グローバル node_modules、`{prefix}/bin` を更新。 |
 | v1相当 | `ncu:install` の install 部分 |
 
@@ -78,7 +78,7 @@ global-npm install
 | 副作用 | `$SETUP_DIR/package.json` と `.upstream-meta.json` を更新。 |
 | オプション | `--dry-run`: ファイル書き込みなし。差分を stderr に表示。 |
 
-ncu / npm は呼びません。
+ncu、npm は呼びません。
 
 ### `global-npm add <pkg>[@range] [--dev]`
 
@@ -104,7 +104,7 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 | ライブラリ | `lib/paths.cjs`, `lib/sync-manifest.cjs` 等 |
 | shebang | `#!/usr/bin/env node` |
 | 引数解析 | サブコマンド5つ。未知の引数は usage 表示して `exit code: 1` |
-| 子プロセス | `child_process.spawnSync` で `ncu` / `npm` を呼び出す。 |
+| 子プロセス | `child_process.spawnSync` で同梱 ncu (`lib/resolve-ncu.cjs`)、`npm` を呼び出す。 |
 | JSON 処理 | `fs` + `JSON.parse` (**jq 不要**) |
 
 ### usage
@@ -142,7 +142,7 @@ const setupDir = path.resolve(
 flowchart TD
   START([global-npm 起動]) --> CTX[resolveSetupContext]
   CTX --> SW{subcommand}
-  SW -->|check / update / install| PREP[prepare → syncManifest]
+  SW -->|check、update、install| PREP[prepare → syncManifest]
   PREP --> ACT[ncu または npm install -g]
   SW -->|sync| SYNC[syncManifest]
   SW -->|add| ADD[resolveRange → user-deps → syncManifest]

@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",

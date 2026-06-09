@@ -11,12 +11,12 @@
 
 | ファイル | 概要 |
 |----------|------|
-| [usage.md](./usage.md) | 使い方 (鮮度管理、`check` / `update` / `install` / `add` / `sync`) |
-| [naming.md](./naming.md) | 命名 (`global-npm-setup` / `@s2j/global-npm` / `global-npm`) |
-| [cli.md](./cli.md) | CLI サブコマンド (`check` / `update` / `install` / `sync` / `add`) |
+| [usage.md](./usage.md) | 使い方 (鮮度管理、`check`、`update`、`install`、`add`、`sync`) |
+| [naming.md](./naming.md) | 命名 (`global-npm-setup`、`@s2j/global-npm`、`global-npm`) |
+| [cli.md](./cli.md) | CLI サブコマンド (`check`、`update`、`install`、`sync`、`add`) |
 | [install.md](./install.md) | install 方式 C 型 (Node 列挙) と ncu 整合 |
 | [layout.md](./layout.md) | overlay manifest、`$SETUP_DIR` 配置 |
-| [legacy-scripts.md](./legacy-scripts.md) | `install-global.zsh` / `~/bin/global-npm` 廃止 |
+| [legacy-scripts.md](./legacy-scripts.md) | `install-global.zsh`、`~/bin/global-npm` 廃止 |
 | [windows.md](./windows.md) | Windows 11向けセットアップ、制約 |
 | [license.md](./license.md) | ライセンス MIT → GPL-3.0-or-later |
 | [npm-publish.md](./npm-publish.md) | npm 公開 (`@s2j` スコープ) |

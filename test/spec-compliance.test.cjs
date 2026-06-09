@@ -202,25 +202,27 @@ test('cli: GLOBAL_NPM_SETUP_DIR support', () => {
 });
 
 test('cli: check invokes ncu with expected args', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'CLI-09',
     'mod-os-agnostic-cli',
-    'check が `ncu -g --format time --packageFile` を使うこと。',
+    'check が bundled ncu 経由で `-g --format time --packageFile` を使うこと。',
     source.includes("'check'") &&
-      source.includes("'ncu'") &&
+      source.includes('runNcu') &&
+      source.includes('resolveNcuInvocation') &&
       source.includes("'--format', 'time'") &&
       source.includes("'--packageFile', pkgPath"),
   );
 });
 
 test('cli: update invokes ncu with -u', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'CLI-10',
     'mod-os-agnostic-cli',
-    'update が `ncu -g --format time -u --packageFile` を使うこと。',
+    'update が bundled ncu 経由で `-g --format time -u --packageFile` を使うこと。',
     source.includes("'update'") &&
+      source.includes('runNcu') &&
       source.includes("'-u'") &&
       source.includes("'--packageFile', pkgPath"),
   );
@@ -348,10 +350,11 @@ test('install: C-type npm install -g with semver specs', () => {
   mark(
     'INS-01',
     'mod-os-agnostic-install',
-    'install が `npm install -g` に `name@range` 形式で渡すこと。',
+    'install が `npm install -g` に `name@version` 形式 (range 解決済み) で渡すこと。',
     source.includes("'npm'") &&
       source.includes("'install', '-g', ...specs") &&
-      source.includes('toGlobalInstallSpec'),
+      source.includes('toGlobalInstallSpec') &&
+      source.includes('pinVersion: true'),
   );
 });
 
@@ -693,13 +696,13 @@ test('windows: path.join usage', () => {
 });
 
 test('windows: shell flag for spawn', () => {
-  const source = read(CLI_PATH);
+  const source = readCliAndLibSources();
   mark(
     'WIN-02',
     'mod-os-agnostic-windows',
     'spawn 時に Windows 判定付き shell オプションを使うこと。',
     /process\.platform\s*===\s*['"]win32['"]/.test(source) &&
-      /spawnSync\([\s\S]*shell,/.test(source),
+      /spawnSync\([\s\S]*shell[,:]/.test(source),
   );
 });
 

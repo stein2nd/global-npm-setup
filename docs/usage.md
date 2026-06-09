@@ -1,7 +1,7 @@
 # Global npm Package Setup - Usage
 
 利用側がグローバル npm モジュールの **鮮度** (バージョン範囲と実インストール) を管理するための使い方です。
-従来から使える `check`、`update`、`install` と、v2.1で追加した `add` / `sync` の役割を整理します。
+従来から使える `check`、`update`、`install` と、v2.1で追加した `add`、`sync` の役割を整理します。
 
 関連: [layout.md](./layout.md) (ファイル構成)、[cli.md](./cli.md) (サブコマンド仕様)
 
@@ -39,7 +39,7 @@ global-npm install
 |---|---|---|
 | `check` | registry 上の新しい版があるか表示 | 「何が古いか」を把握。ファイルは (ncu 以外は) 変えない。 |
 | `update` | 実効 package.json の semver range を更新 | 「次に入れる版」の **宣言** を新しくする。 |
-| `install` | `npm install -g` を一括実行 | 宣言どおり **実際の global 環境** を更新する。 |
+| `install` | range を registry 上の具体 version に解決し `npm install -g` を一括実行 | 宣言どおり **実際の global 環境** を更新する (`check` が案内する `npm -g install pkg@version` 相当)。 |
 
 従来の `ncu:check`、`ncu:update`、install 部分と同じ考え方です。
 違いは、操作対象がリポジトリの1ファイルではなく **実効 package.json** になった点だけです。

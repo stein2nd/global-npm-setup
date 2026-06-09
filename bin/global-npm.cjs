@@ -6,6 +6,7 @@ const path = require('path');
 const { toGlobalInstallSpec } = require('../lib/install-spec.cjs');
 const { ensureSetupDir, readDependencies, readUserDeps, writeJson } = require('../lib/pkg-io.cjs');
 const { resolveSetupContext } = require('../lib/paths.cjs');
+const { resolveNcuInvocation } = require('../lib/resolve-ncu.cjs');
 const { parseAddSpec, resolveDefaultRange } = require('../lib/resolve-range.cjs');
 const { formatReport, syncManifest } = require('../lib/sync-manifest.cjs');
 
@@ -25,10 +26,10 @@ function usage() {
   process.exit(1);
 }
 
-function run(command, args) {
+function run(command, args, { useShell = shell } = {}) {
   const result = spawnSync(command, args, {
     stdio: 'inherit',
-    shell,
+    shell: useShell,
   });
 
   if (result.error) {
@@ -37,6 +38,11 @@ function run(command, args) {
   }
 
   process.exit(result.status ?? 1);
+}
+
+function runNcu(args) {
+  const { command, prefixArgs, useShell } = resolveNcuInvocation(packageRoot);
+  run(command, [...prefixArgs, ...args], { useShell });
 }
 
 function prepare() {
@@ -102,19 +108,19 @@ const restArgs = process.argv.slice(3);
 switch (subcommand) {
   case 'check':
     prepare();
-    run('ncu', ['-g', '--format', 'time', '--packageFile', pkgPath]);
+    runNcu(['-g', '--format', 'time', '--packageFile', pkgPath]);
     break;
 
   case 'update':
     prepare();
-    run('ncu', ['-g', '--format', 'time', '-u', '--packageFile', pkgPath]);
+    runNcu(['-g', '--format', 'time', '-u', '--packageFile', pkgPath]);
     break;
 
   case 'install': {
     prepare();
     const dependencies = readDependencies(pkgPath);
     const specs = Object.entries(dependencies).map(([name, versionRange]) =>
-      toGlobalInstallSpec(name, versionRange),
+      toGlobalInstallSpec(name, versionRange, { pinVersion: true }),
     );
 
     if (specs.length === 0) {

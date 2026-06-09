@@ -3,7 +3,7 @@
 ## 背景
 
 v1では `"private": true` により npm 公開を禁止していました。
-v2では `@s2j/global-npm` として npmjs に公開し、Mac / Windows 双方で `npm install -g` による導入および更新を可能にします。
+v2では `@s2j/global-npm` として npmjs に公開し、Mac、Windows 双方で `npm install -g` による導入および更新を可能にします。
 
 ## 決定事項
 
@@ -99,14 +99,14 @@ npm view @s2j/global-npm version   # 例: 2.1.0
 
 開発中に `version` だけ先に bump している間は、自己参照は前回 publish 版のままにします。未 publish の版 (`^2.1.1` など) を書かないようにしてください。
 
-## CI / 自動 publish
+## CI、自動 publish
 
 `@s2j/docs-linter` と同様、GitHub Actions + npm OIDC (Trusted Publishing) による自動 publish を利用します。
 
 | 項目 | 内容 |
 |------|------|
 | workflow | `.github/workflows/npm-publish.yml` |
-| 認証 | npm Trusted Publishing (OIDC): `stein2nd/global-npm-setup` / `npm-publish.yml` |
+| 認証 | npm Trusted Publishing (OIDC): `stein2nd/global-npm-setup`、`npm-publish.yml` |
 | トリガー | tag push (`v*`) または手動 dispatch (dry-run デフォルト) |
 | 前提 | npm 側で Trusted Publisher 登録済み、`package.json` version と tag が一致 |
 
@@ -155,7 +155,7 @@ v1廃止に伴い publish 運用が必須になるが、管理ツールとして
 | トレードオフ | 受け入れ理由 |
 |--------------|--------------|
 | **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
-| **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | v2.1で overlay manifest を実装。`user-deps.json` / `global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
+| **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | v2.1で overlay manifest を実装。`user-deps.json`、`global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
 
 ## ステータス
 

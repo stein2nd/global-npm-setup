@@ -1,7 +1,7 @@
-# Global npm Package Setup - Overlay Manifest (方式 B / v2.1)
+# Global npm Package Setup - Overlay Manifest (方式 B、v2.1)
 
 v2.1で実装する **方式 B (overlay manifest)** の仕様確定稿です。
-実装完了後は `docs/layout.md` / `docs/cli.md` / `docs/install.md` に移行します。
+実装完了後は `docs/layout.md`、`docs/cli.md`、`docs/install.md` に移行します。
 
 関連: [modification.md](./modification.md) タスク #1、[layout.md](../docs/layout.md) (現状は方式 A 確定)
 
@@ -22,12 +22,12 @@ v2.1では下記を同時に満たします。
 | 項目 | 決定 |
 |------|------|
 | 方式 | 常時 overlay。同梱 `package.json` は upstream 正本のみ。 |
-| setup デフォルト | macOS / Linux: `~/.config/global-npm`、Windows 11: `%APPDATA%\global-npm` |
+| setup デフォルト | macOS、Linux: `~/.config/global-npm`、Windows 11: `%APPDATA%\global-npm` |
 | 環境変数 | `GLOBAL_NPM_SETUP_DIR` でデフォルトを上書き可能。 |
 | `devDependencies` | **B 案:** `user-deps.json` の `devDependencies` を実効 package.json にマージ。`install` は `dependencies` のみ。 |
 | upstream `devDependencies` | 実効 package.json に含めない (リポジトリ開発用ツールをユーザー環境に流さない)。 |
 | `user-deps` による range オーバーライト | 可能 (upstream 管理パッケージのピン留め可、最優先)。 |
-| upstream から削除 | ユーザー追加分は維持 / upstream 管理分は実効 package.json から削除。 |
+| upstream から削除 | ユーザー追加分は維持、upstream 管理分は実効 package.json から削除。 |
 | 新サブコマンド | v2.1で `sync`、`add` を追加。 |
 | `add` の range 省略 | オンライン: `npm view <pkg> version` → `^x.y.z`。オフライン: `*` にフォールバック。 |
 | バージョン | v2.1.0 (v2.0.x からの破壊的変更あり) |
@@ -52,7 +52,7 @@ flowchart TB
   MAT --> SYNC
   SYNC["syncManifest()"] --> MAT
 
-  MAT --> CHECK["check / update (ncu)"]
+  MAT --> CHECK["check、update (ncu)"]
   MAT --> INSTALL["install (dependencies のみ)"]
 ```
 
@@ -61,8 +61,8 @@ flowchart TB
 | レイヤ | パス | 更新者 | 用途 |
 |--------|------|--------|------|
 | Upstream 正本 | `<packageRoot>/package.json` | npm publish | 公式 `dependencies` 一覧 |
-| ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー / `global-npm add` | 追加分、ピン留め |
-| 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu / install の実効マニフェスト |
+| ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー、`global-npm add` | 追加分、ピン留め |
+| 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu、install の実効マニフェスト |
 | Meta | `$SETUP_DIR/.upstream-meta.json` | CLI `sync` | 差分検出用スナップショット |
 
 `packageRoot` = `path.resolve(__dirname, '..')` (CLI が属する `@s2j/global-npm` のインストール先)。
@@ -73,7 +73,7 @@ flowchart TB
 
 | OS | デフォルト |
 |----|------------|
-| macOS / Linux | `~/.config/global-npm` |
+| macOS、Linux | `~/.config/global-npm` |
 | Windows 11 | `%APPDATA%\global-npm` (`process.env.APPDATA`、未設定時は `%USERPROFILE%\AppData\Roaming\global-npm`) |
 
 ### 解決式
@@ -94,7 +94,7 @@ v2.0.x の「package root = setup」は廃止します。
 ```
 ~/.config/global-npm/          # または GLOBAL_NPM_SETUP_DIR
 ├── user-deps.json             # ユーザー追加分、ピン留め
-├── package.json               # 実効 package.json (ncu / install 入力)
+├── package.json               # 実効 package.json (ncu、install 入力)
 └── .upstream-meta.json        # 同期メタ (Git 管理外、ユーザー環境のみ)
 ```
 
@@ -150,11 +150,11 @@ v2.0.x の「package root = setup」は廃止します。
 }
 ```
 
-`name` / `private` は固定値です。ncu が読める最小構成とします。
+`name`、`private` は固定値です。ncu が読める最小構成とします。
 
 ## `syncManifest()`: マージ仕様
 
-`check` / `update` / `install` / `sync` / `add` (sync 実行時) の前に呼びます。
+`check`、`update`、`install`、`sync`、`add` (sync 実行時) の前に呼びます。
 初回は `SETUP_DIR` を作成し、空の `user-deps.json` を bootstrap します。
 
 ### `dependencies` の優先順位 (高い順)
@@ -231,7 +231,7 @@ meta = {
 
 ### `--dry-run`
 
-`global-npm sync --dry-run` はファイルを書き込まず、追加 / 更新 / 削除の差分を stderr に表示します。
+`global-npm sync --dry-run` はファイルを書き込まず、追加、更新、削除の差分を stderr に表示します。
 
 ## CLI サブコマンド (v2.1)
 
@@ -249,7 +249,7 @@ global-npm <check|update|install|sync|add>
 | `sync` | — | upstream + user-deps → 実効 package.json |
 | `add` | 後続 sync | `user-deps.json` に追記 → sync |
 
-`check` / `update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読みます。
+`check`、`update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読みます。
 `install` は `dependencies` のみとします (`devDependencies` は global install しない)。
 
 ### `global-npm add <pkg>[@range] [--dev]`
@@ -263,7 +263,7 @@ global-npm <check|update|install|sync|add>
 **range 省略時のデフォルト値**
 
 1. **オンライン (デフォルト):** `npm view <pkg> version` で最新版を取得し、`^x.y.z` を設定する。
-2. **オフライン、取得失敗時:** `*` にフォールバック。次回 `global-npm check` / `update` で ncu が解決する。
+2. **オフライン、取得失敗時:** `*` にフォールバック。次回 `global-npm check`、`update` で ncu が解決する。
 
 下記は実装例です。
 
@@ -320,7 +320,7 @@ flowchart TD
   SW -->|install| FLOW_INSTALL
   SW -->|sync| FLOW_SYNC
   SW -->|add| FLOW_ADD
-  SW -->|未知 / 未指定| USAGE[usage 表示 `exit code: 1`]
+  SW -->|未知、未指定| USAGE[usage 表示 `exit code: 1`]
 
   FLOW_CHECK[prepare → ncu check]
   FLOW_UPDATE[prepare → ncu update]
@@ -331,7 +331,7 @@ flowchart TD
 
 ### 共通: `prepare()`
 
-`check` / `update` / `install` が呼ぶ共通前処理です。
+`check`、`update`、`install` が呼ぶ共通前処理です。
 
 ```mermaid
 sequenceDiagram
@@ -356,7 +356,7 @@ sequenceDiagram
   S-->>CLI: { changed, report }
 ```
 
-### `check` / `update`
+### `check`、`update`
 
 ```mermaid
 sequenceDiagram
@@ -376,11 +376,11 @@ sequenceDiagram
   CLI->>P: prepare()
   P-->>CLI: sync 完了
   CLI->>N: ncu -g --format time -u --packageFile M
-  N->>M: dependencies / devDependencies の range を更新
+  N->>M: dependencies、devDependencies の range を更新
   N-->>U: 結果表示
 ```
 
-* `check` / `update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読む。
+* `check`、`update` は実効 package.json の `dependencies` と `devDependencies` の両方を ncu が読む。
 * `update` は実効 package.json のみ変更する。`user-deps.json` と upstream 正本は変更しない。
 
 ### `install`
@@ -399,12 +399,12 @@ sequenceDiagram
   CLI->>M: read dependencies のみ
   Note over CLI: devDependencies は読まない
   CLI->>N: npm install -g name@range …
-  N-->>U: global node_modules / bin を更新
+  N-->>U: global node_modules、bin を更新
 ```
 
 * `dependencies` が空のときは `No dependencies to install.` で `exit code: 1`。
 
-### `sync` / `sync --dry-run`
+### `sync`、`sync --dry-run`
 
 ```mermaid
 sequenceDiagram
@@ -421,12 +421,12 @@ sequenceDiagram
     S->>M: write 実効 package.json + meta
     S-->>U: 差分レポート (任意)
   else dryRun = true
-    S-->>U: 追加 / 更新 / 削除を stderr 表示のみ
+    S-->>U: 追加、更新、削除を stderr 表示のみ
     Note over S,M: ファイル書き込みなし
   end
 ```
 
-* `sync` 単体では ncu / npm は呼ばない。
+* `sync` 単体では ncu、npm は呼ばない。
 
 ### `add`
 
@@ -440,14 +440,14 @@ sequenceDiagram
   participant S as syncManifest
 
   U->>CLI: global-npm add pkg[@range] [--dev]
-  CLI->>CLI: 引数解析 (pkg / range / --dev)
+  CLI->>CLI: 引数解析 (pkg、range、--dev)
   alt range 省略
     CLI->>R: resolveDefaultRange(pkg)
     R->>NPM: npm view pkg version --json
     alt 取得成功
       NPM-->>R: x.y.z
       R-->>CLI: ^x.y.z
-    else オフライン / 失敗
+    else オフライン、失敗
       R-->>CLI: * (stderr に warning)
     end
   else range 指定あり
@@ -490,7 +490,7 @@ lib/
   paths.cjs                 # defaultSetupDir, resolveSetupContext
   pkg-io.cjs                # readJson, writeJson, ensureSetupDir
   sync-manifest.cjs         # mergeDependencies, mergeDevDependencies, syncManifest
-  resolve-range.cjs         # resolveDefaultRange (npm view / * フォールバック)
+  resolve-range.cjs         # resolveDefaultRange (npm view、* フォールバック)
   install-spec.cjs          # toGlobalInstallSpec
 ```
 
@@ -578,11 +578,11 @@ global-npm install
 
 | 旧 ID | 変更 |
 |-------|------|
-| CLI-08 | 反転: `GLOBAL_NPM_SETUP_DIR` / デフォルトパス解決を検証 |
+| CLI-08 | 反転: `GLOBAL_NPM_SETUP_DIR`、デフォルトパス解決を検証 |
 | LAY-10 | 反転: overlay 実装済みを検証 |
 | CLI-07 | 更新: package root は upstream のみ、setup は `defaultSetupDir()` |
 
-追加: CLI-13〜15 (`add` / `add --dev` / install が devDeps を無視)、LAY-11〜12 (デフォルトパス、`lib/` tarball)。
+追加: CLI-13〜15 (`add`、`add --dev`、install が devDeps を無視)、LAY-11〜12 (デフォルトパス、`lib/` tarball)。
 
 ### E2E (`.sandbox/`)
 
@@ -590,23 +590,23 @@ global-npm install
 
 ## 実装順序
 
-1. `lib/paths.cjs` / `lib/pkg-io.cjs`
+1. `lib/paths.cjs`、`lib/pkg-io.cjs`
 2. `lib/sync-manifest.cjs` + `test/sync-manifest.test.cjs`
 3. `lib/resolve-range.cjs` + `test/resolve-range.test.cjs`
 4. `bin/global-npm.cjs` リファクタ (5サブコマンド)
 5. `test/spec-compliance.test.cjs` 更新
-6. `docs/` / `README.md` / `CHANGELOG.md` 更新 (実装完了後 `docs/` に移行)
+6. `docs/`、`README.md`、`CHANGELOG.md` 更新 (実装完了後 `docs/` に移行)
 7. v2.1.0を publish
 
-## 実装完了後の docs/ 移行
+## 実装完了後の `docs/` 移行
 
 | 現行 | 移行先 |
 |------|--------|
 | 本ファイルのパス・マージ仕様 | `docs/layout.md` |
-| サブコマンド・`add` / `sync` | `docs/cli.md` |
+| サブコマンド・`add`、`sync` | `docs/cli.md` |
 | install は dependencies のみ | `docs/install.md` |
 | Windows デフォルトパス | `docs/windows.md` |
 
 ## ステータス
 
-**実装済み (v2.1.0):** 2026-06-08。`docs/layout.md` / `docs/cli.md` / `docs/install.md` / `docs/windows.md` / `README.md` に移行済み。
+**実装済み (v2.1.0):** 2026-06-08。`docs/layout.md`、`docs/cli.md`、`docs/install.md`、`docs/windows.md`、`README.md` に移行済み。

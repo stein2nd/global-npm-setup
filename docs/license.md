@@ -47,7 +47,7 @@ the Free Software Foundation, either version 3 of the License, or
 
 * `dependencies` に列挙するパッケージ (textlint、docs-linter 等) を **ソース同梱して再配布するわけではない**。
 * CLI 自身のソースコードが GPL-3.0-or-later で公開される。
-* 各 dependency のライセンスは個別に遵守する (`npm ls` / 各 package の LICENSE を参照)。
+* 各 dependency のライセンスは個別に遵守する (`npm ls`、各 package の LICENSE を参照)。
 
 ## バージョニング
 
