@@ -2,12 +2,16 @@
 
 ## Unreleased
 
+## v2.1.3: 2026-06-09
+
 ### リポジトリ整備 (tarball 非同梱)
 
-* `docsMod/status.md` を更新: v2.1.2の publish 完了の反映、フェーズ3 **100%** (#8 (Windows) 完了)
-* Windows 11 (PowerShell) での実機確認を完了: `check` (`install` 前)、`update`、`install`、`sync`、`add` → `install` (追加分 `@s2j/docs-linter`)、`textlint --version` → `v15.7.1`
-* macOS で実機確認: `check` → `update` → `install` により `@s2j/global-npm` 2.0.3→2.1.2。追加分 `@s2j/docs-linter` は `install` 後も差分残存 → `npm update -g @s2j/docs-linter` で up-to-date
-* 運用メモ: 追加分は `user-deps.json` の range が sync で優先されるため、`update` が実効 manifest だけを上げても `install` 前に戻りうる
+* `docsMod/status.md` を更新: フェーズ3、v2系 **100%**、macOS と Windows 11実機確認、完了条件、既知ギャップを反映
+* Windows 11 (PowerShell) 実機確認が完了: `check` (`install` 前)、`update`、`install`、`sync`、`add` → `install`、`textlint --version` → `v15.7.1`
+* macOS 実機確認: `check` → `update` → `install` で `@s2j/global-npm` 2.0.3→2.1.2。最終 `check` で up-to-date
+* 運用メモ: 追加分は `user-deps.json` の range が sync で優先され、`update` → `install` 後も差分が残りうる → `npm update -g <pkg>` または `user-deps.json` 手動更新
+* `docsMod/modification.md`: v2残タスク #8 (Windows 実機) を ✅ に更新
+* 仕様準拠テスト WIN-05: Windows 11実機確認済みを反映。`npm test` 仕様準拠 **63/63 (PASS)** (WARN: 0)
 * `docs/specs.md`、`docs/npm-publish.md` の表記調整
 
 ## v2.1.2: 2026-06-09

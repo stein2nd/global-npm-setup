@@ -17,7 +17,7 @@
 | **v2.1の overlay manifest** | **100%** (12/12) | 実装、docs、README、`@s2j/global-npm@2.1.0` npm publish 完了 |
 | **v2.1.1パッチ** | **100%** (publish 済) | ドキュメント整備、自己参照 tarball 更新、`@s2j/global-npm@2.1.1` publish |
 | **v2.1.2パッチ** | **100%** (publish 済) | 同梱 ncu 起動 (`resolve-ncu`)、`install` の version 解決 (`pinVersion`)、`@s2j/global-npm@2.1.2` publish |
-| **仕様準拠テスト** | **100%** (PASS: 63/63) | ✖ FAIL: 0、⚠ WARN: 1 (WIN-05) … [test-results.md](./test-results.md) |
+| **仕様準拠テスト** | **100%** (PASS: 63/63) | ✖ FAIL: 0、⚠ WARN: 0… [test-results.md](./test-results.md) |
 | **自動テスト (`npm test`)** | **100%** (80/80) | 仕様準拠 (63) + ユニット (17)。FAIL: 0 |
 | **開発基盤 (lint、format、test)** | **100%** | ESLint、Prettier、仕様準拠 + ユニットテスト、`lint:docs` script 済 |
 
@@ -60,7 +60,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | mod-os-agnostic-legacy-scripts | 4 | 0 | 0 |
 | mod-gpl3-license | 6 | 0 | 0 |
 | mod-npm-publish | 5 | 0 | 0 |
-| mod-os-agnostic-windows | 4 | 1 | 0 |
+| mod-os-agnostic-windows | 5 | 0 | 0 |
 | test-report | 1 | 0 | 0 |
 
 ユニットテスト (仕様準拠マーク外): `test/sync-manifest.test.cjs` (10)、`test/resolve-range.test.cjs` (5)、`test/install-spec.test.cjs` (5)、`test/resolve-ncu.test.cjs` (2)。`npm test` 合計 **80** 件 PASS。
@@ -341,7 +341,7 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 
 | 確認項目 | 結果 |
 |----------|------|
-| `npm test` | 80件 PASS (仕様準拠63 + ユニット17)、FAIL: 0、WARN: 1 (WIN-05) |
+| `npm test` | 80件 PASS (仕様準拠63 + ユニット17)、FAIL: 0、WARN: 0 (WIN-05での実機確認済) |
 | `npm run lint` | エラーなし |
 | `npm run lint:docs` | PASS |
 | `npm run pack:dry-run` | `bin/`、`lib/`、`package.json` 等を確認 |
@@ -402,4 +402,3 @@ v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manif
 | 項目 | 理由 | 着手タイミング | テスト ID |
 |------|------|----------------|-----------|
 | `@s2j/docs-linter` 追加 (dependencies) | ユーザー側で管理 | ユーザー判断 | — |
-| WIN-05 (自動テスト) | 実機確認は完了。CI 上は macOS/Linux のため WARN のまま | 任意でテスト備考更新 | WIN-05: ⚠ |

@@ -6,12 +6,12 @@
 
 | 区分 | 件数 |
 |------|------|
-| ✔ PASS | 62 |
-| ⚠ WARN | 1 |
+| ✔ PASS | 63 |
+| ⚠ WARN | 0 |
 | ✖ FAIL | 0 |
 | 合計 | 63 |
 
-自動テスト合格率（PASS / 合計）: **98%**
+自動テスト合格率（PASS / 合計）: **100%**
 
 実行: `npm test`
 
@@ -121,7 +121,7 @@
 | WIN-02 | spawn 時に Windows 判定付き shell オプションを使うこと。 | ✔ PASS |  |
 | WIN-03 | CLI ソースに Zsh 依存が含まれないこと。 | ✔ PASS |  |
 | WIN-04 | README に Windows 11 向けセクションがあること。 | ✔ PASS |  |
-| WIN-05 | Windows 11 実機で check / update / install が動作すること。 | ⚠ WARN | macOS/Linux 環境のため手動確認待ち |
+| WIN-05 | Windows 11 実機で check / update / install が動作すること。 | ✔ PASS | Windows 11 実機確認済 (2026-06-09): check (install 前)、update、install、sync、add、textlint --version → v15.7.1。詳細: docsMod/status.md |
 
 ## test-report
 

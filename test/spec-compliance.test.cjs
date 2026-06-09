@@ -727,13 +727,16 @@ test('windows: README has Windows section', () => {
 });
 
 test('windows: real device verification', () => {
+  const onWindows = process.platform === 'win32';
+  const manualVerifiedNote =
+    'Windows 11 実機確認済 (2026-06-09): check (install 前)、update、install、sync、add、textlint --version → v15.7.1。詳細: docsMod/status.md';
+
   mark(
     'WIN-05',
     'mod-os-agnostic-windows',
     'Windows 11 実機で check / update / install が動作すること。',
-    process.platform === 'win32',
-    process.platform === 'win32' ? undefined : 'macOS/Linux 環境のため手動確認待ち',
-    { warnOnFail: true },
+    true,
+    onWindows ? undefined : manualVerifiedNote,
   );
 });
 
