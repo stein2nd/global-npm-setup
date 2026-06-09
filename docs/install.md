@@ -29,7 +29,7 @@ v2.1以降、install の入力は **実効 `package.json`**、`$SETUP_DIR/packag
 
 v1の jq 処理と **npm 上の意味論は同一** です。実装を Node に移すだけです。
 
-### `devDependencies` — v2.1 / B 案
+### `devDependencies`: v2.1 / B 案
 
 | 操作 | `dependencies` | `devDependencies` |
 |------|----------------|-------------------|
@@ -102,8 +102,8 @@ spawnSync('npm', ['install', '-g', ...specs], {
 
 ## 関連ドキュメント
 
-* [cli.md](./cli.md) — サブコマンド全体
-* [layout.md](./layout.md) — overlay manifest ・`$SETUP_DIR`
+* [cli.md](./cli.md): サブコマンド全体
+* [layout.md](./layout.md): overlay manifest ・`$SETUP_DIR`
 
 ## ステータス
 

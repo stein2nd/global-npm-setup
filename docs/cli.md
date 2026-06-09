@@ -5,9 +5,10 @@
 v1では `~/bin/global-npm` (Zsh) が `npm run ncu:*` を呼び出していました。
 v2では Node.js 製 CLI として `@s2j/global-npm` に同梱し、macOS / Windows 11で同一のサブコマンドを提供します。
 
-v2.1以降は **overlay manifest** を採用します。`check` / `update` / `install` は実効 `package.json` を操作します ([layout.md](./layout.md))。
+v2.1以降は **overlay manifest** を採用します。
+`check`、`update`、`install` は実効 `package.json` を操作します ([layout.md](./layout.md))。
 
-install の実装は **C 型 (Node 列挙 → 明示 `npm install -g`)** とします。詳細は [install.md](./install.md) を参照してください。
+install の実装は **C 型 (Node 列挙 → 明示 `npm install -g`)** とします。詳細は [install.md](./install.md) をご覧ください。
 
 ## コマンド一覧
 
@@ -23,16 +24,16 @@ global-npm add      # user-deps.json にパッケージを追記
 
 ### 共通: 事前 sync
 
-`check` / `update` / `install` は実行前に `syncManifest()` を呼び、`$SETUP_DIR/package.json` (実効 package.json) を最新化します。
+`check`、`update`、`install` は実行前に `syncManifest()` を呼び、`$SETUP_DIR/package.json` (実効 package.json) を最新化します。
 
 ### `global-npm check`
 
 | 項目 | 内容 |
 |------|------|
-| 目的 | 管理対象パッケージに利用可能な更新があるか確認する |
+| 目的 | 管理対象パッケージに利用可能な更新があるか確認する。 |
 | 事前処理 | `syncManifest()` |
 | 実装 | `ncu -g --format time --packageFile <materialized>/package.json` |
-| 副作用 | 実効 package.json は sync により更新されうる。ncu 自体は check 時に range を書き換えない |
+| 副作用 | 実効 package.json は sync により更新されうる。ncu 自体は check 時に range を書き換えない。 |
 | v1相当 | `npm run ncu:check` |
 
 `--format time` により各パッケージの公開日時を表示します。
@@ -42,7 +43,7 @@ global-npm add      # user-deps.json にパッケージを追記
 
 | 項目 | 内容 |
 |------|------|
-| 目的 | 実効 package.json のバージョン範囲を、最新に書き換える |
+| 目的 | 実効 package.json のバージョン範囲を、最新に書き換える。 |
 | 事前処理 | `syncManifest()` |
 | 実装 | `ncu -g --format time -u --packageFile <materialized>/package.json` |
 | 副作用 | 実効 package.json を更新する。`user-deps.json` と upstream 正本は変更しない。 |
@@ -54,8 +55,8 @@ global-npm add      # user-deps.json にパッケージを追記
 |------|------|
 | 目的 | 実効 package.json の `dependencies` を **各々トップレベルの global pkg** としてインストールする。 |
 | 事前処理 | `syncManifest()` |
-| 実装 | C 型 — 実効 package.json の `dependencies` を読み、`npm install -g <name>@<range>…` |
-| 副作用 | グローバル node_modules / `{prefix}/bin` を更新 |
+| 実装 | C 型: 実効 package.json の `dependencies` を読み、`npm install -g <name>@<range>…` |
+| 副作用 | グローバル node_modules、`{prefix}/bin` を更新。 |
 | v1相当 | `ncu:install` の install 部分 |
 
 `devDependencies` は install 対象外です ([install.md](./install.md))。
@@ -72,10 +73,10 @@ global-npm install
 
 | 項目 | 内容 |
 |------|------|
-| 目的 | upstream + `user-deps.json` → 実効 package.json を再生成する |
+| 目的 | upstream + `user-deps.json` → 実効 package.json を再生成する。 |
 | 実装 | `syncManifest()` |
-| 副作用 | `$SETUP_DIR/package.json` と `.upstream-meta.json` を更新 |
-| オプション | `--dry-run` — ファイル書き込みなし。差分を stderr に表示 |
+| 副作用 | `$SETUP_DIR/package.json` と `.upstream-meta.json` を更新。 |
+| オプション | `--dry-run`: ファイル書き込みなし。差分を stderr に表示。 |
 
 ncu / npm は呼びません。
 
@@ -83,10 +84,10 @@ ncu / npm は呼びません。
 
 | 項目 | 内容 |
 |------|------|
-| 目的 | `user-deps.json` にパッケージを追記し、sync する |
-| `--dev` | `devDependencies` に追加 (省略時は `dependencies`) |
-| range 省略 | `npm view <pkg> version` → `^x.y.z`。失敗時は `*` にフォールバック |
-| 副作用 | `user-deps.json` 更新 → `syncManifest()`。自動 `install` はしない |
+| 目的 | `user-deps.json` にパッケージを追記し、sync する。 |
+| `--dev` | `devDependencies` に追加 (省略時は `dependencies`)。 |
+| range 省略 | `npm view <pkg> version` → `^x.y.z`。失敗時は `*` にフォールバック。 |
+| 副作用 | `user-deps.json` 更新 → `syncManifest()`。自動 `install` はしない。 |
 
 ```sh
 global-npm add @s2j/docs-linter@^1.0.16
@@ -103,7 +104,7 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 | ライブラリ | `lib/paths.cjs`, `lib/sync-manifest.cjs` 等 |
 | shebang | `#!/usr/bin/env node` |
 | 引数解析 | サブコマンド5つ。未知の引数は usage 表示して `exit code: 1` |
-| 子プロセス | `child_process.spawnSync` で `ncu` / `npm` を呼び出す |
+| 子プロセス | `child_process.spawnSync` で `ncu` / `npm` を呼び出す。 |
 | JSON 処理 | `fs` + `JSON.parse` (**jq 不要**) |
 
 ### usage
@@ -135,7 +136,7 @@ const setupDir = path.resolve(
 
 ## サブコマンド実行フロー
 
-詳細なシークェンス図は [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md#サブコマンド実行フロー) を参照してください。
+詳細なシークェンス図は [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md#サブコマンド実行フロー) をご覧ください。
 
 ```mermaid
 flowchart TD

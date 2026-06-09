@@ -136,4 +136,4 @@ v2の README は、OS 別セクションに分けます。
 
 ## ステータス
 
-**確定** — `docs/windows.md` に移行済み (Windows 11実機確認は [status.md](../docsMod/status.md) 参照)。
+**確定:** `docs/windows.md` に移行済み (Windows 11実機確認は [status.md](../docsMod/status.md) 参照)。

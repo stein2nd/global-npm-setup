@@ -5,7 +5,8 @@
 v1では `~/dotfiles/setup/package.json` にグローバル npm パッケージ一覧を保持し、`ncu:install` 経由で jq 列挙 → `npm install -g` していました。
 v2では npm パッケージ `@s2j/global-npm` として配布し、install は C 型 (Node 列挙) で実装します ([install.md](./install.md))。
 
-v2.0.x は **方式 A: パッケージ同梱** のみでした。v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本とユーザー追加分をマージします。
+v2.0.x は **方式 A: パッケージ同梱** のみでした。
+v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本とユーザー追加分をマージします。
 
 ## 方式の比較
 
@@ -99,7 +100,7 @@ const setupDir = path.resolve(
 
 `check` / `update` / `install` / `sync` / `add` 実行時に upstream + `user-deps.json` から実効 package.json を再生成します。
 
-### `dependencies` の優先順位 — 高い順
+### `dependencies` の優先順位: 高い順
 
 1. `user-deps.json` の `dependencies` にキーがある → その range にピン留め。
 2. 実効 package.json の値が前回 upstream と異なる → `global-npm update` 済みとみなし維持。
@@ -112,12 +113,12 @@ const setupDir = path.resolve(
 | ユーザー追加分 | 実効 package.json に維持 |
 | upstream 管理分 | 実効 package.json から削除 |
 
-### `devDependencies` — B 案
+### `devDependencies`: B 案
 
 * upstream の `devDependencies` は実効 package.json に含めない。リポジトリ開発用ツールをユーザー環境に流さない。
 * `user-deps.json` の `devDependencies` のみをマージする。
 
-詳細なマージ手順・実行フローは [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md) を参照してください。
+詳細なマージ手順・実行フローは [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md) をご覧ください。
 
 ## リポジトリ構成 (開発)
 
@@ -141,6 +142,18 @@ global-npm-setup/          # Git リポジトリ root
 | `files` | publish 同梱パス (`bin/`, `lib/`, `package.json` 等) |
 
 `@s2j/global-npm` 自身も `dependencies` に含めます (自己参照)。
+
+### 自己参照の range
+
+`dependencies` の `@s2j/global-npm` は、**npm publish 済みの最新バージョン** を `^x.y.z` で明示します。
+
+| タイミング | 記載する range |
+|---|---|
+| 開発中 (`version` を未 publish の版に bump 済み) | `^<registry 上の latest>` (= 前回 publish 版) |
+| publish 直後 | `^<いま publish した版>` に更新 |
+
+* `latest` や `*` は使いません (`check`、`update` の ncu、`sync` のマージ判定との相性のため)。
+* 確認: `npm view @s2j/global-npm version`
 
 ## ローカル開発配置
 

@@ -38,7 +38,7 @@ global-npm install
 | macOS / Linux | `~/.config/global-npm` |
 | Windows 11 | `%APPDATA%\global-npm` |
 
-`GLOBAL_NPM_SETUP_DIR` 環境変数で上書きできます。詳細は [docs/layout.md](./docs/layout.md)。
+`GLOBAL_NPM_SETUP_DIR` 環境変数で上書きできます。詳細は [docs/layout.md](./docs/layout.md) をご覧ください。
 
 ## セットアップ
 
@@ -82,10 +82,10 @@ global-npm add @s2j/docs-linter@^1.0.16   # 任意: ユーザー追加分
 global-npm install               # 実効 package.json の dependencies を global install
 ```
 
-初回の `global-npm install` で `~/.config/global-npm/` (Windows 11では `%APPDATA%\global-npm\`) に実効 p`ackage.json` が生成されます。
+初回の `global-npm install` で `~/.config/global-npm/` (Windows 11では `%APPDATA%\global-npm\`) に実効 `package.json` が生成されます。
 `global-npm install` は、`@s2j/global-npm` 自身 (自己参照) も含め、`dependencies` のキーを列挙して `npm install -g` します。
 
-### 開発 — リポジトリ clone
+### 開発: リポジトリ clone
 
 ```sh
 git clone https://github.com/stein2nd/global-npm-setup.git
@@ -109,6 +109,15 @@ global-npm sync --dry-run
 * upstream (`npm update -g @s2j/global-npm`) 更新後も、ユーザー追加分は消えない。
 * upstream 管理パッケージのうち未 update 分は、次回 `check` 時の sync で新 range に追従する。
 * upstream パッケージをピン留めする場合は、`user-deps.json` の `dependencies` に同名で range を書く。
+
+## 使い方
+
+下記については、[使い方](./docs/usage.md) をご覧ください。
+
+* 各コマンドの役割
+* 定番フロー (`check` → `update` → `install`)
+* 毎回 `sync` を実行する必要があるか
+* upstream 管理分と追加分の衝突が起こった場合 
 
 ## 日常の更新サイクル
 
@@ -139,8 +148,8 @@ npm run ncu:update
 
 | v1 | v2 |
 |----|-----|
-| `~/bin/global-npm` (Zsh) | 廃止 — `npm install -g @s2j/global-npm` |
-| `install-global.zsh` | 廃止 — `global-npm install` |
+| `~/bin/global-npm` (Zsh) | 廃止: `npm install -g @s2j/global-npm` |
+| `install-global.zsh` | 廃止: `global-npm install` |
 | `ncu:install` (jq 列挙) | `global-npm install` (Node 列挙) |
 
 ### v2.0.x → v2.1
@@ -160,4 +169,4 @@ npm run ncu:update
 
 ## ライセンス
 
-GPL-3.0-or-later: 詳細は [LICENSE](./LICENSE) を参照してください。
+GPL-3.0-or-later: 詳細は [LICENSE](./LICENSE) をご覧ください。

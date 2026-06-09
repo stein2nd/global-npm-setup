@@ -1,5 +1,21 @@
 # Global npm Package Setup - CHANGELOG
 
+## Unreleased
+
+## v2.1.1: 2026-06-09
+
+### パッケージ本体 (次回 publish で tarball 反映)
+
+* `dependencies` の自己参照 `@s2j/global-npm` を `^2.1.0` に更新
+
+### リポジトリ整備 (tarball 非同梱)
+
+* 自己参照の range 運用を明文化: npm publish 済み latest を `^x.y.z` で明示 (`docs/layout.md`、`docs/npm-publish.md`)
+* `docs/usage.md` を追加: 鮮度管理、各サブコマンドの役割、`sync` の要否、upstream 管理分と追加分の衝突
+* README に「使い方」セクションを追加し、`docs/usage.md` に導線。`specs.md` にも同ファイルを追記
+* 各種ドキュメントで用語を **実効 package.json** に統一 (`materialized`、誤訳「物理的なアーカイブ」を整理)
+* textlint (prh) に合わせた表記調整 (README、`docs/`、`docsMod/` ほか)
+
 ## v2.1.0: 2026-06-08
 
 ### パッケージ本体

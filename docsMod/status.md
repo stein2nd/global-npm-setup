@@ -6,25 +6,26 @@
 
 | 区分 | 進捗 | 備考 |
 |------|------|------|
-| **仕様確定** | **100%** (8/8) | `docs/` に移行済み。v2.1overlay は [mod-overlay-manifest.md](./mod-overlay-manifest.md) → `docs/` 反映済 |
+| **仕様確定** | **100%** (8/8) | `docs/` に移行済み。v2.1の overlay は [mod-overlay-manifest.md](./mod-overlay-manifest.md) → `docs/` 反映済 |
 | **フェーズ1: コア実装** | **100%** | 完了 |
 | **フェーズ2: リリース** | **100%** | npm publish、自己参照、仕様書の移行完了 |
 | **フェーズ3: リリース後** | **75%** (3/4) | 方式 B (#1)、Docs Lint CI、npm OIDC publish CI 完了。Windows 実機 (#8) のみ残 |
 | **v2初期リリース全体** | **86%** (6/7) | [modification.md](./modification.md) タスク #8 (Windows 実機確認) のみ残 |
 | **v2全体 (方式 B、CI 含む)** | **89%** (8/9) | #8 (Windows 実機) のみ残 |
-| **v2.1overlay manifest** | **100%** (12/12) | 実装、docs、README、`@s2j/global-npm@2.1.0` npm publish 完了 |
+| **v2.1の overlay manifest** | **100%** (12/12) | 実装、docs、README、`@s2j/global-npm@2.1.0` npm publish 完了 |
 | **仕様準拠テスト** | **98%** (PASS: 62/63) | ✖ FAIL: 0 / ⚠ WARN: 1 (WIN-05) … [test-results.md](./test-results.md) |
 | **開発基盤 (lint / format / test)** | **100%** | ESLint / Prettier / 仕様準拠 + ユニットテスト / `lint:docs` script 済 |
 
 > **進捗率の算定**
 >
-> * [modification.md](./modification.md) の v2 残タスク (#1〜#9) を実装タスクとみなす。#2〜#6 をフェーズ1、#7 をフェーズ2、#8・#9・#1 をフェーズ3 に対応付け。
-> * **フェーズ3 (75%)** — 優先タスク4件のうち #1 (overlay manifest)、#9 (npm OIDC publish CI)、Docs Lint CI が完了。残り #8 (Windows 実機) のみ。
-> * **v2.1 (100%)** — [mod-overlay-manifest.md](./mod-overlay-manifest.md) に従う実装、`docs/` 移行、README 更新、`v2.1.0` tag push + OIDC publish まで完了 ([GitHub Release `v2.1.0`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.0))。
+> * [modification.md](./modification.md) の v2残タスク (#1〜#9) を実装タスクとみなす。#2〜#6をフェーズ1、#7をフェーズ2、#8、#9、#1をフェーズ3に対応付け。
+> * **フェーズ3 (75%):** 優先タスク4件のうち #1 (overlay manifest)、#9 (npm OIDC publish CI)、Docs Lint CI が完了。残り #8 (Windows 実機) のみ。
+> * **v2.1 (100%):** [mod-overlay-manifest.md](./mod-overlay-manifest.md) に従う実装、`docs/` 移行、README 更新、`v2.1.0` tag push + OIDC publish まで完了 ([GitHub Release `v2.1.0`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.0))。
 
 ## 仕様書 (参照元)
 
-[docs/specs.md](../docs/specs.md) に移行済み。v2.1overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manifest.md)。
+[docs/specs.md](../docs/specs.md) に移行済みです。
+v2.1の overlay の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-manifest.md) をご覧ください。
 
 | ファイル | 概要 | 仕様 | 実装 |
 |----------|------|------|------|
@@ -53,7 +54,7 @@
 
 ユニットテスト (仕様準拠マーク外): `test/sync-manifest.test.cjs` (10)、`test/resolve-range.test.cjs` (5)。`npm test` 合計 **73** 件 PASS。
 
-詳細: [test-results.md](./test-results.md) — 実行: `npm test`
+詳細: [test-results.md](./test-results.md) - 実行: `npm test`
 
 ## 機能一覧 (実装状況サマリー)
 
@@ -82,13 +83,13 @@
 | npm publish | ✅ 実施済 | `@s2j/global-npm@2.1.0` (latest)。OIDC CI + [`v2.1.0`](https://github.com/stein2nd/global-npm-setup/releases/tag/v2.1.0) |
 | Windows 11実機確認 | ❌ 未実施 | フェーズ3 (#8) |
 | CI / 自動 publish (npm OIDC) | ✅ 稼働中 | `.github/workflows/npm-publish.yml` |
-| `docsMod/` → `docs/` 移行 | ✅ 完了 | v2.1overlay 仕様も `docs/` に反映済 |
+| `docsMod/` → `docs/` 移行 | ✅ 完了 | v2.1の overlay 仕様も `docs/` に反映済 |
 
 ## フェーズ1: コア実装
 
 ### フェーズ1: サマリー
 
-**100% 完了** — CLI 本体、package.json v2化、README 更新、レガシー削除、ローカル検証まで完了。
+**100% 完了:** CLI 本体、package.json v2化、README 更新、レガシー削除、ローカル検証まで完了。
 
 ### フェーズ1優先タスクと完了条件の対応
 
@@ -113,7 +114,7 @@
 * [x] CHANGELOG にフェーズ1の変更を記載済
 * [x] 仕様準拠テスト (`npm test`) が ✖ FAIL: 0である
 
-**すべて達成 — フェーズ1完了。**
+**すべて達成: フェーズ1完了。**
 
 ### フェーズ1の残タスク
 
@@ -125,7 +126,7 @@
 
 ### フェーズ2: サマリー
 
-**100% 完了** — npm publish (v2.0.2)、自己参照、`docs/` 移行まで完了。v2.0.3 (semver 付き install) は2026-06-07に publish 済。
+**100% 完了:** npm publish (v2.0.2)、自己参照、`docs/` 移行まで完了。v2.0.3 (semver 付き install) は2026-06-07に publish 済。
 
 ### フェーズ2優先タスクと完了条件の対応
 
@@ -149,7 +150,7 @@
 * [x] publish 後、`dependencies` に `@s2j/global-npm` 自己参照を追加する
 * [x] 確定した mod ドキュメントを `docs/` へ移行する
 
-**すべて達成 — フェーズ2完了。**
+**すべて達成: フェーズ2完了。**
 
 ### フェーズ2の残タスク
 
@@ -161,13 +162,13 @@
 
 ### フェーズ3: サマリー
 
-**75% 進行中 (3/4優先タスク完了)** — overlay manifest (#1)、Docs Lint CI、npm OIDC publish CI、`@s2j/global-npm@2.1.0` publish が完了。Windows 実機確認 (#8) のみ残。
+**75% 進行中 (3/4優先タスク完了):** overlay manifest (#1)、Docs Lint CI、npm OIDC publish CI、`@s2j/global-npm@2.1.0` publish が完了。Windows 実機確認 (#8) のみ残。
 
 ### フェーズ3優先タスクと完了条件の対応
 
 | # | タスク | 完了条件 | 状態 |
 |---|--------|----------|------|
-| 1 | 方式 B — overlay manifest (v2.1) | [mod-overlay-manifest.md](./mod-overlay-manifest.md) に従い実装、docs 移行、npm publish | ✅ |
+| 1 | 方式 B: overlay manifest (v2.1) | [mod-overlay-manifest.md](./mod-overlay-manifest.md) に従い実装、docs 移行、npm publish | ✅ |
 | 8 | Windows 11実機確認 | check / update / install / sync / add、CLI on PATH が動作する | ❌ |
 | 9 | CI / 自動 publish (任意) | GitHub Actions + npm OIDC (Trusted Publisher) | ✅ |
 | — | Docs Lint CI | `npm run lint:docs` が CI で PASS | ✅ |
@@ -182,9 +183,9 @@
 * [x] `package.json` に `lint:docs` script がある
 * [x] Docs Lint CI が `npm run lint:docs` で成功する
 
-**6/8達成** — Windows (#8) のみ残。
+**6/8達成:** Windows (#8) のみ残。
 
-### v2.1overlay manifest — 完了条件
+### v2.1の overlay manifest: 完了条件
 
 | 条件 | 状態 |
 |------|------|
@@ -201,7 +202,7 @@
 | `package.json` version `2.1.0`、`files` に `lib/` | ✅ |
 | npm publish `@s2j/global-npm@2.1.0` | ✅ |
 
-**12/12達成 — v2.1overlay manifest 完了。**
+**12/12達成: v2.1の overlay manifest 完了。**
 
 ### フェーズ3で完了した項目 (v2.1)
 
@@ -216,12 +217,12 @@
 
 | ファイル | 変更 |
 |----------|------|
-| `lib/*.cjs` | 新規 — paths / pkg-io / sync-manifest / resolve-range / install-spec |
+| `lib/*.cjs` | 新規: paths / pkg-io / sync-manifest / resolve-range / install-spec |
 | `bin/global-npm.cjs` | 5サブコマンド、事前 sync |
 | `test/sync-manifest.test.cjs` | SYNC-01〜10 |
 | `test/resolve-range.test.cjs` | RANGE-01〜02 |
 | `test/spec-compliance.test.cjs` | CLI-17〜19、LAY-10〜12、PUB-02等 |
-| `docs/layout.md` / `cli.md` / `install.md` / `windows.md` | v2.1overlay 仕様 |
+| `docs/layout.md` / `cli.md` / `install.md` / `windows.md` | v2.1の overlay 仕様 |
 | `README.md` | overlay のしくみ、v2.0.x から v2.1への移行 |
 | `CHANGELOG.md` | v2.1.0エントリ |
 | `package.json` | `2.1.0`、`lib/` を files に追加 |
@@ -232,9 +233,9 @@
 |------|------|
 | 2026-06-07 | `@s2j/global-npm@2.0.3` npm publish、Docs Lint CI、npm OIDC publish CI |
 | 2026-06-08 | [mod-overlay-manifest.md](./mod-overlay-manifest.md) 仕様確定 |
-| 2026-06-08 | **v2.1overlay manifest 実装完了** — コード、テスト、`docs/`、README |
+| 2026-06-08 | **v2.1の overlay manifest 実装完了:** コード、テスト、`docs/`、README |
 | 2026-06-08 | `npm test` 73件 PASS、`npm run lint:docs` PASS |
-| 2026-06-08 | **`@s2j/global-npm@2.1.0` npm publish** — tag `v2.1.0`、OIDC CI success |
+| 2026-06-08 | **`@s2j/global-npm@2.1.0` npm publish:** tag `v2.1.0`、OIDC CI success |
 
 ### フェーズ3の残タスク
 
@@ -279,8 +280,8 @@
 
 ### 既存環境での注意
 
-* `~/bin/global-npm` (v1Zsh ラッパー) が PATH 上で優先される場合がある。v2CLI 利用時は旧ラッパー削除を推奨。
-* v2.0.x から v2.1への移行後、管理定義は `~/.config/global-npm/` に移る。Windows 11では `%APPDATA%\global-npm`。初回は `global-npm sync` を実行する。
+* `~/bin/global-npm` (v1の Zsh ラッパー) が PATH 上で優先される場合がある。v2の CLI 利用時は旧ラッパー削除を推奨。
+* v2.0.x から v2.1に移行後、管理定義は `~/.config/global-npm/` に移る。Windows 11では `%APPDATA%\global-npm`。初回は `global-npm sync` を実行する。
 
 ### 意図的に延期している項目
 

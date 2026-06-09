@@ -21,15 +21,15 @@ v2.1では下記を同時に満たします。
 
 | 項目 | 決定 |
 |------|------|
-| 方式 | 常に overlay。同梱 `package.json` は upstream 正本のみ |
+| 方式 | 常時 overlay。同梱 `package.json` は upstream 正本のみ。 |
 | setup デフォルト | macOS / Linux: `~/.config/global-npm`、Windows 11: `%APPDATA%\global-npm` |
-| 環境変数 | `GLOBAL_NPM_SETUP_DIR` でデフォルトを上書き可能 |
-| `devDependencies` | **B 案:** `user-deps.json` の `devDependencies` を実効 package.json にマージ。`install` は `dependencies` のみ |
-| upstream `devDependencies` | 実効 package.json に含めない (リポジトリ開発用ツールをユーザー環境に流さない) |
-| `user-deps` による range オーバーライト | 可能 (upstream 管理パッケージのピン留め可、最優先) |
-| upstream から削除 | ユーザー追加分は維持 / upstream 管理分は実効 package.json から削除 |
-| 新サブコマンド | v2.1で `sync` / `add` を追加 |
-| `add` の range 省略 | オンライン: `npm view <pkg> version` → `^x.y.z`。オフライン: `*` にフォールバック |
+| 環境変数 | `GLOBAL_NPM_SETUP_DIR` でデフォルトを上書き可能。 |
+| `devDependencies` | **B 案:** `user-deps.json` の `devDependencies` を実効 package.json にマージ。`install` は `dependencies` のみ。 |
+| upstream `devDependencies` | 実効 package.json に含めない (リポジトリ開発用ツールをユーザー環境に流さない)。 |
+| `user-deps` による range オーバーライト | 可能 (upstream 管理パッケージのピン留め可、最優先)。 |
+| upstream から削除 | ユーザー追加分は維持 / upstream 管理分は実効 package.json から削除。 |
+| 新サブコマンド | v2.1で `sync`、`add` を追加。 |
+| `add` の range 省略 | オンライン: `npm view <pkg> version` → `^x.y.z`。オフライン: `*` にフォールバック。 |
 | バージョン | v2.1.0 (v2.0.x からの破壊的変更あり) |
 
 ## アーキテクチャー全体像
@@ -152,7 +152,7 @@ v2.0.x の「package root = setup」は廃止します。
 
 `name` / `private` は固定値です。ncu が読める最小構成とします。
 
-## `syncManifest()` — マージ仕様
+## `syncManifest()`: マージ仕様
 
 `check` / `update` / `install` / `sync` / `add` (sync 実行時) の前に呼びます。
 初回は `SETUP_DIR` を作成し、空の `user-deps.json` を bootstrap します。
@@ -257,7 +257,7 @@ global-npm <check|update|install|sync|add>
 | 引数 | 内容 |
 |------|------|
 | `<pkg>` | npm パッケージ名 (スコープ可) |
-| `[@range]` | 省略可。semver range またはバージョン |
+| `[@range]` | semver range またはバージョン (省略可) |
 | `--dev` | `devDependencies` に追加 (省略時は `dependencies`) |
 
 **range 省略時のデフォルト値**
@@ -578,9 +578,9 @@ global-npm install
 
 | 旧 ID | 変更 |
 |-------|------|
-| CLI-08 | 反転 — `GLOBAL_NPM_SETUP_DIR` / デフォルトパス解決を検証 |
-| LAY-10 | 反転 — overlay 実装済みを検証 |
-| CLI-07 | 更新 — package root は upstream のみ、setup は `defaultSetupDir()` |
+| CLI-08 | 反転: `GLOBAL_NPM_SETUP_DIR` / デフォルトパス解決を検証 |
+| LAY-10 | 反転: overlay 実装済みを検証 |
+| CLI-07 | 更新: package root は upstream のみ、setup は `defaultSetupDir()` |
 
 追加: CLI-13〜15 (`add` / `add --dev` / install が devDeps を無視)、LAY-11〜12 (デフォルトパス、`lib/` tarball)。
 
