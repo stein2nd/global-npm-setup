@@ -13,6 +13,7 @@
 * `docsMod/modification.md`: v2残タスク #8 (Windows 実機) を ✅ に更新
 * 仕様準拠テスト WIN-05: Windows 11実機確認済みを反映。`npm test` 仕様準拠 **63/63 (PASS)** (WARN: 0)
 * `docs/specs.md`、`docs/npm-publish.md` の表記調整
+* publish 後: リポジトリの自己参照を `^2.1.3` に追従
 
 ## v2.1.2: 2026-06-09
 
