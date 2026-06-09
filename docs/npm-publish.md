@@ -159,4 +159,4 @@ v1廃止に伴い publish 運用が必須になるが、管理ツールとして
 
 ## ステータス
 
-**確定:** publish 済み (`@s2j/global-npm@2.1.1`)。自己参照の range 運用を `docs/layout.md` に追記済み。
+**確定:** publish 済み (`@s2j/global-npm@2.1.2`)。自己参照の range 運用を `docs/layout.md` に追記済み。
