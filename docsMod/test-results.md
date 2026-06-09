@@ -108,10 +108,10 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.1.1` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.1.2` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.1.1` が公開済みであること。 | ✔ PASS |  |
+| PUB-05 | npm registry に `@s2j/global-npm@2.1.2` が公開済みであること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-windows
 

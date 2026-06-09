@@ -26,6 +26,6 @@
 | ファイル | 概要 |
 |----------|------|
 | [../docsMod/status.md](../docsMod/status.md) | 実装状況・進捗率 |
-| [../docsMod/modification.md](../docsMod/modification.md) | v2残タスク (#1方式 B、#8Windows 実機確認 等) |
+| [../docsMod/modification.md](../docsMod/modification.md) | v2残タスク (#1 (方式 B)、#8 (Windows 実機確認) 等) |
 | [../docsMod/mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md) | v2.1の overlay manifest 仕様 (方式 B 確定稿) |
 | [../docsMod/test-results.md](../docsMod/test-results.md) | 仕様準拠テスト結果 (`npm test` で自動生成) |

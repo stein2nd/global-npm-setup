@@ -154,7 +154,7 @@ v1廃止に伴い publish 運用が必須になるが、管理ツールとして
 
 | トレードオフ | 受け入れ理由 |
 |--------------|--------------|
-| **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
+| **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務先 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
 | **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | v2.1で overlay manifest を実装。`user-deps.json`、`global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
 
 ## ステータス

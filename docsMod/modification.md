@@ -40,5 +40,5 @@ overlay manifest の詳細仕様は [mod-overlay-manifest.md](./mod-overlay-mani
 | 5 | README 更新 | OS 別手順、移行 (v1→ v2) | ✅ |
 | 6 | `install-global.zsh` 削除 | レガシー廃止 | ✅ |
 | 7 | 初回 npm publish | `@s2j/global-npm` v2.0.x | ✅ v2.0.2 |
-| 8 | Windows 11実機確認 | check、update、install、CLI on PATH | ❌ フェーズ3 |
+| 8 | Windows 11実機確認 | check、update、install、sync、add、CLI on PATH | ✅ v2.1.2 |
 | 9 | CI、自動 publish (任意) | GitHub Actions + npm OIDC | ✅ |

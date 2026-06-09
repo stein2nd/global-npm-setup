@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### リポジトリ整備 (tarball 非同梱)
+
+* `docsMod/status.md` を更新: v2.1.2 publish 完了の反映、フェーズ3 **100%** (Windows #8 完了)
+* Windows 11 (PowerShell) で実機確認完了: `check` (`install` 前)、`update`、`install`、`sync`、`add` → `install` (追加分 `@s2j/docs-linter`)、`textlint --version` → `v15.7.1`
+* macOS で実機確認: `check` → `update` → `install` により `@s2j/global-npm` 2.0.3 → 2.1.2。追加分 `@s2j/docs-linter` は `install` 後も差分残存 → `npm update -g @s2j/docs-linter` で up-to-date
+* 運用メモ: 追加分は `user-deps.json` の range が sync で優先されるため、`update` が実効 manifest だけを上げても `install` 前に戻りうる
+* `docs/specs.md`、`docs/npm-publish.md` の表記調整
+
 ## v2.1.2: 2026-06-09
 
 ### パッケージ本体
