@@ -17,7 +17,7 @@
 | **v2.1の overlay manifest** | **100%** (12/12) | 実装、docs、README、`@s2j/global-npm@2.1.0` npm publish 完了 |
 | **v2.1.1パッチ** | **100%** (publish 済) | ドキュメント整備、自己参照 tarball 更新、`@s2j/global-npm@2.1.1` publish |
 | **v2.1.2パッチ** | **100%** (publish 済) | 同梱 ncu 起動 (`resolve-ncu`)、`install` の version 解決 (`pinVersion`)、`@s2j/global-npm@2.1.2` publish |
-| **v2.1.3パッチ** | **100%** (publish 済) | 実機確認・ドキュメント整備、WIN-05 反映、`@s2j/global-npm@2.1.3` publish |
+| **v2.1.3パッチ** | **100%** (publish 済) | 実機確認、ドキュメント整備、WIN-05に反映、`@s2j/global-npm@2.1.3` publish |
 | **仕様準拠テスト** | **100%** (PASS: 63/63) | ✖ FAIL: 0、⚠ WARN: 0… [test-results.md](./test-results.md) |
 | **自動テスト (`npm test`)** | **100%** (80/80) | 仕様準拠 (63) + ユニット (17)。FAIL: 0 |
 | **開発基盤 (lint、format、test)** | **100%** | ESLint、Prettier、仕様準拠 + ユニットテスト、`lint:docs` script 済 |
