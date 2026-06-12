@@ -1,9 +1,8 @@
 # Global npm Package Setup - Overlay Manifest (方式 B、v2.1)
 
-v2.1で実装する **方式 B (overlay manifest)** の仕様確定稿です。
-実装完了後は `docs/layout.md`、`docs/cli.md`、`docs/install.md` に移行します。
+v2.1 **方式 B (overlay manifest)** の詳細仕様です。要点は [layout.md](./layout.md)、[cli.md](./cli.md)、[install.md](./install.md) に反映済みです。
 
-関連: [modification.md](./modification.md) タスク #1、[layout.md](../docs/layout.md) (現状は方式 A 確定)
+関連: [archive/v2-os-agnostic/modification.md](./archive/v2-os-agnostic/modification.md) タスク #1
 
 ## 背景
 

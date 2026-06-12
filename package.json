@@ -38,7 +38,7 @@
     "test": "node --test test/*.test.cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:docs": "s2j-docs-linter --profile base ./README.md ./CHANGELOG.md ./docs/**/*.md ./docsMod/status.md ./docsMod/modification.md ./docsMod/mod-overlay-manifest.md ./.vscode/**/*.md",
+    "lint:docs": "s2j-docs-linter --profile base ./README.md ./CHANGELOG.md ./docs/**/*.md ./docsMod/status.md ./docsMod/modification.md ./.vscode/**/*.md",
     "format": "prettier --write \"**/*.{cjs,js,mjs,json}\"",
     "format:check": "prettier --check \"**/*.{cjs,js,mjs,json}\"",
     "pack": "mkdir -p artifacts && npm pack --pack-destination artifacts",

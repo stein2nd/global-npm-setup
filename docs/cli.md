@@ -136,7 +136,7 @@ const setupDir = path.resolve(
 
 ## サブコマンド実行フロー
 
-詳細なシークェンス図は [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md#サブコマンド実行フロー) をご覧ください。
+詳細なシークェンス図は [overlay-manifest.md](./overlay-manifest.md#サブコマンド実行フロー) をご覧ください。
 
 ```mermaid
 flowchart TD

@@ -118,7 +118,7 @@ const setupDir = path.resolve(
 * upstream の `devDependencies` は実効 package.json に含めない。リポジトリ開発用ツールをユーザー環境に流さない。
 * `user-deps.json` の `devDependencies` のみをマージする。
 
-詳細なマージ手順・実行フローは [mod-overlay-manifest.md](../docsMod/mod-overlay-manifest.md) をご覧ください。
+詳細なマージ手順・実行フローは [overlay-manifest.md](./overlay-manifest.md) をご覧ください。
 
 ## リポジトリ構成 (開発)
 
