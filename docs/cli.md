@@ -107,7 +107,7 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 | exit code | 子プロセス (`npm`) の status をそのまま返す |
 
 npm 出力1行目の **global prefix パス** は省略しません (nvm 等での切り分けに必要)。
-定番フロー (`check` → `update` → `install`) には含めません。
+定番フロー (`check` → `update` → `install`) には含めません。詳細は [cli-list.md](./cli-list.md) をご覧ください。
 
 ## CLI 実装
 

@@ -43,6 +43,19 @@ global-npm update
 global-npm install
 ```
 
+## global 環境の確認 (`list`)
+
+```sh
+global-npm list
+```
+
+global にインストール済みのトップレベル pkg を一覧します (`npm ls -g --depth=0` と同等)。
+実効 `package.json` ではなく、**現在の Node.js / npm が指す global prefix 配下** を読みます。
+事前 `sync` なしで、定番フローとは独立しています。
+
+`install` 直後の反映確認、Node.js 切り替え後の prefix 確認、`check` と実環境の食い違いの切り分けなどに使います。
+詳細は [使い方](./docs/usage.md#list-global-環境の確認) をご覧ください。
+
 ## しくみ (v2.1)
 
 | レイヤ | 場所 | 役割 |
@@ -135,7 +148,7 @@ global-npm sync --dry-run
 
 下記については、[使い方](./docs/usage.md) をご覧ください。
 
-* 各コマンドの役割
+* 各コマンドの役割 (`check`、`update`、`install`、`add`、`sync`、`list`)
 * 定番フロー (`check` → `update` → `install`)
 * 毎回 `sync` を実行する必要があるか
 * upstream 管理分と追加分の衝突が起こった場合 

@@ -1,7 +1,7 @@
 # Global npm Package Setup - Usage
 
 利用側がグローバル npm モジュールの **鮮度** (バージョン範囲と実インストール) を管理するための使い方です。
-従来から使える `check`、`update`、`install` と、v2.1で追加した `add`、`sync` の役割を整理します。
+従来から使える `check`、`update`、`install` と、v2.1で追加した `add`、`sync`、v2.2で追加した `list` の役割を整理します。
 
 関連: [layout.md](./layout.md) (ファイル構成)、[cli.md](./cli.md) (サブコマンド仕様)
 
@@ -82,6 +82,39 @@ global-npm sync --dry-run   # 書き込みなしで差分だけ表示
 | upstream を取り込んだ直後で、中身を確定させたい | `npm update -g @s2j/global-npm` のあと |
 
 `sync` 単体では ncu も `npm install -g` も走りません。**一覧の合成** だけです。
+
+### `list`: global 環境の確認
+
+実際に global インストールされているトップレベルパッケージを、`npm ls -g --depth=0` と同じ形式で表示します。
+
+```sh
+global-npm list
+```
+
+| 項目 | 内容 |
+|------|------|
+| 読む対象 | 現在の Node.js / npm が指す **global prefix** 配下の実インストール。 |
+| 読まない対象 | 実効 package.json (`$SETUP_DIR/package.json`)。manifest の「管理対象一覧」ではない。 |
+| 事前 `sync` | **なし** (ファイルは変更しない) |
+| 定番フロー | **含めない** (`check` → `update` → `install` とは独立) |
+
+出力1行目は global prefix パスです (nvm 等で Node.js を切り替えたとき、**どの global を見ているか** の確認に使います)。
+
+```
+/Users/ユーザー名/.nvm/versions/node/v26.3.0/lib
+├── @s2j/docs-linter@1.0.18
+├── @s2j/global-npm@2.2.0
+├── npm-check-updates@22.2.3
+└── textlint@15.7.1
+```
+
+| 使う場面 | 例 |
+|----------|-----|
+| `install` 後の反映確認 | 定番フロー後に、global に入ったバージョンを目視する。 |
+| Node.js 切り替え後 | nvm / fnm でバージョンを変えたあと、意図した prefix を見ているか確認する。 |
+| manifest と実環境の切り分け | `check` の結果と global 実体が食い違うとき、まず `list` で実態を把握する。 |
+
+実効 package.json に書いてある内容と global 実体を **突き合わせたい** ときは、`list` で実態を確認したうえで `check` や `sync --dry-run` を使います。
 
 ## 毎回、明示的に `sync` を実行する必要があるか
 
@@ -170,6 +203,14 @@ global-npm install
 npm update -g @s2j/global-npm
 global-npm sync --dry-run
 ```
+
+### global に何が入っているか確認する
+
+```sh
+global-npm list
+```
+
+`install` 直後や、nvm で Node.js を切り替えた直後など、**実際の global 環境** を確認するときに使います。詳細は上記 [`list`](#list-global-環境の確認) をご覧ください。
 
 ## 関連ドキュメント
 

@@ -13,7 +13,8 @@
 |----------|------|
 | [usage.md](./usage.md) | 使い方 (鮮度管理、`check`、`update`、`install`、`add`、`sync`、`list`) |
 | [naming.md](./naming.md) | 命名 (`global-npm-setup`、`@s2j/global-npm`、`global-npm`) |
-| [cli.md](./cli.md) | CLI サブコマンド (`check`、`update`、`install`、`sync`、`add`) |
+| [cli.md](./cli.md) | CLI サブコマンド (`check`、`update`、`install`、`sync`、`add`、`list`) |
+| [cli-list.md](./cli-list.md) | `list` サブコマンド (`npm ls -g --depth=0`) の詳細仕様 |
 | [install.md](./install.md) | install 方式 C 型 (Node 列挙) と ncu 整合 |
 | [layout.md](./layout.md) | overlay manifest、`$SETUP_DIR` 配置 |
 | [overlay-manifest.md](./overlay-manifest.md) | overlay manifest (方式 B) の詳細仕様 |

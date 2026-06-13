@@ -1,9 +1,8 @@
 # Global npm Package Setup - CLI list サブコマンド
 
-`global-npm list` サブコマンドの仕様確定稿です。
-実装完了後は [docs/cli.md](../docs/cli.md) に移行します。
+`global-npm list` サブコマンドの詳細仕様です。要点は [cli.md](./cli.md) に反映済みです。
 
-関連: [modification.md](./modification.md)
+関連: [archive/mod-cli-list/modification.md](./archive/mod-cli-list/modification.md)
 
 ## 背景
 
@@ -129,4 +128,4 @@ flowchart TD
 
 ## ステータス
 
-**実装済:** `docs/cli.md` に反映済。publish (#4) 前。
+**確定 (v2.2):** [cli.md](./cli.md) に反映済み。進行記録は [archive/mod-cli-list/](./archive/mod-cli-list/modification.md)。

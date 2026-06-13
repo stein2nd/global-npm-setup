@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.2.1: 2026-06-13
+
+### リポジトリ整備 (tarball 非同梱)
+
+* publish 後: 自己参照 `@s2j/global-npm` を `^2.2.0` に追従
+* `README.md`: `list` の簡潔な使い方セクションを追記
+* `docs/usage.md`: `list` 専用セクションとよくあるシナリオを追記
+* v2.2改修完了に伴う docs 整理: `docsMod/mod-cli-list.md` → `docs/cli-list.md`、進行記録を `docs/archive/mod-cli-list/` に退避
+* Windows 11実機: `global-npm list` (prefix 行 + 一覧) を確認 (#5完了)
+* 運用メモ: 定番フロー後の `check` 差分残存 (overlay manifest 既知ギャップ) を `docs/usage.md` に記載
+
 ## v2.2.0: 2026-06-13
 
 ### パッケージ本体
@@ -10,8 +21,9 @@
 
 ### リポジトリ整備 (tarball 非同梱)
 
-* `docs/cli.md`、`README.md`、`docs/usage.md` に `list` を追記
+* `docs/cli.md`、`README.md`、`docs/usage.md` (コマンド一覧表) に `list` を追記
 * 仕様準拠テスト CLI-20〜22を追加
+* README に Node.js / macOS / Windows 11バッジ (shields.io) を追記
 
 ## v2.1.3: 2026-06-09
 
