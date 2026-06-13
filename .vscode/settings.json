@@ -6,5 +6,8 @@
   "textlint.autoFixOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.textlint": "always"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "3w36zj6.textlint"
   }
 }
