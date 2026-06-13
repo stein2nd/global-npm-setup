@@ -18,6 +18,7 @@ global-npm update   # package.json のバージョン範囲を更新 (ncu -u)
 global-npm install  # dependencies を列挙して npm install -g を実行
 global-npm sync     # upstream + user-deps → 実効 package.json を再生成
 global-npm add      # user-deps.json にパッケージを追記
+global-npm list     # global にインストール済み pkg を一覧 (npm ls -g --depth=0)
 ```
 
 ## 各サブコマンドの仕様
@@ -95,6 +96,19 @@ global-npm add typescript --dev
 global-npm add lodash          # npm view で ^x.y.z を自動設定
 ```
 
+### `global-npm list`
+
+| 項目 | 内容 |
+|------|------|
+| 目的 | 現在の global 環境にインストールされているトップレベルパッケージを一覧する。 |
+| 事前処理 | なし (`syncManifest()` を呼ばない) |
+| 実装 | `npm ls -g --depth=0` を透過実行 (`stdio: 'inherit'`) |
+| 副作用 | なし |
+| exit code | 子プロセス (`npm`) の status をそのまま返す |
+
+npm 出力1行目の **global prefix パス** は省略しません (nvm 等での切り分けに必要)。
+定番フロー (`check` → `update` → `install`) には含めません。
+
 ## CLI 実装
 
 | 項目 | 内容 |
@@ -103,20 +117,21 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 | エントリ | `bin/global-npm.cjs` |
 | ライブラリ | `lib/paths.cjs`, `lib/sync-manifest.cjs` 等 |
 | shebang | `#!/usr/bin/env node` |
-| 引数解析 | サブコマンド5つ。未知の引数は usage 表示して `exit code: 1` |
+| 引数解析 | サブコマンド6つ。未知の引数は usage 表示して `exit code: 1` |
 | 子プロセス | `child_process.spawnSync` で同梱 ncu (`lib/resolve-ncu.cjs`)、`npm` を呼び出す。 |
 | JSON 処理 | `fs` + `JSON.parse` (**jq 不要**) |
 
 ### usage
 
 ```
-Usage: global-npm <check|update|install|sync|add>
+Usage: global-npm <check|update|install|sync|add|list>
 
   check    Check for available updates (ncu -g)
   update   Update version ranges in package.json (ncu -g -u)
   install  Install dependencies globally (npm install -g …)
   sync     Merge upstream + user-deps into materialized package.json
   add      Add a package to user-deps.json (optional: --dev)
+  list     List top-level globally installed packages (npm ls -g --depth=0)
 ```
 
 ## setup ディレクトリの解決
@@ -146,6 +161,7 @@ flowchart TD
   PREP --> ACT[ncu または npm install -g]
   SW -->|sync| SYNC[syncManifest]
   SW -->|add| ADD[resolveRange → user-deps → syncManifest]
+  SW -->|list| LIST[npm ls -g --depth=0]
 ```
 
 ## 廃止するもの

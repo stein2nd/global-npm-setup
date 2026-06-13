@@ -26,6 +26,7 @@ v2.1以降、一覧は次の2ヵ所に分かれます。
 | `install` | ✅ | 実効 package.json の `dependencies` を **global に実インストール** |
 | `add` | v2.1で追加 | 追加分を `user-deps.json` に登録し、実効 package.json を更新 |
 | `sync` | v2.1で追加 | upstream + 追加分をマージし、実効 package.json を **再生成** |
+| `list` | v2.2で追加 | 実際の global 環境 (prefix + トップレベル pkg) を **確認** (`npm ls -g --depth=0`) |
 
 ### 定番フロー: `check` → `update` → `install`
 

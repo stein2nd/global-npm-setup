@@ -1,17 +1,17 @@
 # Global npm Package Setup - 仕様準拠テスト結果
 
-最終実行: **2026-06-12**
+最終実行: **2026-06-13**
 
 ## サマリー
 
 | 区分 | 件数 |
 |------|------|
-| ✔ PASS | 63 |
-| ⚠ WARN | 0 |
+| ✔ PASS | 65 |
+| ⚠ WARN | 1 |
 | ✖ FAIL | 0 |
-| 合計 | 63 |
+| 合計 | 66 |
 
-自動テスト合格率（PASS / 合計）: **100%**
+自動テスト合格率（PASS / 合計）: **98%**
 
 実行: `npm test`
 
@@ -53,6 +53,9 @@
 | CLI-17 | `add` が `user-deps.json` の dependencies に追記すること。 | ✔ PASS |  |
 | CLI-18 | `add --dev` が `user-deps.json` の devDependencies に追記すること。 | ✔ PASS |  |
 | CLI-19 | `sync` が upstream dependencies を materialized package.json に反映すること。 | ✔ PASS |  |
+| CLI-20 | `list` サブコマンドが `npm ls -g --depth=0` を spawn すること。 | ✔ PASS |  |
+| CLI-21 | `list` の実装が `syncManifest` / `prepare` を呼ばないこと (ソース静的確認)。 | ✔ PASS |  |
+| CLI-22 | `usage` 文字列に `list` が含まれること。 | ✔ PASS |  |
 
 ## mod-os-agnostic-install
 
@@ -108,10 +111,18 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.1.3` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.2.0` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.1.3` が公開済みであること。 | ✔ PASS |  |
+| PUB-05 | npm registry に `@s2j/global-npm@2.2.0` が公開済みであること。 | ⚠ WARN | npm warn Unknown env config "devdir". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+npm error code E404
+npm error 404 No match found for version 2.2.0
+npm error 404
+npm error 404  The requested resource '@s2j/global-npm@2.2.0' could not be found or you do not have permission to access it.
+npm error 404
+npm error 404 Note that you can also install from a
+npm error 404 tarball, folder, http url, or git url.
+npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/4ec5ae47001ceaa926b5982479155f61/npm/_logs/2026-06-13T00_13_33_374Z-debug-0.log |
 
 ## mod-os-agnostic-windows
 
@@ -120,8 +131,8 @@
 | WIN-01 | CLI が `path.join` / `path.resolve` を使うこと。 | ✔ PASS |  |
 | WIN-02 | spawn 時に Windows 判定付き shell オプションを使うこと。 | ✔ PASS |  |
 | WIN-03 | CLI ソースに Zsh 依存が含まれないこと。 | ✔ PASS |  |
-| WIN-04 | README に Windows 11 向けセクションがあること。 | ✔ PASS |  |
-| WIN-05 | Windows 11 実機で check / update / install が動作すること。 | ✔ PASS | Windows 11 実機確認済 (2026-06-09): check (install 前)、update、install、sync、add、textlint --version → v15.7.1。詳細: docs/archive/v2-os-agnostic/status.md |
+| WIN-04 | README に Windows 11向けセクションがあること。 | ✔ PASS |  |
+| WIN-05 | Windows v11実機で check / update / install が動作すること。 | ✔ PASS | Windows v11実機確認済 (2026-06-09): check (install 前)、update、install、sync、add、textlint --version → v15.7.1。詳細: docs/archive/v2-os-agnostic/status.md |
 
 ## test-report
 

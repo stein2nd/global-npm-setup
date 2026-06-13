@@ -343,6 +343,35 @@ test('cli: sync materializes overlay manifest', () => {
   );
 });
 
+test('cli: list subcommand', () => {
+  const source = read(CLI_PATH);
+  const listStart = source.indexOf("case 'list':");
+  const listEnd = source.indexOf('default:', listStart);
+  const listBlock = source.slice(listStart, listEnd);
+
+  mark(
+    'CLI-20',
+    'mod-os-agnostic-cli',
+    '`list` サブコマンドが `npm ls -g --depth=0` を spawn すること。',
+    listBlock.includes("'list'") &&
+      listBlock.includes("'npm'") &&
+      listBlock.includes("'ls', '-g', '--depth=0'"),
+  );
+  mark(
+    'CLI-21',
+    'mod-os-agnostic-cli',
+    '`list` の実装が `syncManifest` / `prepare` を呼ばないこと (ソース静的確認)。',
+    !listBlock.includes('prepare()') && !listBlock.includes('syncManifest'),
+  );
+  mark(
+    'CLI-22',
+    'mod-os-agnostic-cli',
+    '`usage` 文字列に `list` が含まれること。',
+    source.includes('Usage: global-npm <check|update|install|sync|add|list>') &&
+      source.includes('list     List top-level globally installed packages'),
+  );
+});
+
 // --- mod-os-agnostic-install ---
 
 test('install: C-type npm install -g with semver specs', () => {
@@ -626,13 +655,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.1.3', () => {
+test('publish: version 2.2.0', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.1.3` であること。',
-    pkg.version === '2.1.3',
+    'package.json の version が `2.2.0` であること。',
+    pkg.version === '2.2.0',
   );
 });
 

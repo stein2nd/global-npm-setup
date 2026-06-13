@@ -16,13 +16,14 @@ const { pkgPath } = ctx;
 const shell = process.platform === 'win32';
 
 function usage() {
-  console.error(`Usage: global-npm <check|update|install|sync|add>
+  console.error(`Usage: global-npm <check|update|install|sync|add|list>
 
   check    Check for available updates (ncu -g)
   update   Update version ranges in package.json (ncu -g -u)
   install  Install dependencies globally (npm install -g <name>@<range>…)
   sync     Merge upstream + user-deps into materialized package.json
-  add      Add a package to user-deps.json (optional: --dev)`);
+  add      Add a package to user-deps.json (optional: --dev)
+  list     List top-level globally installed packages (npm ls -g --depth=0)`);
   process.exit(1);
 }
 
@@ -138,6 +139,13 @@ switch (subcommand) {
 
   case 'add':
     handleAdd(restArgs);
+    break;
+
+  case 'list':
+    if (restArgs.length > 0) {
+      usage();
+    }
+    run('npm', ['ls', '-g', '--depth=0']);
     break;
 
   default:

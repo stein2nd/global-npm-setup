@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## v2.2.0: 2026-06-13
+
+### パッケージ本体
+
+* `global-npm list` サブコマンドを追加 (`npm ls -g --depth=0` を透過実行。事前 sync なし)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `docs/cli.md`、`README.md`、`docs/usage.md` に `list` を追記
+* 仕様準拠テスト CLI-20〜22を追加
+
 ## v2.1.3: 2026-06-09
 
 ### リポジトリ整備 (tarball 非同梱)

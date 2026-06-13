@@ -11,7 +11,7 @@
 
 | ファイル | 概要 |
 |----------|------|
-| [usage.md](./usage.md) | 使い方 (鮮度管理、`check`、`update`、`install`、`add`、`sync`) |
+| [usage.md](./usage.md) | 使い方 (鮮度管理、`check`、`update`、`install`、`add`、`sync`、`list`) |
 | [naming.md](./naming.md) | 命名 (`global-npm-setup`、`@s2j/global-npm`、`global-npm`) |
 | [cli.md](./cli.md) | CLI サブコマンド (`check`、`update`、`install`、`sync`、`add`) |
 | [install.md](./install.md) | install 方式 C 型 (Node 列挙) と ncu 整合 |
