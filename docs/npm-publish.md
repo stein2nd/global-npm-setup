@@ -8,7 +8,7 @@ v2では `@s2j/global-npm` として npmjs に公開し、Mac、Windows 双方�
 ## 決定事項
 
 | 項目 | v1.0.0 | v2 |
-|------|--------|-----|
+| --- | --- | --- |
 | npm パッケージ名 | `global-npm-packages` | `@s2j/global-npm` |
 | 公開 | `private: true` | 公開 (`private` 削除または `false`) |
 | スコープ | なし | `@s2j` |
@@ -18,7 +18,7 @@ v2では `@s2j/global-npm` として npmjs に公開し、Mac、Windows 双方�
 ## 名称の可用性 (2026-06-07確認)
 
 | 名称 | 状態 |
-|------|------|
+| --- | --- |
 | `@s2j/global-npm` | 登録済み: v2.0.2 (2026-06-07) |
 | `global-npm` (非スコープ) | 登録済み (別用途): 使用不可 |
 | `global-npm-setup` (非スコープ) | 未登録: リポジトリ名として使用可 |
@@ -104,7 +104,7 @@ npm view @s2j/global-npm version   # 例: 2.1.0
 `@s2j/docs-linter` と同様、GitHub Actions + npm OIDC (Trusted Publishing) による自動 publish を利用します。
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | workflow | `.github/workflows/npm-publish.yml` |
 | 認証 | npm Trusted Publishing (OIDC): `stein2nd/global-npm-setup`、`npm-publish.yml` |
 | トリガー | tag push (`v*`) または手動 dispatch (dry-run デフォルト) |
@@ -143,7 +143,7 @@ global-npm install
 ## GitHub リポジトリ
 
 | 項目 | 値 |
-|------|-----|
+| --- | --- |
 | リポジトリ名 | `global-npm-setup` |
 | 想定 URL | `https://github.com/stein2nd/global-npm-setup` |
 | README | インストール手順 + OS 別セットアップ |
@@ -153,8 +153,8 @@ global-npm install
 v1廃止に伴い publish 運用が必須になるが、管理ツールとしての利便性と `@s2j/docs-linter` 更新管理の目的に合致するため、受け入れます。
 
 | トレードオフ | 受け入れ理由 |
-|--------------|--------------|
-| **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務先 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
+| --- | --- |
+| **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務先 Windows11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
 | **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | v2.1で overlay manifest を実装。`user-deps.json`、`global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
 
 ## ステータス

@@ -13,7 +13,7 @@
 ## v2.2残タスク
 
 | # | タスク | 概要 | 状態 |
-|---|--------|------|------|
+| --- | --- | --- | --- |
 | 1 | `list` サブコマンド実装 | [cli-list.md](../../cli-list.md) に従い `bin/global-npm.cjs` を更新 | ✅ |
 | 2 | 仕様準拠テスト | CLI-20〜22を追加 | ✅ |
 | 3 | docs 更新 | `docs/cli.md`、`README.md`、`docs/usage.md` に `list` 反映 | ✅ |

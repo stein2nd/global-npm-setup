@@ -9,7 +9,7 @@ v2では npm 公開し `@s2j/docs-linter` (GPL-2.0-or-later) と同一エコシ�
 ## 決定事項
 
 | 項目 | v1.0.0 | v2 |
-|------|--------|-----|
+| --- | --- | --- |
 | ライセンス | MIT | GPL-3.0-or-later |
 | LICENSE ファイル | なし | GNU GPL v3全文を追加 |
 | package.json `"license"` | `"MIT"` | `"GPL-3.0-or-later"` |
@@ -23,7 +23,7 @@ v2では npm 公開し `@s2j/docs-linter` (GPL-2.0-or-later) と同一エコシ�
 ## 変更対象ファイル
 
 | ファイル | 変更内容 |
-|----------|----------|
+| --- | --- |
 | `LICENSE` | 新規作成 (GPL v3全文 + Copyright 表記) |
 | `package.json` | `"license": "GPL-3.0-or-later"` |
 | `README.md` | ライセンス節を追加 |

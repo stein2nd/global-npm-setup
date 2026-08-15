@@ -19,7 +19,7 @@ v2.1では下記を同時に満たします。
 ## 決定事項サマリー
 
 | 項目 | 決定 |
-|------|------|
+| --- | --- |
 | 方式 | 常時 overlay。同梱 `package.json` は upstream 正本のみ。 |
 | setup デフォルト | macOS、Linux: `~/.config/global-npm`、Windows 11: `%APPDATA%\global-npm` |
 | 環境変数 | `GLOBAL_NPM_SETUP_DIR` でデフォルトを上書き可能。 |
@@ -58,7 +58,7 @@ flowchart TB
 ### レイヤの役割
 
 | レイヤ | パス | 更新者 | 用途 |
-|--------|------|--------|------|
+| --- | --- | --- | --- |
 | Upstream 正本 | `<packageRoot>/package.json` | npm publish | 公式 `dependencies` 一覧 |
 | ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー、`global-npm add` | 追加分、ピン留め |
 | 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu、install の実効マニフェスト |
@@ -71,9 +71,9 @@ flowchart TB
 ### デフォルト `SETUP_DIR`
 
 | OS | デフォルト |
-|----|------------|
+| --- | --- |
 | macOS、Linux | `~/.config/global-npm` |
-| Windows 11 | `%APPDATA%\global-npm` (`process.env.APPDATA`、未設定時は `%USERPROFILE%\AppData\Roaming\global-npm`) |
+| Windows11 | `%APPDATA%\global-npm` (`process.env.APPDATA`、未設定時は `%USERPROFILE%\AppData\Roaming\global-npm`) |
 
 ### 解決式
 
@@ -241,7 +241,7 @@ global-npm <check|update|install|sync|add>
 ```
 
 | サブコマンド | 事前 sync | 操作対象 |
-|--------------|-----------|----------|
+| --- | --- | --- |
 | `check` | あり | 実効 package.json → `ncu -g --format time --packageFile` |
 | `update` | あり | 実効 package.json → `ncu -g --format time -u --packageFile` |
 | `install` | あり | 実効 package.json の **dependencies のみ** → `npm install -g` |
@@ -254,7 +254,7 @@ global-npm <check|update|install|sync|add>
 ### `global-npm add <pkg>[@range] [--dev]`
 
 | 引数 | 内容 |
-|------|------|
+| --- | --- |
 | `<pkg>` | npm パッケージ名 (スコープ可) |
 | `[@range]` | semver range またはバージョン (省略可) |
 | `--dev` | `devDependencies` に追加 (省略時は `dependencies`) |
@@ -534,7 +534,7 @@ global-npm install
 ## v2.0.x からの移行 (破壊的変更)
 
 | v2.0.x | v2.1 |
-|--------|------|
+| --- | --- |
 | setup = package root | setup = `~/.config/global-npm` (Windows: `%APPDATA%\global-npm`) |
 | 同梱 `package.json` を直接 ncu | 実効 package.json を ncu |
 | 3サブコマンド | 5サブコマンド |
@@ -554,7 +554,7 @@ global-npm install
 ### `test/sync-manifest.test.cjs` (純関数ユニット)
 
 | ID | 観点 | 期待 |
-|----|------|------|
+| --- | --- | --- |
 | SYNC-01 | user-only `dependencies` | upstream 更新後も維持 |
 | SYNC-02 | 未 update の upstream パッケージ | 新 upstream range にオーバーライトする |
 | SYNC-03 | `global-npm update` 済み | 実効 package.json 維持 |
@@ -569,14 +569,14 @@ global-npm install
 ### `test/resolve-range.test.cjs` (新規)
 
 | ID | 観点 | 期待 |
-|----|------|------|
+| --- | --- | --- |
 | RANGE-01 | `npm view` 成功 | `^x.y.z` を返す |
 | RANGE-02 | `npm view` 失敗 (オフライン等) | `*` を返し warning を stderr |
 
 ### `test/spec-compliance.test.cjs` (更新)
 
 | 旧 ID | 変更 |
-|-------|------|
+| --- | --- |
 | CLI-08 | 反転: `GLOBAL_NPM_SETUP_DIR`、デフォルトパス解決を検証 |
 | LAY-10 | 反転: overlay 実装済みを検証 |
 | CLI-07 | 更新: package root は upstream のみ、setup は `defaultSetupDir()` |
@@ -600,7 +600,7 @@ global-npm install
 ## 実装完了後の `docs/` 移行
 
 | 現行 | 移行先 |
-|------|--------|
+| --- | --- |
 | 本ファイルのパス・マージ仕様 | `docs/layout.md` |
 | サブコマンド・`add`、`sync` | `docs/cli.md` |
 | install は dependencies のみ | `docs/install.md` |

@@ -10,7 +10,7 @@ v2.1以降、install の入力は **実効 `package.json`**、`$SETUP_DIR/packag
 ## 方式の比較 (要約)
 
 | 方式 | 概要 | CLI on PATH | ncu 整合 | OS 非依存 |
-|------|------|-------------|----------|-----------|
+| --- | --- | --- | --- | --- |
 | A. jq 列挙 | `npm install -g $(jq …)` | ◎ | ◎ | △ (jq + シェル) |
 | B. setup で `npm install -g` | メタ pkg のみ global install | △ | △ | ◎ |
 | **C. Node 列挙** | `package.json` を Node で読み、明示 global install | ◎ | ◎ | ◎ |
@@ -32,7 +32,7 @@ v1の jq 処理と **npm 上の意味論は同一** です。実装を Node に�
 ### `devDependencies`: v2.1、B 案
 
 | 操作 | `dependencies` | `devDependencies` |
-|------|----------------|-------------------|
+| --- | --- | --- |
 | `check`、`update` (ncu) | 対象 | 対象。実効 package.json にマージ済みの分 |
 | `install` | 対象 | **対象外** |
 
@@ -41,7 +41,7 @@ v1の jq 処理と **npm 上の意味論は同一** です。実装を Node に�
 ## ncu との整合
 
 | サブコマンド | 操作対象 | ncu、npm の入力 |
-|--------------|----------|------------------|
+| --- | --- | --- |
 | `global-npm check` | 更新確認のみ | 実効 `package.json` |
 | `global-npm update` | バージョン範囲の書き換え | 実効 `package.json` |
 | `global-npm install` | グローバルインストール | 実効 package.json の **dependencies** のみ |
@@ -86,7 +86,7 @@ spawnSync('npm', ['install', '-g', ...specs], {
 ### エッジケース
 
 | ケース | 対応 |
-|--------|------|
+| --- | --- |
 | `dependencies` が空 | エラー終了 (`exit code: 1`) |
 | 自己参照 `@s2j/global-npm` | 他 pkg と同様に列挙 (自身も再インストール) |
 | Windows | `shell: true` で `npm.cmd` を解決 |
@@ -95,7 +95,7 @@ spawnSync('npm', ['install', '-g', ...specs], {
 ## 移行
 
 | 版 | setup、install 入力 |
-|----|----------------------|
+| --- | --- |
 | v1 | jq 列挙 |
 | v2.0.x | package root の `package.json` |
 | v2.1 | 実効 package.json (`$SETUP_DIR/package.json`) |

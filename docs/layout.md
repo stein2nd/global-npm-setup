@@ -11,7 +11,7 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 ## 方式の比較
 
 | | 方式 A: パッケージ同梱のみ | 方式 B: overlay manifest (v2.1) |
-|--|---------------------------|----------------------------------|
+| --- | --- | --- |
 | 配置 | `@s2j/global-npm` 内の `package.json` のみ | upstream 正本 + `$SETUP_DIR` の実効 package.json |
 | 更新 | `npm update -g @s2j/global-npm` で upstream 更新 | sync が upstream を実効 package.json に反映 |
 | Mac、Windows 同期 | upstream を npm publish で同期 | upstream + 同一 `$SETUP_DIR` 構成で同期 |
@@ -31,7 +31,7 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 ### レイヤの役割
 
 | レイヤ | パス | 更新者 | 用途 |
-|--------|------|--------|------|
+| --- | --- | --- | --- |
 | Upstream 正本 | `<packageRoot>/package.json` | npm publish | 公式 `dependencies` 一覧 |
 | ユーザー overlay | `$SETUP_DIR/user-deps.json` | ユーザー、`global-npm add` | 追加分、ピン留め |
 | 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu、install の実効マニフェスト |
@@ -44,14 +44,14 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 ### デフォルト
 
 | OS | パス |
-|----|------|
+| --- | --- |
 | macOS、Linux | `~/.config/global-npm` |
-| Windows 11 | `%APPDATA%\global-npm` |
+| Windows11 | `%APPDATA%\global-npm` |
 
 ### 環境変数
 
 | 変数 | 用途 |
-|------|------|
+| --- | --- |
 | `GLOBAL_NPM_SETUP_DIR` | デフォルト setup ディレクトリを上書き |
 
 ```js
@@ -109,7 +109,7 @@ const setupDir = path.resolve(
 ### upstream から削除されたパッケージ
 
 | 種別 | 扱い |
-|------|------|
+| --- | --- |
 | ユーザー追加分 | 実効 package.json に維持 |
 | upstream 管理分 | 実効 package.json から削除 |
 
@@ -135,7 +135,7 @@ global-npm-setup/          # Git リポジトリ root
 ### upstream `package.json` の役割
 
 | フィールド | 用途 |
-|------------|------|
+| --- | --- |
 | `name` | `@s2j/global-npm` |
 | `bin` | `global-npm` コマンド |
 | `dependencies` | 公式グローバルインストール対象 |
@@ -148,7 +148,7 @@ global-npm-setup/          # Git リポジトリ root
 `dependencies` の `@s2j/global-npm` は、**npm publish 済みの最新バージョン** を `^x.y.z` で明示します。
 
 | タイミング | 記載する range |
-|---|---|
+| --- | --- |
 | 開発中 (`version` を未 publish の版に bump 済み) | `^<registry 上の latest>` (= 前回 publish 版) |
 | publish 直後 | `^<いま publish した版>` に更新 |
 
@@ -158,9 +158,9 @@ global-npm-setup/          # Git リポジトリ root
 ## ローカル開発配置
 
 | 環境 | 推奨パス |
-|------|----------|
+| --- | --- |
 | macOS | `~/dotfiles/global-npm-setup/` |
-| Windows 11 | `%USERPROFILE%\dotfiles\global-npm-setup\` |
+| Windows11 | `%USERPROFILE%\dotfiles\global-npm-setup\` |
 
 開発時は `GLOBAL_NPM_SETUP_DIR` を `.sandbox/setup` 等に向けて overlay を検証します。
 

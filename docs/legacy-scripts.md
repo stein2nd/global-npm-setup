@@ -8,7 +8,7 @@ v2では `@s2j/global-npm` CLI に統一し、両者を **廃止** します。
 ## v1の構成 (2層)
 
 | 層 | ファイル | 役割 |
-|----|----------|------|
+| --- | --- | --- |
 | install 専用 | `./install-global.zsh` | setup ディレクトリで `npm install -g` (B 型) |
 | オーケストレータ | `~/bin/global-npm` | `check`、`update`、`install` を `npm run ncu:*` に委譲 |
 
@@ -24,7 +24,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 利点
 
 | 利点 | 説明 |
-|------|------|
+| --- | --- |
 | 極めて単純 | 12行。依存は zsh + npm のみ。 |
 | リポジトリ同梱 | Git で追跡。npm publish 不要。 |
 | 自己の位置解決 | `cd "$(dirname "$0")"` で setup ディレクトリを確定。 |
@@ -35,7 +35,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 欠点
 
 | 欠点 | 説明 |
-|------|------|
+| --- | --- |
 | B 型 install | 依存 CLI の `bin` が PATH に載らない ([install.md](./install.md) 参照)。 |
 | Zsh 専用 | Windows、bash では動かない。 |
 | 二重入口 | 本番は `ncu:install` 経由のことが多く、役割があいまい。 |
@@ -46,7 +46,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 利点
 
 | 利点 | 説明 |
-|------|------|
+| --- | --- |
 | 短いコマンド名 | どの cwd からも `global-npm check`。 |
 | 3操作の統一入口 | check、update、install を1コマンド体系に。 |
 | dotfiles 文化との親和性 | `~/bin` + `.zshrc` の PATH は UNIX ユーザーに馴染み深い。 |
@@ -56,7 +56,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 欠点・脆弱性
 
 | 欠点 | 説明 |
-|------|------|
+| --- | --- |
 | Zsh 専用 | `${0:A:h}` 等は Windows 非対応。 |
 | SETUP_DIR のあいまいさ | README では `~/bin/global-npm` に置く想定だが、`SETUP_DIR="${0:A:h}"` だと `~/bin` を指す。正しく動かすには setup 内に置いて symlink する等の追加手順が必要。 |
 | 二重管理 | ラッパー + `package.json` scripts + `install-global.zsh`。 |
@@ -69,7 +69,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 廃止の利点
 
 | 利点 | 説明 |
-|------|------|
+| --- | --- |
 | OS 非依存 | Node + npm のみ。macOS、Windows 11で同一。 |
 | 入口の一本化 | check、update、install が1実装 (`bin/global-npm.js`)。 |
 | C 型 install | Node 列挙。ncu 整合を保ちつつ jq ランタイム不要。 |
@@ -84,7 +84,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ### 廃止のトレードオフ
 
 | トレードオフ | 説明 | 受け入れ |
-|--------------|------|----------|
+| --- | --- | --- |
 | 初回 bootstrap | 先に `npm install -g @s2j/global-npm` が必要 | ◎ |
 | npm publish 依存 | dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | ◎: [npm-publish.md](./npm-publish.md) 参照 |
 | ネットワーク | 初回および更新時に registry 到達が前提 | ◎ |
@@ -94,7 +94,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ## 横断比較
 
 | 観点 | `install-global.zsh` | `~/bin/global-npm` | 廃止 → `@s2j/global-npm` |
-|------|----------------------|--------------------|---------------------------|
+| --- | --- | --- | --- |
 | 対応 OS | macOS (Zsh) | macOS (Zsh) | macOS、Windows |
 | 入口数 | install のみ (別系統) | 3操作 | 3操作 (統一) |
 | install 方式 | B 型 (不適) | A 型 (jq、ラッパー経由) | C 型 (Node 列挙) |
@@ -107,7 +107,7 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 ## 決定事項
 
 | 項目 | 判断 |
-|------|------|
+| --- | --- |
 | `install-global.zsh` | **廃止** (B 型かつ冗長) |
 | `~/bin/global-npm` | **廃止** (npm global `bin` が代替) |
 | コマンド名 `global-npm` | **維持** (`@s2j/global-npm` の `bin` フィールド) |

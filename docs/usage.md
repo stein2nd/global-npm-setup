@@ -10,7 +10,7 @@
 v2.1以降、一覧は次の2ヵ所に分かれます。
 
 | 種別 | 置き場所 | 誰が更新するか |
-|------|----------|----------------|
+| --- | --- | --- |
 | **upstream 管理分** | `@s2j/global-npm` 同梱の公式 `package.json` | `npm update -g @s2j/global-npm` で取り込む |
 | **利用側の追加分** | `~/.config/global-npm/user-deps.json` 等 | `global-npm add` または手編集 |
 
@@ -20,7 +20,7 @@ v2.1以降、一覧は次の2ヵ所に分かれます。
 ## コマンドと鮮度への役割
 
 | コマンド | 従来から | 主な役割 (鮮度の観点) |
-|----------|--------|------------------------|
+| --- | --- | --- |
 | `check` | ✅ | 実効 package.json を前提に、更新候補を **確認するだけ** (range は変えない) |
 | `update` | ✅ | 実効 package.json の range を ncu で **最新に書き換える** |
 | `install` | ✅ | 実効 package.json の `dependencies` を **global に実インストール** |
@@ -37,7 +37,7 @@ global-npm install
 ```
 
 | 段階 | やること | 鮮度への意味 |
-|---|---|---|
+| --- | --- | --- |
 | `check` | registry 上の新しい版があるか表示 | 「何が古いか」を把握。ファイルは (ncu 以外は) 変えない。 |
 | `update` | 実効 package.json の semver range を更新 | 「次に入れる版」の **宣言** を新しくする。 |
 | `install` | range を registry 上の具体 version に解決し `npm install -g` を一括実行 | 宣言どおり **実際の global 環境** を更新する (`check` が案内する `npm -g install pkg@version` 相当)。 |
@@ -59,7 +59,7 @@ global-npm add eslint --dev        # devDependencies (ncu 対象、install は�
 ```
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 書き込み先 | `user-deps.json`。 |
 | その後 | 内部で `sync` が走り、実効 package.json に反映。 |
 | `install` | **自動では実行しない**。global に入れるには続けて `global-npm install`。 |
@@ -76,7 +76,7 @@ global-npm sync --dry-run   # 書き込みなしで差分だけ表示
 ```
 
 | 使う場面 | 例 |
-|----------|-----|
+| --- | --- |
 | マージ結果だけ確認したい | `sync --dry-run` |
 | `user-deps.json` を手編集した直後 | `sync` (または次の `check` 等で自動 sync) |
 | upstream を取り込んだ直後で、中身を確定させたい | `npm update -g @s2j/global-npm` のあと |
@@ -92,7 +92,7 @@ global-npm list
 ```
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 読む対象 | 現在の Node.js / npm が指す **global prefix** 配下の実インストール。 |
 | 読まない対象 | 実効 package.json (`$SETUP_DIR/package.json`)。manifest の「管理対象一覧」ではない。 |
 | 事前 `sync` | **なし** (ファイルは変更しない) |
@@ -109,7 +109,7 @@ global-npm list
 ```
 
 | 使う場面 | 例 |
-|----------|-----|
+| --- | --- |
 | `install` 後の反映確認 | 定番フロー後に、global に入ったバージョンを目視する。 |
 | Node.js 切り替え後 | nvm / fnm でバージョンを変えたあと、意図した prefix を見ているか確認する。 |
 | manifest と実環境の切り分け | `check` の結果と global 実体が食い違うとき、まず `list` で実態を把握する。 |
@@ -156,7 +156,7 @@ global-npm install
 ### 起こりうるパターン
 
 | 状況 | 結果 |
-|------|------|
+| --- | --- |
 | 追加分だけのパッケージ (`typescript` 等) | upstream 更新でも **消えない** |
 | upstream 管理分で、まだ `update` していない | upstream 更新後の最初の `check` 等で **新 range に追従** |
 | upstream 管理分で、すでに `update` 済み | 利用側が選んだ range を **維持** |

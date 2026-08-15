@@ -8,13 +8,13 @@ v1は macOS 専用 (Zsh、`brew`、`~/bin`、nvm UNIX 版) でした。
 ## v1で Windows 非対応だった要素
 
 | 要素 | v1 | v2 |
-|------|----|----|
+| --- | --- | --- |
 | インストールスクリプト | `install-global.zsh` | Node CLI `global-npm` |
 | コマンドラッパー | `~/bin/global-npm` (Zsh) | `npm install -g @s2j/global-npm` |
 | パッケージ名の列挙 | `jq` + シェル展開 | Node `JSON.parse` (C 型。**jq 不要**) |
 | パッケージマネージャー (OS) | Homebrew (jq 等) | fnm、winget 等 (Node 導入) |
 
-## Windows 11セットアップ手順 (概要)
+## Windows11セットアップ手順 (概要)
 
 ### 1. Node.js
 
@@ -60,8 +60,8 @@ global-npm install
 
 ## パス・ディレクトリ
 
-| 項目 | Windows 11 |
-|------|------------|
+| 項目 | Windows11 |
+| --- | --- |
 | ユーザーホーム | `%USERPROFILE%` (例: `C:\Users\<user>`) |
 | setup ディレクトリ (デフォルト) | `%APPDATA%\global-npm` |
 | setup 上書き | 環境変数 `GLOBAL_NPM_SETUP_DIR` |
@@ -77,7 +77,7 @@ PowerShell 再起動後、`global-npm --version` 等で PATH を確認します�
 ## CLI 実装上の Windows 対応
 
 | 要件 | 対応 |
-|------|------|
+| --- | --- |
 | シェル非依存 | Node.js `child_process.spawnSync` を使用 |
 | パス区切り | `path.join`、`path.resolve` を使用 |
 | shebang | `#!/usr/bin/env node` (Windows では npm が `.js` を node で実行) |
@@ -122,8 +122,8 @@ v2の README は、OS 別セクションに分けます。
 
 ## テスト観点
 
-| 確認項目 | macOS | Windows 11 |
-|----------|-------|------------|
+| 確認項目 | macOS | Windows11 |
+| --- | --- | --- |
 | `global-npm check` | ✓ | ✓ |
 | `global-npm update` | ✓ | ✓ |
 | `global-npm install` (C 型列挙) | ✓ | ✓ |

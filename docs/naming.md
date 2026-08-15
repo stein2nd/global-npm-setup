@@ -8,7 +8,7 @@ v2では Windows 11 (勤務先) でも同じ操作感で使えるよう npm パ�
 ## 決定事項
 
 | レイヤ | v1.0.0 | v2 (決定) |
-|--------|--------|------------|
+| --- | --- | --- |
 | GitHub リポジトリ名 |  (dotfiles 内 `setup/`) | `global-npm-setup` |
 | ローカル配置 (推奨) | `~/dotfiles/setup/` | `~/dotfiles/global-npm-setup/` |
 | npm パッケージ名 | `global-npm-packages` (`private: true`) | `@s2j/global-npm` |
@@ -55,7 +55,7 @@ v2では Windows 11 (勤務先) でも同じ操作感で使えるよう npm パ�
 ## 移行
 
 | v1 | v2への対応 |
-|----|-------------|
+| --- | --- |
 | `~/dotfiles/setup/` | リネームまたは clone 先を `~/dotfiles/global-npm-setup/` に |
 | `~/bin/global-npm` | 削除可 (npm グローバル `bin` が PATH に入っていれば不要) |
 | `install-global.zsh` | 廃止 (CLI `global-npm install` に統合) |

@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+## v2.2.2: 2026-08-15
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: npm v12、npm-check-updates v23、eslint v10、TypeScript v7、@s2j/docs-linter v1.0.22ほかを追従
+* npm v12: 推移的 Git 依存 (`@s2j/docs-linter` → `textlint-rule-preset-wp-docs-ja`) の `EALLOWGIT` 回避のため、`.npmrc` に `allow-git=all` を追加
+* npm v12: `allowScripts` で `@s2j/docs-linter` の `postinstall` を許可。`spawn-sync` は拒否
+
 ## v2.2.1: 2026-06-13
 
 ### リポジトリ整備 (tarball 非同梱)

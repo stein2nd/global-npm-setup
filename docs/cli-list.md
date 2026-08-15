@@ -15,7 +15,7 @@ manifest の内容ではなく、**実際に global インストールされて�
 ## 決定事項サマリー
 
 | 項目 | 決定 |
-|------|------|
+| --- | --- |
 | サブコマンド名 | `list` |
 | 実装 | `npm ls -g --depth=0` を透過実行 (`stdio: 'inherit'`) |
 | 事前 `syncManifest()` | **呼ばない** (読み取り専用) |
@@ -43,7 +43,7 @@ manifest の内容ではなく、**実際に global インストールされて�
 ## `$SETUP_DIR` との関係
 
 | 概念 | パス例 | `list` で示すか |
-|------|--------|-----------------|
+| --- | --- | --- |
 | 実効 manifest | `$SETUP_DIR/package.json` | 否 (manifest は表示しない) |
 | global prefix | `npm prefix -g` 配下 (例: nvm 利用時 `~/.nvm/versions/node/v26.3.0/lib`) | **是** (npm 出力1行目) |
 
@@ -55,7 +55,7 @@ manifest の内容ではなく、**実際に global インストールされて�
 ### `global-npm list`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | 現在の global 環境にインストールされているトップレベルパッケージを一覧する。 |
 | 事前処理 | なし (`syncManifest()` を呼ばない) |
 | 実装 | `spawnSync('npm', ['ls', '-g', '--depth=0'], { stdio: 'inherit', shell: win32 })` |
@@ -102,7 +102,7 @@ flowchart TD
 ## 実装メモ
 
 | ファイル | 変更 |
-|----------|------|
+| --- | --- |
 | `bin/global-npm.cjs` | `case 'list':` を追加。`usage()` に `list` を追記 |
 | `docs/cli.md` | サブコマンド仕様を追記 (確定後) |
 | `docs/usage.md` | トラブルシュートや確認用途として1行追記 (任意) |
@@ -114,7 +114,7 @@ flowchart TD
 ## 仕様準拠テスト (案)
 
 | ID | 条件 |
-|----|------|
+| --- | --- |
 | CLI-20 | `list` サブコマンドが `npm ls -g --depth=0` を spawn すること。 |
 | CLI-21 | `list` の実装が `syncManifest` / `prepare` を呼ばないこと (ソース静的確認)。 |
 | CLI-22 | `usage` 文字列に `list` が含まれること。 |
@@ -122,9 +122,9 @@ flowchart TD
 ## 実機確認 (任意)
 
 | OS | 確認項目 |
-|----|----------|
+| --- | --- |
 | macOS | prefix 行が表示される。一覧が `npm ls -g --depth=0` と一致する。 |
-| Windows 11 | 同上 (PowerShell)。 |
+| Windows11 | 同上 (PowerShell)。 |
 
 ## ステータス
 

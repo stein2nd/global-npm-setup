@@ -10,7 +10,7 @@
 ## 仕様書一覧 (v2)
 
 | ファイル | 概要 |
-|----------|------|
+| --- | --- |
 | [usage.md](./usage.md) | 使い方 (鮮度管理、`check`、`update`、`install`、`add`、`sync`、`list`) |
 | [naming.md](./naming.md) | 命名 (`global-npm-setup`、`@s2j/global-npm`、`global-npm`) |
 | [cli.md](./cli.md) | CLI サブコマンド (`check`、`update`、`install`、`sync`、`add`、`list`) |
@@ -26,7 +26,7 @@
 ## 進行管理
 
 | 種別 | 場所 |
-|------|------|
+| --- | --- |
 | 進行中 | [docsMod/modification.md](../docsMod/modification.md)、[status.md](../docsMod/status.md) |
 | テスト結果 (自動生成) | [docsMod/test-results.md](../docsMod/test-results.md) — `npm test` |
 | 完了した改修 | [archive/](./archive/README.md) |

@@ -30,7 +30,7 @@ global-npm list     # global にインストール済み pkg を一覧 (npm ls -
 ### `global-npm check`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | 管理対象パッケージに利用可能な更新があるか確認する。 |
 | 事前処理 | `syncManifest()` |
 | 実装 | 同梱 `npm-check-updates` を優先起動し、`-g --format time --packageFile <materialized>/package.json` |
@@ -43,7 +43,7 @@ global-npm list     # global にインストール済み pkg を一覧 (npm ls -
 ### `global-npm update`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | 実効 package.json のバージョン範囲を、最新に書き換える。 |
 | 事前処理 | `syncManifest()` |
 | 実装 | 同梱 `npm-check-updates` を優先起動し、`-g --format time -u --packageFile <materialized>/package.json` |
@@ -53,7 +53,7 @@ global-npm list     # global にインストール済み pkg を一覧 (npm ls -
 ### `global-npm install`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | 実効 package.json の `dependencies` を **各々トップレベルの global pkg** としてインストールする。 |
 | 事前処理 | `syncManifest()` |
 | 実装 | C 型: 実効 package.json の `dependencies` を読み、range を `npm view` で具体 version に解決して `npm install -g <name>@<version>…` |
@@ -73,7 +73,7 @@ global-npm install
 ### `global-npm sync`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | upstream + `user-deps.json` → 実効 package.json を再生成する。 |
 | 実装 | `syncManifest()` |
 | 副作用 | `$SETUP_DIR/package.json` と `.upstream-meta.json` を更新。 |
@@ -84,7 +84,7 @@ ncu、npm は呼びません。
 ### `global-npm add <pkg>[@range] [--dev]`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | `user-deps.json` にパッケージを追記し、sync する。 |
 | `--dev` | `devDependencies` に追加 (省略時は `dependencies`)。 |
 | range 省略 | `npm view <pkg> version` → `^x.y.z`。失敗時は `*` にフォールバック。 |
@@ -99,7 +99,7 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 ### `global-npm list`
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 目的 | 現在の global 環境にインストールされているトップレベルパッケージを一覧する。 |
 | 事前処理 | なし (`syncManifest()` を呼ばない) |
 | 実装 | `npm ls -g --depth=0` を透過実行 (`stdio: 'inherit'`) |
@@ -112,7 +112,7 @@ npm 出力1行目の **global prefix パス** は省略しません (nvm 等で�
 ## CLI 実装
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | 言語 | Node.js (CommonJS) |
 | エントリ | `bin/global-npm.cjs` |
 | ライブラリ | `lib/paths.cjs`, `lib/sync-manifest.cjs` 等 |
@@ -137,7 +137,7 @@ Usage: global-npm <check|update|install|sync|add|list>
 ## setup ディレクトリの解決
 
 | 項目 | 内容 |
-|------|------|
+| --- | --- |
 | upstream 正本 | `path.resolve(__dirname, '..')/package.json` |
 | 実効 package.json | `$SETUP_DIR/package.json` |
 | デフォルト `$SETUP_DIR` | `~/.config/global-npm`。Windows 11では `%APPDATA%\global-npm` |
@@ -167,7 +167,7 @@ flowchart TD
 ## 廃止するもの
 
 | v1 | v2 |
-|----|-----|
+| --- | --- |
 | `~/bin/global-npm` (Zsh) | 廃止 |
 | `install-global.zsh` | 廃止 |
 | `ncu:install` 内 `jq` | Node 列挙 (C 型) に置換 |

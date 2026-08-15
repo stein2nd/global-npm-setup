@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
@@ -47,27 +47,31 @@
     "ncu:update": "ncu -g --format time -u --packageFile package.json"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@s2j/docs-linter": "^1.0.16",
-    "eslint": "^9.39.1",
+    "@eslint/js": "^10.0.1",
+    "@s2j/docs-linter": "^1.0.22",
+    "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^16.5.0",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.3"
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
   },
   "dependencies": {
     "@s2j/global-npm": "^2.2.1",
     "corepack": "^0.35.0",
     "editorconfig-cli": "^1.0.0",
     "envinfo": "^7.21.0",
-    "npm": "^11.16.0",
-    "npm-check-updates": "^22.2.3",
-    "run": "^1.5.0",
-    "textlint": "^15.7.1",
-    "textlint-rule-preset-ja-spacing": "^3.0.0",
+    "npm": "^12.0.2",
+    "npm-check-updates": "^23.0.2",
+    "run": "^2.0.0",
+    "textlint": "^15.8.0",
+    "textlint-rule-preset-ja-spacing": "^3.0.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-spellcheck-tech-word": "^5.0.0",
     "wp-handbook-converter": "^1.0.0",
     "wpapi": "^1.2.2"
+  },
+  "allowScripts": {
+    "@s2j/docs-linter": true,
+    "spawn-sync": false
   }
 }
