@@ -1,34 +1,25 @@
-# Global npm Package Setup - npm 公開
-
-`@s2j/global-npm` の公開方針です。
+# Global npm Package Setup - npm 公開 (脱 OS 依存改修)
 
 ## 背景
 
 v1では `"private": true` により npm 公開を禁止していました。
 v2では `@s2j/global-npm` として npmjs に公開し、Mac、Windows 双方で `npm install -g` による導入および更新を可能にします。
 
-Global Package Setup シリーズでは、各エコシステムの標準レジストリから CLUI を配ります。
-npm 実装の配布物は npmjs です。姉妹 `global-composer-setup` の配布先は、そちらの仕様に委ねます。
-
-Vite 再構成後は、tarball に載せる実行ファイルが `bin/` + `lib/` から `dist/` に変わります。
-パッケージ名、コマンド名、Trusted Publishing の流れは維持します。
-
 ## 決定事項
 
-| 項目 | v1.0.0 | v2以降 |
+| 項目 | v1.0.0 | v2 |
 | --- | --- | --- |
 | npm パッケージ名 | `global-npm-packages` | `@s2j/global-npm` |
 | 公開 | `private: true` | 公開 (`private` 削除または `false`) |
 | スコープ | なし | `@s2j` |
-| バージョン | 1.0.x | 2.x (公開済み) |
+| バージョン | 1.0.x | 2.0.0 (メジャー bump) |
 | レジストリ | — | https://registry.npmjs.org |
-| ビルド | なし (CJS をそのまま同梱) | 今後: Vite で `dist/` を生成してから publish |
 
-## 名称の可用性
+## 名称の可用性 (2026-06-07確認)
 
 | 名称 | 状態 |
 | --- | --- |
-| `@s2j/global-npm` | 登録済み (運用中) |
+| `@s2j/global-npm` | 登録済み: v2.0.2 (2026-06-07) |
 | `global-npm` (非スコープ) | 登録済み (別用途): 使用不可 |
 | `global-npm-setup` (非スコープ) | 未登録: リポジトリ名として使用可 |
 
@@ -36,19 +27,18 @@ maintainer: `stein2nd` (`@s2j/docs-linter` と同一)。
 
 ## package.json (公開用)
 
-現行 (v2.2) の `bin` は `bin/global-npm.cjs` です。Vite 再構成後の想定は、下記です。
-
 ```json
 {
   "name": "@s2j/global-npm",
+  "version": "2.0.2",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bin": {
-    "global-npm": "dist/global-npm.js"
+    "global-npm": "bin/global-npm.cjs"
   },
   "files": [
-    "dist/",
+    "bin/",
     "package.json",
     "LICENSE",
     "README.md"
@@ -67,8 +57,7 @@ maintainer: `stein2nd` (`@s2j/docs-linter` と同一)。
     "packages",
     "setup",
     "ncu",
-    "npm-check-updates",
-    "clui"
+    "npm-check-updates"
   ],
   "engines": {
     "node": ">=18"
@@ -77,18 +66,12 @@ maintainer: `stein2nd` (`@s2j/docs-linter` と同一)。
 ```
 
 `private` フィールドは削除します。
-`files` の確定は実装時に `npm run pack:dry-run` で確認します。GPL 対応として `src/` を同梱するかは [license.md](./license.md) を参照してください。
 
 ## publish 手順
 
-Vite 再構成後は、pack / publish の前にビルドを挟みます。
-
 ```sh
-# 0. ビルド (今後)
-npm run build
-
 # 1. バージョン更新 (CHANGELOG 反映後)
-npm version patch   # 例
+npm version major   # 2.0.0
 
 # 2. 公開内容の確認 (tarball は ./artifacts/ に出力)
 npm run pack:dry-run
@@ -102,21 +85,19 @@ npm publish --access public
 
 `@s2j` はスコープ付きのため `--access public` が必要です (初回 publish 時)。
 
-CI では tag トリガーの前に同じ `build` を走らせ、未ビルドの `dist/` を公開しないようにします。
-
 ### 自己参照 `@s2j/global-npm` の更新
 
 `dependencies` の自己参照は、**npm publish 済みの最新バージョン** を `^x.y.z` で明示する運用とします ([layout.md](./layout.md))。
 
 ```sh
 # publish 後: registry 上の latest を確認
-npm view @s2j/global-npm version
+npm view @s2j/global-npm version   # 例: 2.1.0
 
 # package.json の dependencies を更新
-# "@s2j/global-npm": "^x.y.z"
+# "@s2j/global-npm": "^2.1.0"
 ```
 
-開発中に `version` だけ先に bump している間は、自己参照は前回 publish 版のままにします。未 publish の版を書かないようにしてください。
+開発中に `version` だけ先に bump している間は、自己参照は前回 publish 版のままにします。未 publish の版 (`^2.1.1` など) を書かないようにしてください。
 
 ## CI、自動 publish
 
@@ -128,12 +109,11 @@ npm view @s2j/global-npm version
 | 認証 | npm Trusted Publishing (OIDC): `stein2nd/global-npm-setup`、`npm-publish.yml` |
 | トリガー | tag push (`v*`) または手動 dispatch (dry-run デフォルト) |
 | 前提 | npm 側で Trusted Publisher 登録済み、`package.json` version と tag が一致 |
-| 今後 | publish job に Vite `build` を追加する |
 
 ```sh
 # tag push で publish + GitHub Release
-git tag v2.x.x
-git push origin v2.x.x
+git tag v2.0.3
+git push origin v2.0.3
 ```
 
 手動 dry-run とは、GitHub Actions → **Publish to npm** → Run workflow → `dry_run: true` という操作のことです。
@@ -167,7 +147,6 @@ global-npm install
 | リポジトリ名 | `global-npm-setup` |
 | 想定 URL | `https://github.com/stein2nd/global-npm-setup` |
 | README | インストール手順 + OS 別セットアップ |
-| シリーズ | Global Package Setup (姉妹: `global-composer-setup`) |
 
 ## トレードオフを受け入れる理由
 
@@ -175,16 +154,9 @@ v1廃止に伴い publish 運用が必須になるが、管理ツールとして
 
 | トレードオフ | 受け入れ理由 |
 | --- | --- |
-| **npm publish 依存:** dependencies 一覧の変更は publish (または開発時の link) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務先 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
-| **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か overlay が必要 | overlay manifest を実装済み。`user-deps.json`、`global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
-| **ビルド成果の公開:** Vite 後はソースそのものではなく `dist/` が bin になる | CLUI の起動を単純にする。ソースは GitHub で公開し、GPL-3.0-or-later を維持する。 |
-
-## 関連ドキュメント
-
-* [naming.md](./naming.md): パッケージ名と bin
-* [layout.md](./layout.md): 同梱パス
-* [license.md](./license.md): GPL とソース公開
+| **npm publish 依存:** dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | 一覧の正本を1箇所に固定し、自宅 macOS と勤務先 Windows 11が同一 tarball を参照できる。`@s2j/docs-linter` と同じ ncu → publish → `npm update -g` フローで更新管理できる。 |
+| **カスタム一覧:** 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | v2.1で overlay manifest を実装。`user-deps.json`、`global-npm add` で追加分を管理し、upstream は `npm update -g @s2j/global-npm` で同期する。 |
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/npm-publish.md](./archive/v2-specs/npm-publish.md)。
+**確定:** publish 済み (`@s2j/global-npm@2.1.3`)。自己参照の range 運用を `docs/layout.md` に追記済み。

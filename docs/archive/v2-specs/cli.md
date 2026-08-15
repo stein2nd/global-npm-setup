@@ -1,22 +1,14 @@
-# Global npm Package Setup - CLI
+# Global npm Package Setup - CLI (脱 OS 依存改修)
 
-Global Package Setup シリーズ (npm 実装) の CLUI 仕様です。
+## 背景
 
-## 位置付け
-
-`global-npm` は **CLUI ユーティリティ** です。対話 TUI や GUI は持ちません。
-macOS、Windows 11で同一のサブコマンドを提供します。
+v1では `~/bin/global-npm` (Zsh) が `npm run ncu:*` を呼び出していました。
+v2では Node.js 製 CLI として `@s2j/global-npm` に同梱し、macOS、Windows 11で同一のサブコマンドを提供します。
 
 v2.1以降は **overlay manifest** を採用します。
 `check`、`update`、`install` は実効 `package.json` を操作します ([layout.md](./layout.md))。
 
-install の実装は **C 型 (列挙 → 明示 `npm install -g`)** とします。詳細は [install.md](./install.md) をご覧ください。
-
-内部構造は [specs.md](./specs.md) の方針に従います。
-
-* FOP + Clean Coding (ドメインは純関数、副作用はアダプタ)。
-* Clean Architecture のフルセットは使わず、domain / application / adapters / cli の依存の向きだけ借りる。
-* ビルドは Vite。公開されるコマンド契約は変えない。
+install の実装は **C 型 (Node 列挙 → 明示 `npm install -g`)** とします。詳細は [install.md](./install.md) をご覧ください。
 
 ## コマンド一覧
 
@@ -31,12 +23,9 @@ global-npm list     # global にインストール済み pkg を一覧 (npm ls -
 
 ## 各サブコマンドの仕様
 
-振る舞い契約は v2.2と同一です。実装ファイルの置き場所だけが、今後 Vite / FOP 再構成で変わります。
-
 ### 共通: 事前 sync
 
 `check`、`update`、`install` は実行前に `syncManifest()` を呼び、`$SETUP_DIR/package.json` (実効 package.json) を最新化します。
-`list` は呼びません。
 
 ### `global-npm check`
 
@@ -90,7 +79,7 @@ global-npm install
 | 副作用 | `$SETUP_DIR/package.json` と `.upstream-meta.json` を更新。 |
 | オプション | `--dry-run`: ファイル書き込みなし。差分を stderr に表示。 |
 
-ncu、npm は呼びません。マージ判断そのものはドメインの純関数です。
+ncu、npm は呼びません。
 
 ### `global-npm add <pkg>[@range] [--dev]`
 
@@ -120,31 +109,17 @@ global-npm add lodash          # npm view で ^x.y.z を自動設定
 npm 出力1行目の **global prefix パス** は省略しません (nvm 等での切り分けに必要)。
 定番フロー (`check` → `update` → `install`) には含めません。詳細は [cli-list.md](./cli-list.md) をご覧ください。
 
-## CLUI 実装
+## CLI 実装
 
-### レイヤ分担 (部分的 Clean Architecture)
-
-| レイヤ | 責務 | 例 |
-| --- | --- | --- |
-| cli | argv の解釈、usage、exit code | 未知サブコマンド → usage → `exit 1` |
-| application | サブコマンド相当のユースケース関数 | `handleCheck`、`handleInstall` |
-| domain | 純関数 | `mergeDependencies`、`parseAddSpec` |
-| adapters | fs、spawn、パス、ncu / npm 起動 | `readJson`、`runNcu`、`runNpm` |
-
-フルセットの Controller / Presenter / Gateway クラスは置きません。
-CLUI なので「表示」は stdout / stderr の `inherit` か、短いメッセージにとどめます。
-
-### ツールチェイン
-
-| 項目 | 現行 (v2.2) | 今後 (草案) |
-| --- | --- | --- |
-| 言語 | Node.js (CommonJS) | TypeScript。Vite が Node 向けにビルド |
-| エントリ | `bin/global-npm.cjs` | `src/cli/main.ts` → `dist/global-npm.js` |
-| ライブラリ | `lib/*.cjs` | `src/domain`、`src/application`、`src/adapters` |
-| shebang | `#!/usr/bin/env node` | ビルド成果に付与 |
-| 引数解析 | サブコマンド6つ。未知の引数は usage 表示して `exit code: 1` | 同じ契約。CLI フレームワークは必須にしない |
-| 子プロセス | `child_process.spawnSync` | adapters に閉じる。Windows では `shell: true` |
-| JSON 処理 | `fs` + `JSON.parse` (**jq 不要**) | 同じ。I/O は adapters |
+| 項目 | 内容 |
+| --- | --- |
+| 言語 | Node.js (CommonJS) |
+| エントリ | `bin/global-npm.cjs` |
+| ライブラリ | `lib/paths.cjs`, `lib/sync-manifest.cjs` 等 |
+| shebang | `#!/usr/bin/env node` |
+| 引数解析 | サブコマンド6つ。未知の引数は usage 表示して `exit code: 1` |
+| 子プロセス | `child_process.spawnSync` で同梱 ncu (`lib/resolve-ncu.cjs`)、`npm` を呼び出す。 |
+| JSON 処理 | `fs` + `JSON.parse` (**jq 不要**) |
 
 ### usage
 
@@ -163,15 +138,12 @@ Usage: global-npm <check|update|install|sync|add|list>
 
 | 項目 | 内容 |
 | --- | --- |
-| upstream 正本 | パッケージ root の `package.json` |
+| upstream 正本 | `path.resolve(__dirname, '..')/package.json` |
 | 実効 package.json | `$SETUP_DIR/package.json` |
 | デフォルト `$SETUP_DIR` | `~/.config/global-npm`。Windows 11では `%APPDATA%\global-npm` |
 | 上書き | `GLOBAL_NPM_SETUP_DIR` |
 
-パス解決は環境に依存するため **adapters** に置きます。
-返る `SetupContext` はイミュータブルなプレーンオブジェクトです。
-
-```ts
+```js
 const setupDir = path.resolve(
   process.env.GLOBAL_NPM_SETUP_DIR?.trim() || defaultSetupDir(),
 );
@@ -192,28 +164,17 @@ flowchart TD
   SW -->|list| LIST[npm ls -g --depth=0]
 ```
 
-`list` 以外は application が domain (merge) と adapters (I/O) を組み合わせます。
-`list` は読み取り専用のため、manifest ドメインを通さず npm アダプタだけを呼びます。
-
 ## 廃止するもの
 
-| v1 | v2以降 |
+| v1 | v2 |
 | --- | --- |
 | `~/bin/global-npm` (Zsh) | 廃止 |
 | `install-global.zsh` | 廃止 |
-| `ncu:install` 内 `jq` | 列挙 (C 型) に置換 |
+| `ncu:install` 内 `jq` | Node 列挙 (C 型) に置換 |
 | package root = setup (v2.0.x) | overlay manifest (v2.1) |
 
-`package.json` の `scripts` (`ncu:check` 等) は開発・デバッグ用として残してもよいが、ユーザー向け入口は CLUI に一本化します。
-
-## 関連ドキュメント
-
-* [specs.md](./specs.md): FOP と部分的 Clean Architecture
-* [cli-list.md](./cli-list.md): `list` の詳細
-* [install.md](./install.md): C 型 install
-* [overlay-manifest.md](./overlay-manifest.md): マージと実行フロー
-* [layout.md](./layout.md): `$SETUP_DIR` とソース配置
+`package.json` の `scripts` (`ncu:check` 等) は開発・デバッグ用として残してもよいが、ユーザー向け入口は CLI に一本化します。
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/cli.md](./archive/v2-specs/cli.md)。
+**確定 (v2.1):** `docs/cli.md` に反映済み。

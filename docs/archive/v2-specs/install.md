@@ -1,16 +1,11 @@
-# Global npm Package Setup - install 方式
-
-`global-npm install` の方式です。
+# Global npm Package Setup - install 方式 (脱 OS 依存改修)
 
 ## 背景
 
-`global-npm install` の実装方式について、v1の jq 列挙 (A 型)、setup ディレクトリでの `npm install -g` (B 型)、列挙して明示 install (C 型) を比較検討しました。
+`global-npm install` の実装方式について、v1の jq 列挙 (A 型)、setup ディレクトリでの `npm install -g` (B 型)、Node 列挙 (C 型) を比較検討しました。
 **ncu との整合** および **依存 CLI を PATH に載せる** ことを最優先し、**C 型を採用** します。
 
 v2.1以降、install の入力は **実効 `package.json`**、`$SETUP_DIR/package.json` です ([layout.md](./layout.md))。
-
-FOP 再構成後も C 型の意味論は変えません。
-変わるのは、列挙と spec 組み立てを **ドメインの純関数** に置き、`npm view` / `npm install -g` を **アダプタ** に閉じることです。
 
 ## 方式の比較 (要約)
 
@@ -18,23 +13,23 @@ FOP 再構成後も C 型の意味論は変えません。
 | --- | --- | --- | --- | --- |
 | A. jq 列挙 | `npm install -g $(jq …)` | ◎ | ◎ | △ (jq + シェル) |
 | B. setup で `npm install -g` | メタ pkg のみ global install | △ | △ | ◎ |
-| **C. 列挙して明示 install** | 実効 `package.json` を読み、明示 global install | ◎ | ◎ | ◎ |
+| **C. Node 列挙** | `package.json` を Node で読み、明示 global install | ◎ | ◎ | ◎ |
 
 ### B 型を採用しない理由
 
 `npm install -g` (引数なし) は **カレント package を1つ global install** する npm の意味論であり、`dependencies` に列挙した CLI ツール (`textlint`、`ncu`、`s2j-docs-linter` 等) の `bin` を `{prefix}/bin` にリンクしません。
 
-## 決定事項: C 型 (列挙 → 明示 `npm install -g`)
+## 決定事項: C 型 (Node 列挙)
 
 ### 挙動
 
 1. `syncManifest()` で実効 `package.json` を最新化する。
-2. 実効 package.json の `dependencies` を読む。
+2. 実効 package.json の `dependencies` を Node.js で読み込む。
 3. 各 `dependencies` の range を `npm view` で registry 上の具体バージョンに解決し、`npm install -g <name>@<version>…` を実行する (ncu が `check` で案内する形式と同等)。
 
-v1の jq 処理と **npm 上の意味論は同一** です。シェルと jq を、CLUI 内の関数合成に移しただけです。
+v1の jq 処理と **npm 上の意味論は同一** です。実装を Node に移すだけです。
 
-### `devDependencies`: B 案 (維持)
+### `devDependencies`: v2.1、B 案
 
 | 操作 | `dependencies` | `devDependencies` |
 | --- | --- | --- |
@@ -68,29 +63,25 @@ global-npm install  # 更新後の範囲で各 pkg を global install
 
 `global-npm install` 単体では ncu は実行しません。
 
-## 実装概要 (FOP)
+## 実装概要
 
-application の `handleInstall` は、次の合成です。
-
-```ts
-prepare(); // application: syncManifest (domain merge + adapters I/O)
-
-const dependencies = readDependencies(materializedPkgPath); // adapter
-
+```js
+prepare(); // syncManifest()
+const dependencies = readDependencies(materializedPkgPath);
 const specs = Object.entries(dependencies).map(([name, range]) =>
   toGlobalInstallSpec(name, range, { pinVersion: true }),
-); // domain の文字列組み立て + 必要なら npm view アダプタ
+);
 
 if (specs.length === 0) {
   console.error('No dependencies to install.');
   process.exit(1);
 }
 
-runNpm(['install', '-g', ...specs]); // adapter (win32 では shell: true)
+spawnSync('npm', ['install', '-g', ...specs], {
+  stdio: 'inherit',
+  shell: process.platform === 'win32',
+});
 ```
-
-Clean Coding として、`toGlobalInstallSpec` は「名前と range から npm に渡す1引数を作る」以外を知りません。
-空集合のエラーは application が扱い、npm の失敗はアダプタが exit code をそのまま返します。
 
 ### エッジケース
 
@@ -107,15 +98,13 @@ Clean Coding として、`toGlobalInstallSpec` は「名前と range から npm 
 | --- | --- |
 | v1 | jq 列挙 |
 | v2.0.x | package root の `package.json` |
-| v2.1以降 | 実効 package.json (`$SETUP_DIR/package.json`) |
-| 今後 (実装再構成) | 入力契約は v2.1のまま。内部を FOP + Vite に移す |
+| v2.1 | 実効 package.json (`$SETUP_DIR/package.json`) |
 
 ## 関連ドキュメント
 
 * [cli.md](./cli.md): サブコマンド全体
 * [layout.md](./layout.md): overlay manifest ・`$SETUP_DIR`
-* [specs.md](./specs.md): レイヤ方針
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/install.md](./archive/v2-specs/install.md)。
+**確定 (v2.1):** `docs/install.md` に反映済み。

@@ -367,7 +367,7 @@ v2.1の overlay の詳細仕様は [overlay-manifest.md](../../overlay-manifest.
 | `global-npm update` | ✅ | 同上 |
 | `global-npm install` | ✅ | global 一括更新が完了 (`@s2j/global-npm` →2.1.2) |
 | `global-npm check` (`install` 後) | ℹ️ 想定どおり | `@s2j/docs-linter` 1.0.16→1.0.17が残存 (追加分ギャップ。下記参照) |
-| `npm update -g @s2j/docs-linter` | ✅ | 追加分を latest へ |
+| `npm update -g @s2j/docs-linter` | ✅ | 追加分を latest に |
 | `global-npm check` (最終) | ✅ | `All global packages are up-to-date :)` |
 
 ### npm scripts 一覧

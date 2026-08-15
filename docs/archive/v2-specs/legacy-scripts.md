@@ -1,16 +1,9 @@
-# Global npm Package Setup - レガシースクリプト廃止
-
-v1のシェル入口を廃止し、CLUI に一本化した理由です。
-
-今後の FOP / Vite 再構成は、この一本化を前提に **中身の設計** を整えるものであり、シェルラッパーを復活させません。
+# Global npm Package Setup - レガシースクリプト廃止 (脱 OS 依存改修)
 
 ## 背景
 
 v1では `./install-global.zsh` と `~/bin/global-npm` (Zsh ラッパー) が install、更新フローの入口でした。
-v2では `@s2j/global-npm` CLUI に統一し、両者を **廃止** しました。
-
-Global Package Setup シリーズでは、パッケージマネージャーごとの入口を **そのエコシステムの標準配布** に載せます。
-npm 実装では `npm install -g` が `{prefix}/bin` に `global-npm` を置く経路です。
+v2では `@s2j/global-npm` CLI に統一し、両者を **廃止** します。
 
 ## v1の構成 (2層)
 
@@ -19,7 +12,7 @@ npm 実装では `npm install -g` が `{prefix}/bin` に `global-npm` を置く�
 | install 専用 | `./install-global.zsh` | setup ディレクトリで `npm install -g` (B 型) |
 | オーケストレータ | `~/bin/global-npm` | `check`、`update`、`install` を `npm run ncu:*` に委譲 |
 
-`install` サブコマンドと `install-global.zsh` は **別経路** でした。
+`install` サブコマンドと `install-global.zsh` は **別経路** です。
 
 ```
 global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g … (A 型)
@@ -71,48 +64,44 @@ global-npm install  →  npm run ncu:install  →  jq 列挙 + npm install -g �
 | install 経路の不一致 | ラッパー `install` → A 型、`install-global.zsh` → B 型。 |
 | Mac 限定の再現 | 勤務先 Windows 11にはそのまま持ち込めない。 |
 
-## 廃止し `@s2j/global-npm` CLUI に統一する
+## 廃止し `@s2j/global-npm` CLI に統一する
 
 ### 廃止の利点
 
 | 利点 | 説明 |
 | --- | --- |
 | OS 非依存 | Node + npm のみ。macOS、Windows 11で同一。 |
-| 入口の一本化 | check、update、install、sync、add、list が1つの CLUI。 |
-| C 型 install | 列挙して明示 global install。ncu 整合を保ちつつ jq ランタイム不要。 |
-| setup ディレクトリの明確化 | パッケージ root と `$SETUP_DIR` を分離 (overlay)。 |
+| 入口の一本化 | check、update、install が1実装 (`bin/global-npm.js`)。 |
+| C 型 install | Node 列挙。ncu 整合を保ちつつ jq ランタイム不要。 |
+| setup ディレクトリの明確化 | `path.resolve(__dirname, '..')` = npm global install 先の package root。 |
 | 標準的な PATH 管理 | `npm install -g` が `{prefix}/bin` に `global-npm` を置く。`~/bin` 不要。 |
 | 新マシンセットアップ簡素化 | Node + `npm install -g @s2j/global-npm` で開始。 |
 | 自己更新が可能 | `@s2j/global-npm` を `dependencies` に含め、C 型 install で自身も更新。 |
 | npm エコシステム整合 | `@s2j/docs-linter` と同じ publish、update フロー。 |
-| シリーズ整合 | 姉妹 `global-composer-setup` も「エコシステムの標準 bin」に載せる。 |
 | 重複の解消 | zsh ラッパー、B 型 zsh、jq シェル展開が消える。 |
 | ncu フローの明確化 | `install` から ncu を外し、check → update → install が明示的。 |
-
-FOP + Vite は、この CLUI を **保守しやすい内部構造** にするための方針です。
-配布形態 (npm の `bin`) とユーザーから見たコマンドは維持します。
 
 ### 廃止のトレードオフ
 
 | トレードオフ | 説明 | 受け入れ |
 | --- | --- | --- |
 | 初回 bootstrap | 先に `npm install -g @s2j/global-npm` が必要 | ◎ |
-| npm publish 依存 | dependencies 一覧の変更は publish (または開発時の link) が必要 | ◎: [npm-publish.md](./npm-publish.md) 参照 |
+| npm publish 依存 | dependencies 一覧の変更は publish (または `npm link` 開発) が必要 | ◎: [npm-publish.md](./npm-publish.md) 参照 |
 | ネットワーク | 初回および更新時に registry 到達が前提 | ◎ |
 | 純 dotfiles からの距離 | 「clone するだけ」より npm パッケージとしての運用に寄る | ◎ |
-| カスタム一覧 | 勤務先だけ別 pkg 集合にするには fork か overlay が必要 | ◎: overlay manifest (`user-deps.json`) で対応済み |
+| カスタム一覧 | 勤務先だけ別 pkg 集合にするには fork か方式 B が必要 | ◎: v2.1で overlay manifest (`user-deps.json`) を実装 |
 
 ## 横断比較
 
 | 観点 | `install-global.zsh` | `~/bin/global-npm` | 廃止 → `@s2j/global-npm` |
 | --- | --- | --- | --- |
 | 対応 OS | macOS (Zsh) | macOS (Zsh) | macOS、Windows |
-| 入口数 | install のみ (別系統) | 3操作 | 6操作 (CLUI で統一) |
-| install 方式 | B 型 (不適) | A 型 (jq、ラッパー経由) | C 型 (列挙) |
+| 入口数 | install のみ (別系統) | 3操作 | 3操作 (統一) |
+| install 方式 | B 型 (不適) | A 型 (jq、ラッパー経由) | C 型 (Node 列挙) |
 | ncu 整合 | ✗ | △ (install だけ ncu 合体) | ◎ |
-| setup ディレクトリ解決 | ◎ (`$0` 基準) | △ (README 通りだと誤り) | ◎ (`$SETUP_DIR`) |
+| setup ディレクトリ解決 | ◎ (`$0` 基準) | △ (README 通りだと誤り) | ◎ (package root) |
 | 新マシンセットアップ | clone + 実行 | clone + ~/bin + zshrc | Node + npm install -g |
-| 保守箇所 | zsh (1) | zsh + scripts + jq | CLUI (1)。内部は FOP で分割 |
+| 保守箇所 | zsh (1) | zsh + scripts + jq | Node CLI (1) |
 | npm 公開 | 不要 | 不要 | 必要 |
 
 ## 決定事項
@@ -122,7 +111,6 @@ FOP + Vite は、この CLUI を **保守しやすい内部構造** にするた
 | `install-global.zsh` | **廃止** (B 型かつ冗長) |
 | `~/bin/global-npm` | **廃止** (npm global `bin` が代替) |
 | コマンド名 `global-npm` | **維持** (`@s2j/global-npm` の `bin` フィールド) |
-| 今後の内部実装 | FOP + Vite。シェル入口は復活させない |
 
 ### 移行時の注意
 
@@ -131,11 +119,10 @@ FOP + Vite は、この CLUI を **保守しやすい内部構造** にするた
 
 ## 関連ドキュメント
 
-* [cli.md](./cli.md): CLUI 仕様
+* [cli.md](./cli.md): v2の CLI 仕様
 * [install.md](./install.md): C 型 install
 * [npm-publish.md](./npm-publish.md): publish 依存の受け入れ理由
-* [specs.md](./specs.md): シリーズと設計方針
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/legacy-scripts.md](./archive/v2-specs/legacy-scripts.md)。
+**確定:** `docs/legacy-scripts.md` に移行済み。

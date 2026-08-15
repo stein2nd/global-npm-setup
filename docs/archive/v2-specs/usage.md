@@ -1,13 +1,9 @@
 # Global npm Package Setup - Usage
 
 利用側がグローバル npm モジュールの **鮮度** (バージョン範囲と実インストール) を管理するための使い方です。
-
-`global-npm` は Global Package Setup シリーズの **CLUI ユーティリティ** です。
 従来から使える `check`、`update`、`install` と、v2.1で追加した `add`、`sync`、v2.2で追加した `list` の役割を整理します。
 
 関連: [layout.md](./layout.md) (ファイル構成)、[cli.md](./cli.md) (サブコマンド仕様)
-
-内部の FOP / Vite 再構成があっても、このページの操作契約は維持します。
 
 ## 何を管理しているか
 
@@ -98,7 +94,7 @@ global-npm list
 | 項目 | 内容 |
 | --- | --- |
 | 読む対象 | 現在の Node.js / npm が指す **global prefix** 配下の実インストール。 |
-| 読まない対象 | 実効 package.json (`$SETUP_DIR/package.json`)。manifest 上の管理対象の一覧ではない。 |
+| 読まない対象 | 実効 package.json (`$SETUP_DIR/package.json`)。manifest の「管理対象一覧」ではない。 |
 | 事前 `sync` | **なし** (ファイルは変更しない) |
 | 定番フロー | **含めない** (`check` → `update` → `install` とは独立) |
 
@@ -118,7 +114,7 @@ global-npm list
 | Node.js 切り替え後 | nvm / fnm でバージョンを変えたあと、意図した prefix を見ているか確認する。 |
 | manifest と実環境の切り分け | `check` の結果と global 実体が食い違うとき、まず `list` で実態を把握する。 |
 
-実効 package.json に書いてある内容と global 実体を **突き合わせたい** ときは、`list` で実態を確認してから `check` や `sync --dry-run` を使います。
+実効 package.json に書いてある内容と global 実体を **突き合わせたい** ときは、`list` で実態を確認したうえで `check` や `sync --dry-run` を使います。
 
 ## 毎回、明示的に `sync` を実行する必要があるか
 
@@ -221,9 +217,4 @@ global-npm list
 * [layout.md](./layout.md): 実効 package.json、`user-deps.json`、マージ仕様
 * [cli.md](./cli.md): 各サブコマンドの実装詳細
 * [install.md](./install.md): `install` が `dependencies` のみを対象とする理由
-* [specs.md](./specs.md): シリーズと設計方針
-* [../README.md](../README.md): セットアップと v2.0.x からの移行
-
-## ステータス
-
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/usage.md](./archive/v2-specs/usage.md)。
+* [README.md](../../../README.md): セットアップと v2.0.x からの移行

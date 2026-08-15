@@ -1,18 +1,14 @@
-# Global npm Package Setup - ライセンス GPL-3
-
-Global Package Setup シリーズ (本プロジェクト) のライセンス方針です。
+# Global npm Package Setup - ライセンス GPL-3 (脱 OS 依存改修)
 
 ## 背景
 
 v1.0.0は MIT ライセンスでした。
 v2では npm 公開し `@s2j/docs-linter` (GPL-2.0-or-later) と同一エコシステムとして運用します。
-併せて、ライセンスを **GPL-3.0-or-later** に変更しました。
-
-Vite / FOP への再構成があっても、ライセンスは変更しません。
+併せて、ライセンスを **GPL-3.0-or-later** に変更します。
 
 ## 決定事項
 
-| 項目 | v1.0.0 | v2以降 |
+| 項目 | v1.0.0 | v2 |
 | --- | --- | --- |
 | ライセンス | MIT | GPL-3.0-or-later |
 | LICENSE ファイル | なし | GNU GPL v3全文を追加 |
@@ -21,11 +17,10 @@ Vite / FOP への再構成があっても、ライセンスは変更しません
 ### GPL-3.0-or-later を選ぶ理由
 
 * `@s2j/docs-linter` が GPL-2.0-or-later。同一 maintainer のツール群として copyleft の方向性をそろえる。
-* Global Package Setup シリーズ (姉妹 `global-composer-setup` を含む) でも、同じ copyleft 方針をデフォルトとする。
 * `-or-later` により将来の GPL 改訂版への適用を許容できる。
 * npm registry 上でも SPDX として広く認識されている。
 
-## 変更対象ファイル (v2で実施済み)
+## 変更対象ファイル
 
 | ファイル | 変更内容 |
 | --- | --- |
@@ -34,7 +29,7 @@ Vite / FOP への再構成があっても、ライセンスは変更しません
 | `README.md` | ライセンス節を追加 |
 | `CHANGELOG.md` | v2.0.0にライセンス変更を明記 |
 
-## Copyright 表記
+## Copyright 表記 (案)
 
 ```
 Copyright (C) 2024-2026 Koutarou ISHIKAWA
@@ -48,26 +43,16 @@ the Free Software Foundation, either version 3 of the License, or
 
 ## 依存パッケージとの関係
 
-本プロジェクトは **グローバル npm パッケージの一覧と CLUI** を提供します。
+本プロジェクトは **グローバル npm パッケージの一覧と CLI** を提供します。
 
 * `dependencies` に列挙するパッケージ (textlint、docs-linter 等) を **ソース同梱して再配布するわけではない**。
-* CLUI 自身のソースコードが GPL-3.0-or-later で公開される。
-* Vite が `dist/` にビルド成果を出しても、対応するソースは Git リポジトリで公開する。
+* CLI 自身のソースコードが GPL-3.0-or-later で公開される。
 * 各 dependency のライセンスは個別に遵守する (`npm ls`、各 package の LICENSE を参照)。
-
-tarball に `src/` を含めるかは、実装時に GPL 対応と配布サイズを見て決めます。
-`repository` フィールドによるソース公開は維持します。
 
 ## バージョニング
 
-MIT → GPL-3.0-or-later は **後方互換のないライセンス変更** のため、**v2.0.0 (メジャー bump)** としました。
-以降の FOP / Vite 再構成が公開 API (コマンド、マニフェスト契約) を壊さなければ、メジャー bump は不要です。
-
-## 関連ドキュメント
-
-* [naming.md](./naming.md): パッケージ名
-* [npm-publish.md](./npm-publish.md): 公開物と `files`
+MIT → GPL-3.0-or-later は **後方互換のないライセンス変更** のため、**v2.0.0 (メジャー bump)** とします。
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/license.md](./archive/v2-specs/license.md)。
+**確定:** `docs/license.md` に移行済み。

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.2.3: 2026-08-15
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.2のまま。Vite / FOP 再構成は未着手)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* 仕様書12件を FOP + Clean Coding、部分的 Clean Architecture、Vite、CLUI、Global Package Setup シリーズの方針でリライトして確定
+* 以前の `docs/` を `docs/archive/v2-specs/` に freeze。進行記録は `docs/archive/mod-fop-vite/`
+* `docsMod/` の草案を `docs/` に正本化。`lint:docs` の対象を `docs/` に戻す
+
 ## v2.2.2: 2026-08-15
 
 ### リポジトリ整備 (tarball 非同梱)

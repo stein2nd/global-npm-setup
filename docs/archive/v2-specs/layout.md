@@ -1,20 +1,16 @@
-# Global npm Package Setup - 配置
-
-overlay manifest とリポジトリ配置です。
+# Global npm Package Setup - 配置 (脱 OS 依存改修)
 
 ## 背景
 
 v1では `~/dotfiles/setup/package.json` にグローバル npm パッケージ一覧を保持し、`ncu:install` 経由で jq 列挙 → `npm install -g` していました。
-v2では npm パッケージ `@s2j/global-npm` として配布し、install は C 型で実装します ([install.md](./install.md))。
+v2では npm パッケージ `@s2j/global-npm` として配布し、install は C 型 (Node 列挙) で実装します ([install.md](./install.md))。
 
 v2.0.x は **方式 A: パッケージ同梱** のみでした。
 v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本とユーザー追加分をマージします。
 
-今後の開発では、この overlay 契約を維持したまま、ソース配置を **Vite + FOP** に合わせます。
-
 ## 方式の比較
 
-| | 方式 A: パッケージ同梱のみ | 方式 B: overlay manifest (v2.1以降) |
+| | 方式 A: パッケージ同梱のみ | 方式 B: overlay manifest (v2.1) |
 | --- | --- | --- |
 | 配置 | `@s2j/global-npm` 内の `package.json` のみ | upstream 正本 + `$SETUP_DIR` の実効 package.json |
 | 更新 | `npm update -g @s2j/global-npm` で upstream 更新 | sync が upstream を実効 package.json に反映 |
@@ -22,7 +18,7 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 | カスタム | fork が必要だった | `user-deps.json`、`global-npm add` で追記 |
 | 複雑さ | 低 | 中 |
 
-## 決定事項 (v2.1、維持)
+## 決定事項 (v2.1)
 
 **方式 B: overlay manifest** を採用する。
 
@@ -31,9 +27,8 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 * 自宅 macOS と勤務先 Windows 11で **upstream 公式一覧** を `npm update -g` で同期できる。
 * 勤務先だけ別 pkg 集合にしたい要件に、`user-deps.json` で対応できる。
 * upstream 更新時にユーザー追加分を消さず、未 update の upstream 管理分は新 range に追従できる。
-* 姉妹 `global-composer-setup` でも、公式一覧と利用側の追加分を分ける同型を採る。
 
-### レイヤの役割 (マニフェスト)
+### レイヤの役割
 
 | レイヤ | パス | 更新者 | 用途 |
 | --- | --- | --- | --- |
@@ -42,8 +37,7 @@ v2.1以降は **方式 B: overlay manifest** を採用し、upstream 正本と�
 | 実効 package.json | `$SETUP_DIR/package.json` | CLI `sync` | ncu、install の実効マニフェスト |
 | Meta | `$SETUP_DIR/.upstream-meta.json` | CLI `sync` | 差分検出用スナップショット |
 
-`packageRoot` は CLUI が属する `@s2j/global-npm` のインストール先です。
-Vite 再構成後も、実行ファイルからの相対ではなく **パッケージ root** を adapters が解決します。
+`packageRoot` = `path.resolve(__dirname, '..')` で解決し、CLI が属する `@s2j/global-npm` のインストール先になります。
 
 ## setup ディレクトリ (`$SETUP_DIR`)
 
@@ -60,7 +54,7 @@ Vite 再構成後も、実行ファイルからの相対ではなく **パッケ
 | --- | --- |
 | `GLOBAL_NPM_SETUP_DIR` | デフォルト setup ディレクトリを上書き |
 
-```ts
+```js
 const setupDir = path.resolve(
   process.env.GLOBAL_NPM_SETUP_DIR?.trim() || defaultSetupDir(),
 );
@@ -106,9 +100,6 @@ const setupDir = path.resolve(
 
 `check`、`update`、`install`、`sync`、`add` 実行時に upstream + `user-deps.json` から実効 package.json を再生成します。
 
-マージ判断 (`mergeDependencies`、`mergeDevDependencies`) は **ドメインの純関数** です。
-ファイルの読み書きとディレクトリ作成はアダプタです。`syncManifest` はその合成 (application) です。
-
 ### `dependencies` の優先順位: 高い順
 
 1. `user-deps.json` の `dependencies` にキーがある → その range にピン留め。
@@ -131,11 +122,9 @@ const setupDir = path.resolve(
 
 ## リポジトリ構成 (開発)
 
-### 現行 (v2.2)
-
 ```
 global-npm-setup/          # Git リポジトリ root
-├── bin/global-npm.cjs     # CLUI エントリ
+├── bin/global-npm.cjs     # CLI エントリ
 ├── lib/                   # paths, sync-manifest 等
 ├── package.json           # upstream 正本 + bin 定義
 ├── LICENSE
@@ -143,35 +132,14 @@ global-npm-setup/          # Git リポジトリ root
 └── docs/
 ```
 
-### 今後 (Vite + FOP 草案)
-
-```
-global-npm-setup/
-├── src/
-│   ├── cli/               # argv、usage、エントリ
-│   ├── application/       # サブコマンド相当のユースケース関数
-│   ├── domain/            # 純関数 (merge、spec 組み立て)
-│   └── adapters/          # fs、spawn、paths、ncu / npm
-├── dist/                  # Vite ビルド成果 (bin が指す)
-├── vite.config.ts
-├── package.json           # upstream 正本 + bin 定義
-├── LICENSE
-├── README.md
-├── docs/                  # 確定仕様
-└── docsMod/               # 改修中の進行記録
-```
-
-Clean Architecture のフルセット (entities / use-cases / interface-adapters / frameworks の機械的分割) は採用しません。
-上の4ディレクトリは、CLUI に必要な依存の向きを固定するための最小構成です。
-
 ### upstream `package.json` の役割
 
 | フィールド | 用途 |
 | --- | --- |
 | `name` | `@s2j/global-npm` |
-| `bin` | `global-npm` コマンド (現行は `bin/`、今後は `dist/`) |
+| `bin` | `global-npm` コマンド |
 | `dependencies` | 公式グローバルインストール対象 |
-| `files` | publish 同梱パス (現行は `bin/`、`lib/`。今後は `dist/` 等) |
+| `files` | publish 同梱パス (`bin/`, `lib/`, `package.json` 等) |
 
 `@s2j/global-npm` 自身も `dependencies` に含めます (自己参照)。
 
@@ -201,19 +169,11 @@ npm link
 GLOBAL_NPM_SETUP_DIR=.sandbox/setup global-npm sync
 ```
 
-Vite 再構成後は、link の前にビルド (または watch) が必要になります。手順は実装時に README に落とします。
-
 ## npm publish 時の注意
 
-* `files` に実行に必要な成果物 (`dist/` または現行の `bin/`、`lib/`) と `package.json` が tarball に含まれることを確認する。
+* `files` に `bin/`、`lib/`、`package.json` が tarball に含まれることを確認する。
 * publish される `package.json` は **upstream 正本**。ユーザーの実効 package.json は各環境の `$SETUP_DIR` に生成される。
-
-## 関連ドキュメント
-
-* [specs.md](./specs.md): 設計方針
-* [overlay-manifest.md](./overlay-manifest.md): マージ詳細
-* [npm-publish.md](./npm-publish.md): `files` と bin
 
 ## ステータス
 
-**確定:** 2026-08-15。以前の版は [archive/v2-specs/layout.md](./archive/v2-specs/layout.md)。
+**確定 (v2.1):** overlay manifest を `docs/layout.md` に反映済み。

@@ -2,18 +2,15 @@
 
 `global-npm list` サブコマンドの詳細仕様です。要点は [cli.md](./cli.md) に反映済みです。
 
-関連: [archive/mod-cli-list/modification.md](./archive/mod-cli-list/modification.md)
+関連: [mod-cli-list/modification.md](../mod-cli-list/modification.md)
 
 ## 背景
 
-v2.1までの CLUI は、実効 `package.json` を起点に **更新確認、range 更新、global install** を行うコマンドが中心でした。
+v2.1までの CLI は、実効 `package.json` を起点に **更新確認、range 更新、global install** を行うコマンドが中心でした。
 一方、ユーザーが「いま global に何が入っているか」を確認するには、毎回 `npm ls -g --depth=0` を直接実行する必要があります。
 
-`global-npm list` は、この確認を CLUI から提供します。
+`global-npm list` は、この確認を CLI から提供します。
 manifest の内容ではなく、**実際に global インストールされている、トップレベルパッケージ** を表示します。
-
-FOP の観点では、`list` はドメイン (マージ) を持たない **読み取り専用アダプタ呼び出し** です。
-副作用を起こさないため、`syncManifest()` の前段に置きません。
 
 ## 決定事項サマリー
 
@@ -24,9 +21,9 @@ FOP の観点では、`list` はドメイン (マージ) を持たない **読�
 | 事前 `syncManifest()` | **呼ばない** (読み取り専用) |
 | 出力 | npm の標準出力を **そのまま** 表示する (加工やフィルターなし) |
 | prefix 行 | **省略しない** (1行目の global prefix パスを npm 出力どおり残す) |
-| 追加引数 | 受け付けない (未知引数は usage → `exit 1`) |
+| 追加引数 | v2.2では受け付けない (未知引数は usage → `exit 1`) |
 | 定番フロー | **含めない** (`check` → `update` → `install` とは独立) |
-| バージョン | v2.2.0 (非破壊的な機能追加)。以降も契約を維持 |
+| バージョン | v2.2.0 (非破壊的な機能追加) |
 
 ## 目的と非目的
 
@@ -36,13 +33,12 @@ FOP の観点では、`list` はドメイン (マージ) を持たない **読�
 * トップレベルの global パッケージ一覧を、npm と同じ形式で確認できる。
 * macOS (nvm 等)、Windows 11で同一のサブコマンド名を提供する。
 
-### 非目的 (行わない)
+### 非目的 (v2.2では行わない)
 
 * 実効 `package.json` との差分表示。
 * manifest 管理対象のみに絞った一覧。
 * npm 出力の再フォーマット (ツリー記号や prefix 行の加工)。
 * `npm ls` の `--depth` 等オプションの透過。
-* Presenter 層での整形 (部分的 Clean Architecture でも、ここは npm に委譲する)。
 
 ## `$SETUP_DIR` との関係
 
@@ -65,9 +61,6 @@ FOP の観点では、`list` はドメイン (マージ) を持たない **読�
 | 実装 | `spawnSync('npm', ['ls', '-g', '--depth=0'], { stdio: 'inherit', shell: win32 })` |
 | 副作用 | なし (ファイル読み書きなし) |
 | exit code | 子プロセス (`npm`) の status をそのまま返す |
-
-Vite 再構成後も、application の `handleList` は npm アダプタを呼ぶだけです。
-domain モジュールは使いません。
 
 ### 出力例 (macOS + nvm)
 
@@ -105,19 +98,20 @@ flowchart TD
 ```
 
 `check`、`update`、`install` と異なり、`resolveSetupContext` 以降の manifest 操作は行いません。
-cli はサブコマンド判定のあと、application → npm adapter に渡します。
 
 ## 実装メモ
 
-| 場所 | 現行 (v2.2) | 今後 (草案) |
-| --- | --- | --- |
-| エントリ | `bin/global-npm.cjs` の `case 'list':` | `src/cli` の振り分け → `handleList` |
-| npm 起動 | 同ファイル内の `spawnSync` | `src/adapters` の npm 実行 |
-| 新規ドメイン | 不要 | 不要のまま |
+| ファイル | 変更 |
+| --- | --- |
+| `bin/global-npm.cjs` | `case 'list':` を追加。`usage()` に `list` を追記 |
+| `docs/cli.md` | サブコマンド仕様を追記 (確定後) |
+| `docs/usage.md` | トラブルシュートや確認用途として1行追記 (任意) |
+| `README.md` | コマンド一覧に `list` を追記 |
+| `test/spec-compliance.test.cjs` | 仕様準拠マークを追加 |
 
-仕様準拠テスト (CLI-20〜22) の観点は維持します。ソースパスが変わったらテスト側の静的確認先を追従します。
+新規 `lib/` モジュールは、不要です。
 
-## 仕様準拠テスト
+## 仕様準拠テスト (案)
 
 | ID | 条件 |
 | --- | --- |
@@ -134,4 +128,4 @@ cli はサブコマンド判定のあと、application → npm adapter に渡し
 
 ## ステータス
 
-**確定:** 2026-08-15。`list` の振る舞い契約は v2.2確定済み ([archive/mod-cli-list/](./archive/mod-cli-list/modification.md))。以前の版は [archive/v2-specs/cli-list.md](./archive/v2-specs/cli-list.md)。
+**確定 (v2.2):** [cli.md](./cli.md) に反映済み。進行記録は [mod-cli-list/](../mod-cli-list/modification.md)。
