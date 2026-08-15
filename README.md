@@ -59,7 +59,7 @@ global にインストール済みのトップレベル pkg を一覧します (
 ## しくみ (v2.1)
 
 | レイヤ | 場所 | 役割 |
-|--------|------|------|
+| --- | --- | --- |
 | Upstream 正本 | `@s2j/global-npm` 同梱 `package.json` | 公式 `dependencies` 一覧 |
 | ユーザー overlay | `$SETUP_DIR/user-deps.json` | 追加分、ピン留め |
 | 実効 package.json | `$SETUP_DIR/package.json` | ncu、install が読む実効マニフェスト |
@@ -67,7 +67,7 @@ global にインストール済みのトップレベル pkg を一覧します (
 **setup ディレクトリ (`$SETUP_DIR`) のデフォルト**
 
 | OS | パス |
-|----|------|
+| --- | --- |
 | macOS、Linux | `~/.config/global-npm` |
 | Windows 11 | `%APPDATA%\global-npm` |
 
@@ -174,14 +174,18 @@ CLI 実装のデバッグ用に、リポジトリ root から下記の npm scrip
 ```sh
 npm run ncu:check
 npm run ncu:update
+npm run typecheck    # tsc (TypeScript 7 native)
+npm run typecheck:6  # tsc6 (TypeScript 6、API 互換)
 ```
+
+`typescript` は公式の npm alias で `@typescript/typescript6` を指します (`require('typescript')`、エディター tsdk)。`tsc` は `@typescript/native` (`typescript@^7`) です。
 
 ## 移行
 
 ### v1→ v2
 
 | v1 | v2 |
-|----|-----|
+| --- | --- |
 | `~/bin/global-npm` (Zsh) | 廃止: `npm install -g @s2j/global-npm` |
 | `install-global.zsh` | 廃止: `global-npm install` |
 | `ncu:install` (jq 列挙) | `global-npm install` (Node 列挙) |
@@ -189,7 +193,7 @@ npm run ncu:update
 ### v2.0.x → v2.1
 
 | v2.0.x | v2.1 |
-|--------|------|
+| --- | --- |
 | setup = package root | setup = `~/.config/global-npm`。Windows は `%APPDATA%\global-npm` |
 | 同梱 `package.json` を直接 ncu | 実効 package.json を ncu |
 | 3サブコマンド | 5サブコマンド (`sync`、`add` 追加) |

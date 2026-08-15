@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## v2.2.4: 2026-08-15
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.3のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* TypeScript: 公式 side-by-side。`tsc` は `@typescript/native` (`typescript@^7`)、`require('typescript')` と `tsc6` は `@typescript/typescript6` (`typescript-eslint` 等の API 互換)
+* `typecheck` (`tsc`)、`typecheck:6` (`tsc6`) を追加
+* `.npmignore` を追加。同梱の正本は `files`。npm の `.gitignore` fallback 警告を避ける
+* PUB-02を `2.2.4` に追従
+* ncu: 直接依存に更新なし。deprecated / audit 残は `wpapi`、`wp-handbook-converter`、`npm` 同梱、`editorconfig-cli` の推移的依存
+
 ## v2.2.3: 2026-08-15
 
 ### パッケージ本体

@@ -78,6 +78,7 @@ maintainer: `stein2nd` (`@s2j/docs-linter` と同一)。
 
 `private` フィールドは削除します。
 `files` の確定は実装時に `npm run pack:dry-run` で確認します。GPL 対応として `src/` を同梱するかは [license.md](./license.md) を参照してください。
+同梱の正本は `files` です。`.npmignore` は `.gitignore` への fallback を避けるために置き、追加の除外はしません。
 
 ## publish 手順
 

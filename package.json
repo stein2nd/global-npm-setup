@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
@@ -44,16 +44,19 @@
     "pack": "mkdir -p artifacts && npm pack --pack-destination artifacts",
     "pack:dry-run": "mkdir -p artifacts && npm pack --dry-run --pack-destination artifacts",
     "ncu:check": "ncu -g --format time --packageFile package.json",
-    "ncu:update": "ncu -g --format time -u --packageFile package.json"
+    "ncu:update": "ncu -g --format time -u --packageFile package.json",
+    "typecheck": "tsc --noEmit",
+    "typecheck:6": "tsc6 --noEmit"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@s2j/docs-linter": "^1.0.22",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^10.8.1",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.11.0",
     "prettier": "^3.9.6",
-    "typescript": "^7.0.2"
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "dependencies": {
     "@s2j/global-npm": "^2.2.3",

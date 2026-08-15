@@ -1,0 +1,2 @@
+# 同梱の正本は package.json の files。
+# npm が .gitignore に fallback しないよう、明示する。
