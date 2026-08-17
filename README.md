@@ -2,7 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
-[![macOS](https://img.shields.io/badge/macOS-26.5.1-000000?logo=apple&logoColor=white)](https://www.apple.com/os/macos/)
+[![macOS](https://img.shields.io/badge/macOS-26.6.1-000000?logo=apple&logoColor=white)](https://www.apple.com/os/macos/)
 [![Windows 11](https://img.shields.io/badge/Windows-11%2025H2-000000?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
 
 Node.js の **グローバル npm パッケージ管理** を `package.json` で一元化する CLI です。
