@@ -59,7 +59,7 @@
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
   "dependencies": {
-    "@s2j/global-npm": "^2.2.4",
+    "@s2j/global-npm": "^2.2.5",
     "corepack": "^0.35.0",
     "editorconfig-cli": "^1.0.0",
     "envinfo": "^7.21.0",
