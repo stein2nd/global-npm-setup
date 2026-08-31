@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## v2.2.6: 2026-08-31
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.5のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: `corepack` ^0.36.0、`npm-check-updates` ^23.1.0、`run` ^2.1.0、`wp-handbook-converter` ^2.0.0、`@s2j/docs-linter` ^1.0.23、`eslint` ^10.9.1を追従
+* deprecated / audit 残は `wpapi`、`npm` 同梱、`editorconfig-cli` の推移的依存 (`wp-handbook-converter` は v2で解消)
+* README: macOS バッジを `26.6.2` に追従
+* PUB-02を `2.2.6` に追従
+
 ## v2.2.5: 2026-08-17
 
 ### パッケージ本体
