@@ -2,6 +2,7 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Vite](https://img.shields.io/badge/vite-8.2-blue.svg)](https://vite.dev)
 [![macOS](https://img.shields.io/badge/macOS-26.6.2-000000?logo=apple&logoColor=white)](https://www.apple.com/os/macos/)
 [![Windows 11](https://img.shields.io/badge/Windows-11%2025H2-000000?logo=windows&logoColor=white)](https://www.microsoft.com/windows/)
 
