@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## v2.2.7: 2026-09-09
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.6のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: `@s2j/docs-linter` ^1.0.24、`eslint` ^10.10.0、`globals` ^17.12.0、`run` ^2.1.4を追従
+* `overrides`: `parse-link-header` ^2.0.0 (`wpapi`)、`tmp` ^0.2.7 (`editorconfig-cli` → `inquirer` → `external-editor`)
+* audit 残は `npm@12.0.2` 同梱 (`tar` 7.5.19、`brace-expansion` 5.0.7、`ip-address` 10.2.0、`undici` 6.27.0)。`overrides` では置換不可。`npm audit fix --force` は `npm@11.19.1` へのダウングレードになるため非採用
+* PUB-02を `2.2.7` に追従
+
 ## v2.2.6: 2026-08-31
 
 ### パッケージ本体
