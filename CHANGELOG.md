@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.2.9: 2026-10-02
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.8のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: `npm` ^12.2.0、`run` ^2.1.7、`@s2j/docs-linter` ^1.0.26、`globals` ^17.13.0を追従
+* audit 残は `npm@12.2.0` 同梱 (`brace-expansion` 5.0.9、`ip-address` 10.5.0、`undici` 6.28.0)。`overrides` では置換不可。上流に同梱 lockfile の更新を依頼 ([npm/cli#10062](https://github.com/npm/cli/issues/10062))
+* PUB-02を `2.2.9` に追従
+
 ## v2.2.8: 2026-09-26
 
 ### パッケージ本体

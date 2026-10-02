@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
@@ -50,11 +50,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@s2j/docs-linter": "^1.0.25",
+    "@s2j/docs-linter": "^1.0.26",
     "@typescript/native": "npm:typescript@^7.0.2",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.12.0",
+    "globals": "^17.13.0",
     "prettier": "^3.9.9",
     "typescript": "npm:@typescript/typescript6@^6.0.2"
   },
@@ -63,9 +63,9 @@
     "corepack": "^0.36.0",
     "editorconfig-cli": "^1.0.0",
     "envinfo": "^7.21.0",
-    "npm": "^12.1.0",
+    "npm": "^12.2.0",
     "npm-check-updates": "^23.1.0",
-    "run": "^2.1.5",
+    "run": "^2.1.7",
     "textlint": "^15.8.0",
     "textlint-rule-preset-ja-spacing": "^3.0.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
