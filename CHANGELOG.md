@@ -11,7 +11,7 @@
 ### リポジトリ整備 (tarball 非同梱)
 
 * `.vscode/settings.json`: 非推奨の `typescript.tsdk` / `typescript.enablePromptUseWorkspaceTsdk` を `js/ts.tsdk.path` / `js/ts.tsdk.promptToUseWorkspaceVersion` に置換。`json.schemaDownload.enable` を追加
-* `ncu -u`: `@s2j/docs-linter` ^1.0.29、`eslint` ^10.12.0、`prettier` ^3.9.10、`npm-check-updates` ^23.1.1、`run` ^2.1.8を追従。自己参照 `@s2j/global-npm` を ^2.2.9 に追従
+* `ncu -u`: `@s2j/docs-linter` ^1.0.29、`eslint` ^10.12.0、`prettier` ^3.9.10、`npm-check-updates` ^23.1.1、`run` ^2.1.8を追従。自己参照 `@s2j/global-npm` を ^2.2.9に追従
 * audit 残は `npm@12.2.0` 同梱ほか推移的依存。`npm` 同梱分は [npm/cli#10062](https://github.com/npm/cli/issues/10062) 待ち
 * PUB-02を `2.2.10` に追従
 
