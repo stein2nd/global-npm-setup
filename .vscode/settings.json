@@ -1,6 +1,7 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "json.schemaDownload.enable": true,
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "textlint.configPath": "${workspaceFolder}/.textlintrc.json",
   "textlint.nodePath": "${workspaceFolder}/node_modules",
   "textlint.autoFixOnSave": true,
