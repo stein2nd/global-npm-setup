@@ -11,7 +11,7 @@
 ### リポジトリ整備 (tarball 非同梱)
 
 * `ncu -u`: `npm` ^12.2.1、`run` ^2.1.10、`@s2j/docs-linter` ^1.0.30、`eslint` ^10.13.0、`textlint-rule-preset-ja-spacing` ^3.0.4を追従
-* audit 残は `npm@12.2.1` 同梱 (`undici`) 2件 (`npm@12.2.0` 比で 16件から減少)
+* audit 残は `npm@12.2.1` 同梱 (`undici`) 2件 (`npm@12.2.0` 比で16件から減少)
 * PUB-02を `2.2.11` に追従
 
 ## v2.2.10: 2026-10-15
