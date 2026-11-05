@@ -11,7 +11,7 @@
 ### リポジトリ整備 (tarball 非同梱)
 
 * `ncu -u`: `npm` ^12.2.2、`run` ^2.1.11、`@s2j/docs-linter` ^1.0.32、`eslint` ^10.14.0、`globals` ^17.14.0を追従
-* audit 残は `npm@12.2.2` 同梱中心 39 moderate (`npm@12.2.1` 比 2件から増加)。`overrides` では置換不可
+* audit 残は `npm@12.2.2` 同梱中心 `39` moderate (`npm@12.2.1` 比2件から増加)。`overrides` では置換不可
 * PUB-02を `2.2.12` に追従
 
 ## v2.2.11: 2026-10-24
