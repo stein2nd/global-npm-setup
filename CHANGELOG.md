@@ -2,9 +2,16 @@
 
 ## Unreleased
 
+## v2.2.13: 2026-11-07
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.12のまま)
+
 ### リポジトリ整備 (tarball 非同梱)
 
 * CI: `lint-docs` / `publish` の Actions を Node24対応版に更新 (`checkout@v5`、`setup-node@v5`、`upload-artifact@v6`、`action-gh-release@v3`)。runner を `ubuntu-24.04` に固定 (`ubuntu-latest` 移行警告の回避)
+* PUB-02を `2.2.13` に追従
 
 ## v2.2.12: 2026-11-05
 

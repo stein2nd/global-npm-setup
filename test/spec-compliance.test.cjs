@@ -655,13 +655,13 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.2.12', () => {
+test('publish: version 2.2.13', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.2.12` であること。',
-    pkg.version === '2.2.12',
+    'package.json の version が `2.2.13` であること。',
+    pkg.version === '2.2.13',
   );
 });
 
