@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## v2.2.14: 2026-11-20
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.13のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: `npm` ^12.2.3、`run` ^2.1.13、`textlint` ^16.1.1、`textlint-rule-preset-ja-spacing` ^3.1.0、`@s2j/docs-linter` ^1.0.34、`eslint` ^10.15.0、`prettier` ^3.10.1を追従
+* audit 残は `npm@12.2.3` 同梱ほか推移的依存19moderate (`npm@12.2.2` 比39件から減少)。`overrides` では置換不可
+* PUB-02を `2.2.14` に追従
+
 ## v2.2.13: 2026-11-07
 
 ### パッケージ本体
@@ -10,7 +22,7 @@
 
 ### リポジトリ整備 (tarball 非同梱)
 
-* CI: `lint-docs` / `publish` の Actions を Node24対応版に更新 (`checkout@v5`、`setup-node@v5`、`upload-artifact@v6`、`action-gh-release@v3`)。runner を `ubuntu-24.04` に固定 (`ubuntu-latest` 移行警告の回避)
+* CI: `lint-docs` / `publish` の Actions を Node v24対応版に更新 (`checkout@v5`、`setup-node@v5`、`upload-artifact@v6`、`action-gh-release@v3`)。runner を `ubuntu-24.04` に固定 (`ubuntu-latest` 移行警告の回避)
 * PUB-02を `2.2.13` に追従
 
 ## v2.2.12: 2026-11-05
