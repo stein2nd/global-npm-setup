@@ -23,7 +23,7 @@ npm 実装は Node.js 上で動き、Vite でビルドしてもランタイム�
 
 ### 1. Node.js
 
-以下いずれかで Node.js v18以降を導入します。
+以下いずれかで Node.js v22.22.2以降を導入します。
 
 * [fnm](https://github.com/Schniz/fnm) (macOS、Windows 共通。推奨)
 * [nvm-windows](https://github.com/coreybutler/nvm-windows)

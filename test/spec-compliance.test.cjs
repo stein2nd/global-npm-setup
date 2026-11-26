@@ -655,23 +655,23 @@ test('publish: not private', () => {
   );
 });
 
-test('publish: version 2.2.15', () => {
+test('publish: version 2.3.0', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-02',
     'mod-npm-publish',
-    'package.json の version が `2.2.15` であること。',
-    pkg.version === '2.2.15',
+    'package.json の version が `2.3.0` であること。',
+    pkg.version === '2.3.0',
   );
 });
 
-test('publish: engines node >=18', () => {
+test('publish: engines node >=22.22.2', () => {
   const pkg = readJson(PKG_PATH);
   mark(
     'PUB-03',
     'mod-npm-publish',
-    'package.json の engines.node が `>=18` であること。',
-    pkg.engines?.node === '>=18',
+    'package.json の engines.node が `>=22.22.2` であること。',
+    pkg.engines?.node === '>=22.22.2',
   );
 });
 

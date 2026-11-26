@@ -77,7 +77,7 @@ flowchart TD
 | 現行 (v2.2) | `bin/*.cjs` + `lib/*.cjs` (CommonJS)。本仕様の配置に再構成する |
 
 プラグインの選定 (shebang 付与、外部依存のバンドル範囲) は実装時に決めます。
-ランタイムの前提は Node.js v18以降のままです。
+ランタイムの前提は Node.js v22.22.2以降です (同梱する `npm` 12 / `npm-check-updates` 等の要件に合わせる)。
 
 ### アプリケーション類型: CLUI
 

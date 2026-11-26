@@ -79,7 +79,7 @@ global にインストール済みのトップレベル pkg を一覧します (
 
 ### macOS での下準備
 
-Homebrew、Node.js v18以降が未導入の場合は、先にインストールしてください。
+Homebrew、Node.js v22.22.2以降が未導入の場合は、先にインストールしてください。
 
 1. `node -v` を実行する。
    1. 失敗する場合は、`brew install node` または `nvm install` などで、Node.js をインストールする。
@@ -92,7 +92,7 @@ Homebrew、Node.js v18以降が未導入の場合は、先にインストール�
 
 ### Windows での下準備
 
-Node.js v18以上 (LTS 推奨) が未導入の場合は、先にインストールしてください。[fnm](https://github.com/Schniz/fnm)、[nvm-windows](https://github.com/coreybutler/nvm-windows)、[Volta](https://volta.sh/)、公式インストーラのいずれでもかまいません。
+Node.js v22.22.2以上 (LTS 推奨) が未導入の場合は、先にインストールしてください。[fnm](https://github.com/Schniz/fnm)、[nvm-windows](https://github.com/coreybutler/nvm-windows)、[Volta](https://volta.sh/)、公式インストーラのいずれでもかまいません。
 
 1. `node -v` を実行する。
    1. 失敗する場合は、[Node.js 公式サイト](https://nodejs.org/ja) などから Node.js をインストールする。

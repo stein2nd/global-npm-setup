@@ -71,7 +71,7 @@ maintainer: `stein2nd` (`@s2j/docs-linter` と同一)。
     "clui"
   ],
   "engines": {
-    "node": ">=18"
+    "node": ">=22.22.2"
   }
 }
 ```

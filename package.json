@@ -1,6 +1,6 @@
 {
   "name": "@s2j/global-npm",
-  "version": "2.2.15",
+  "version": "2.3.0",
   "description": "Manage globally installed npm packages via package.json with ncu.",
   "author": "Koutarou ISHIKAWA <stein2nd@gmail.com>",
   "type": "commonjs",
@@ -32,13 +32,13 @@
     "url": "https://github.com/stein2nd/global-npm-setup/issues"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22.22.2"
   },
   "scripts": {
     "test": "node --test test/*.test.cjs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:docs": "s2j-docs-linter --profile base ./README.md ./CHANGELOG.md ./docs/**/*.md ./docsMod/status.md ./docsMod/modification.md ./.vscode/**/*.md",
+    "lint:docs": "s2j-docs-linter --profile base ./README.md ./CHANGELOG.md ./docs/*.md docs/**/*.md ./docsMod/status.md ./docsMod/modification.md ./.vscode/**/*.md",
     "format": "prettier --write \"**/*.{cjs,js,mjs,json}\"",
     "format:check": "prettier --check \"**/*.{cjs,js,mjs,json}\"",
     "pack": "mkdir -p artifacts && npm pack --pack-destination artifacts",
