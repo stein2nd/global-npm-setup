@@ -1,6 +1,6 @@
 # Global npm Package Setup - 仕様準拠テスト結果
 
-最終実行: **2026-11-20**
+最終実行: **2026-11-26**
 
 ## サマリー
 
@@ -111,18 +111,18 @@
 | ID | 条件 | 結果 | 備考 |
 |----|------|------|------|
 | PUB-01 | package.json に `private: true` が設定されていないこと。 | ✔ PASS |  |
-| PUB-02 | package.json の version が `2.2.14` であること。 | ✔ PASS |  |
+| PUB-02 | package.json の version が `2.2.15` であること。 | ✔ PASS |  |
 | PUB-03 | package.json の engines.node が `>=18` であること。 | ✔ PASS |  |
 | PUB-04 | `npm pack --dry-run` の tarball に必須ファイルが含まれること。 | ✔ PASS |  |
-| PUB-05 | npm registry に `@s2j/global-npm@2.2.14` が公開済みであること。 | ⚠ WARN | npm warn Unknown env config "devdir". This will error in a future major version of npm. See `npm help npmrc` for supported config options.
+| PUB-05 | npm registry に `@s2j/global-npm@2.2.15` が公開済みであること。 | ⚠ WARN | npm warn Unknown env config "devdir". This will error in a future major version of npm. See `npm help npmrc` for supported config options.
 npm error code E404
-npm error 404 No match found for version 2.2.14
+npm error 404 No match found for version 2.2.15
 npm error 404
-npm error 404  The requested resource '@s2j/global-npm@2.2.14' could not be found or you do not have permission to access it.
+npm error 404  The requested resource '@s2j/global-npm@2.2.15' could not be found or you do not have permission to access it.
 npm error 404
 npm error 404 Note that you can also install from a
 npm error 404 tarball, folder, http url, or git url.
-npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/3eb300ae9c13d8c26ebf5f0ad375cf08/npm/_logs/2026-11-20T06_45_32_197Z-debug-0.log |
+npm error A complete log of this run can be found in: /var/folders/qv/2_s65_ks5qg160slfww9n1gw0000gn/T/cursor-sandbox-cache/e3c8d5d50693b9e71d3f6699801aca86/npm/_logs/2026-11-26T03_36_46_507Z-debug-0.log |
 
 ## mod-os-agnostic-windows
 

@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## v2.2.15: 2026-11-26
+
+### パッケージ本体
+
+* 振る舞い変更なし (`bin/`、`lib/` は v2.2.14のまま)
+
+### リポジトリ整備 (tarball 非同梱)
+
+* `ncu -u`: `textlint` ^16.1.3、`textlint-rule-preset-ja-technical-writing` ^12.1.0、`@s2j/docs-linter` ^1.0.35を追従
+* README: GPL v3バッジのリンク先を `https://www.gnu.org/` に変更
+* audit 残は `npm@12.2.3` 同梱ほか推移的依存 `moderate` 19 (v2.2.14と同水準)
+* PUB-02を `2.2.15` に追従
+
 ## v2.2.14: 2026-11-20
 
 ### パッケージ本体
